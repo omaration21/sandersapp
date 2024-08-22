@@ -10,7 +10,7 @@ const LoginPage = () => {
   const authContext = useContext(AuthContext);
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault(); // Evita el comportamiento por defecto de recargar la página
+    e.preventDefault();
     console.log('Formulario enviado');
 
     if (authContext) {

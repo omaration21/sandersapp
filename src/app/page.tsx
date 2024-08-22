@@ -21,5 +21,5 @@ export default function HomePage() {
     }
   }, [authContext, router]);
 
-  return null; // No renderiza nada ya que el componente solo se utiliza para redirecciones
+  return null;
 }
