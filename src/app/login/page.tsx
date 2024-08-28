@@ -1,23 +1,33 @@
 "use client";
 
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);  // Nuevo estado para mostrar/ocultar la contraseña
   const authContext = useContext(AuthContext);
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Formulario enviado');
 
     if (authContext) {
-      console.log('Contexto de autenticación encontrado, llamando a login');
       authContext.login(email, password);
-    } else {
-      console.log('Contexto de autenticación no encontrado');
+
+      if (authContext.user && authContext.role) {
+        console.log('Usuario autenticado:', authContext.user);
+        console.log('Rol del usuario:', authContext.role);
+
+        if (authContext.role === 'Admin') {
+          router.push('/dashboard/admin');
+        } else if (authContext.role === 'Donor') {
+          router.push('/dashboard/donor');
+        }
+      } else {
+        console.log('Error en la autenticación');
+      }
     }
   };
 
@@ -30,7 +40,7 @@ const LoginPage = () => {
             <label className="block text-gray-700">Email</label>
             <input
               type="email"
-              className="w-full px-4 py-2 border rounded-lg text-gray-900"  // Asegúrate de que el color del texto sea visible
+              className="w-full px-4 py-2 border rounded-lg text-gray-900"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -39,19 +49,12 @@ const LoginPage = () => {
           <div className="mb-4 relative">
             <label className="block text-gray-700">Password</label>
             <input
-              type={showPassword ? 'text' : 'password'}
-              className="w-full px-4 py-2 border rounded-lg text-gray-900"  // Asegúrate de que el color del texto sea visible
+              type="password"
+              className="w-full px-4 py-2 border rounded-lg text-gray-900"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <button
-              type="button"
-              className="absolute inset-y-0 right-0 px-3 py-2 text-gray-600"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? 'Hide' : 'Show'}
-            </button>
           </div>
           <button
             type="submit"

@@ -26,10 +26,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (email === 'admin@e.com' && password === 'admin') {
       setUser({ email });
       setRole('Admin');
+      console.log('Usuario autenticado como Admin');
       router.push('/dashboard/admin');
     } else if (email === 'donor@e.com' && password === 'donor') {
       setUser({ email });
       setRole('Donor');
+      console.log('Usuario autenticado como Donor');
       router.push('/dashboard/donor');
     } else {
       console.log('Credenciales incorrectas');
@@ -39,6 +41,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = () => {
     setUser(null);
     setRole(null);
+    console.log('Sesión cerrada');
     router.push('/login');
   };
 

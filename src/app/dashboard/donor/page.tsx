@@ -1,12 +1,24 @@
 "use client";
 
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
-export default function DonorDashboard() {
+const DonorDashboard = () => {
   const authContext = useContext(AuthContext);
+  const router = useRouter();
 
-  console.log(authContext);
+  useEffect(() => {
+    if (!authContext?.user) {
+      router.push('/login'); // Redirige si no hay un usuario autenticado
+    } else if (authContext.role !== 'Donor') {
+      router.push('/login'); // Redirige si el rol no es Donor
+    }
+  }, [authContext, router]);
+
+  if (!authContext?.user || authContext.role !== 'Donor') {
+    return <div>Cargando...</div>; // Renderiza un mensaje de carga mientras redirige
+  }
 
   const handleLogout = () => {
     if (authContext) {
@@ -67,4 +79,6 @@ export default function DonorDashboard() {
       </div>
     </div>
   );
-}
+};
+
+export default DonorDashboard;

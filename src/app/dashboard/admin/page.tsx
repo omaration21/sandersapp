@@ -1,12 +1,24 @@
 "use client";
 
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { useRouter } from 'next/navigation';
 
-export default function AdminDashboard() {
+const AdminDashboard = () => {
   const authContext = useContext(AuthContext);
+  const router = useRouter();
 
-  console.log(authContext);
+  useEffect(() => {
+    if (!authContext?.user) {
+      router.push('/login'); // Redirige si no hay un usuario autenticado
+    } else if (authContext.role !== 'Admin') {
+      router.push('/login'); // Redirige si el rol no es Admin
+    }
+  }, [authContext, router]);
+
+  if (!authContext?.user || authContext.role !== 'Admin') {
+    return <div>Cargando...</div>; // Renderiza un mensaje de carga mientras redirige
+  }
 
   const handleLogout = () => {
     if (authContext) {
@@ -26,7 +38,7 @@ export default function AdminDashboard() {
             Dashboard
           </a>
           <a href="#" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
-            Donations
+            Users
           </a>
           <a href="#" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
             Settings
@@ -67,4 +79,6 @@ export default function AdminDashboard() {
       </div>
     </div>
   );
-}
+};
+
+export default AdminDashboard;
