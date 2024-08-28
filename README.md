@@ -12,8 +12,6 @@ yarn dev
 pnpm dev
 # or
 bun dev
-# and run the next command to install all dependencies used 
-npm install re 
 ```
 
 Open [http://localhost:3000](http://localhost:3001) with your browser to see the result.
