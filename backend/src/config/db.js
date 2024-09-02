@@ -10,7 +10,7 @@ async function connection_to_db() {
             host: process.env.DB_HOST || 'localhost',
             user: process.env.DB_USER || 'root',
             port: process.env.DB_PORT || 3306,
-            password: process.env.DB_PASSWORD || '',
+            password: process.env.DB_PASSWORD || 'r922006dmkh',
             database: process.env.DB_NAME || 'sanders_db'
         });
         console.log('Connected to the MySQL database');

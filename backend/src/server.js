@@ -1,10 +1,7 @@
 import express from 'express';
 import connection_to_db from './config/db.js';
-import userRoutes from './routes/userRoutes.js'; 
-
 
 const app = express();
-
 
 app.use(express.json());
 
@@ -14,20 +11,28 @@ async function startServer() {
         const dbConnection = await connection_to_db();
         console.log('Database connected successfully.');
 
-        app.use((req, res, next) => {
+        app.use((req, _res, next) => {
             req.db = dbConnection;
             next();
         });
 
-        // Definir las rutas
-        app.use('/api/users', userRoutes); // Ejemplo de ruta
+        // Ruta para obtener todos los usuarios
+        app.get('/api/users', async (req, res) => {
+            try {
+                const [rows] = await req.db.query('SELECT * FROM usuarios');
+                res.json(rows);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+                res.status(500).json({ message: 'Error fetching users' });
+            }
+        });
 
         app.use((err, req, res, next) => {
             console.error(err.stack);
             res.status(500).send('Something broke!');
         });
 
-        const PORT = process.env.PORT || 5000;
+        const PORT = process.env.PORT || 3000;
         app.listen(PORT, () => {
             console.log(`Server running on port ${PORT}`);
         });

@@ -2,7 +2,7 @@ import express from 'express';
 const app = express();
 
 // Import the connect function
-const connect = require('./db');
+const connect = require('./config/db');
 
 // Create a route to get all users
 app.get('/users', async (_req, res) => {
@@ -11,7 +11,7 @@ app.get('/users', async (_req, res) => {
 
         try {
             connection = await connect();
-            connection.query('SELECT * FROM users', (error, results) => {
+            connection.query('SELECT * FROM usuarios WHERE cargo = 1', (error, results) => {
                 if (error) {
                     throw error;
                 }
