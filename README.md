@@ -12,6 +12,8 @@ yarn dev
 pnpm dev
 # or
 bun dev
+# then run the next comand to install requirements
+npm run install-requirements
 ```
 
 Open [http://localhost:3000](http://localhost:3001) with your browser to see the result.
