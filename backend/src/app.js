@@ -1,31 +1,15 @@
-import express from 'express';
+import express, { json } from 'express';
+import { usersRouter } from './routes/users.js';
+//import { corsMiddleware } from './middlewares/cors.js';
+
 const app = express();
+app.use(json());
+//app.use(corsMiddleware);
 
-// Import the connect function
-const connect = require('./config/db');
+app.use('/users', usersRouter);
 
-// Create a route to get all users
-app.get('/users', async (_req, res) => {
-    
-        let connection = null;
+const PORT = process.env.PORT ?? 3000;
 
-        try {
-            connection = await connect();
-            connection.query('SELECT * FROM usuarios WHERE cargo = 1', (error, results) => {
-                if (error) {
-                    throw error;
-                }
-                res.json(results);
-            })
-        }
-
-        catch (error) {
-            res.status(500).json({ error: error.message });
-        }
-
-        finally {
-            if (connection) {
-                connection.end();
-            }
-        }
-})
+app.listen(PORT, () => {
+    console.log(`Server listening on port http://localhost:${PORT}`);
+});
