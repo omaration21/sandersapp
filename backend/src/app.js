@@ -8,7 +8,7 @@ app.use(json());
 
 app.use('/users', usersRouter);
 
-const PORT = process.env.PORT ?? 3000;
+const PORT = process.env.PORT ?? 5001;
 
 app.listen(PORT, () => {
     console.log(`Server listening on port http://localhost:${PORT}`);
