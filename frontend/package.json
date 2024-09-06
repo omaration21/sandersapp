@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "install-requirements": "npm install"
+    "install-requirements": "npm install",
+    "test": "jest"
   },
   "dependencies": {
     "autoprefixer": "^10.4.20",
@@ -22,6 +23,7 @@
     "@types/node": "^20.16.1",
     "@types/react": "^18.3.4",
     "@types/react-dom": "^18",
+    "jest": "^29.7.0",
     "postcss": "^8.4.41",
     "tailwindcss": "^3.4.10",
     "typescript": "^5.5.4"
