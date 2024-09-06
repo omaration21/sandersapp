@@ -27,7 +27,7 @@ const DonationsPage = () => {
     <div className="flex h-screen bg-gray-100">
       <Sidebar role="Donor"/>
       <div className="flex-1 p-10">
-        <form onSubmit={handleSubmit} className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
+        <form data-testid="donor-form" onSubmit={handleSubmit} className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold mb-6 text-[#202451]">Registro del Donador</h2>
 
           <div className="mb-4">

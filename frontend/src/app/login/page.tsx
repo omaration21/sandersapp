@@ -18,8 +18,7 @@ const LoginPage = () => {
       try {
         // Esperar la llamada de login
         await authContext.login(email, password);
-
-        // Ya no necesitas verificar el user y role aquí, ya que se maneja dentro de AuthContext
+        router.push('/'); // Redirigir a la página de inicio
       } catch (error) {
         setError('Error en la autenticación. Inténtalo de nuevo.');
         console.error('Error en la autenticación en front de page:', error);
@@ -35,8 +34,9 @@ const LoginPage = () => {
         <form onSubmit={handleSubmit}>
           {error && <p className="text-red-500 mb-4">{error}</p>} {/* Mostrar el error si existe */}
           <div className="mb-4">
-            <label className="block text-[#202451]">Email</label>
+            <label htmlFor="email" className="block text-[#202451]">Email</label>
             <input
+              id="email" // Asocia este campo de entrada con la etiqueta del correo electrónico
               type="email"
               className="w-full px-4 py-2 border rounded-lg text-[#202451]"
               value={email}
@@ -45,8 +45,9 @@ const LoginPage = () => {
             />
           </div>
           <div className="mb-4 relative">
-            <label className="block text-[#202451]">Password</label>
+            <label htmlFor="password" className="block text-[#202451]">Password</label>
             <input
+              id="password" // Asocia este campo de entrada con la etiqueta de la contraseña
               type="password"
               className="w-full px-4 py-2 border rounded-lg text-gray-900"
               value={password}
