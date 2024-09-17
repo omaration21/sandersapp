@@ -1,7 +1,7 @@
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
-//import jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 const saltRounds = process.env.SALT_ROUNDS || 10;
 
@@ -81,9 +81,20 @@ export class UserModel {
 
             if (match) 
             {
-                // const token = jwt.sign({ email: email }, process.env.JWT_SECRET, { expiresIn: '1h' }); // check if this is correct
-                // return token;
-                return user;
+                const token = jwt.sign(
+                    {
+                        id: user[0].id,
+                        email: user[0].email,
+                        password: user[0].password,
+                        role_id: user[0].role_id,
+                        phone: user[0].phone
+                    },
+                    process.env.JWT_SECRET,
+                    {
+                        expiresIn: '1h'
+                    }
+                )
+                return {user: user[0], token};
             }
         }
         catch (error) {
