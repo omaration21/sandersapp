@@ -35,10 +35,10 @@ export class UserController {
         const {email, password} = req.body;
         try 
         {
-            const user = await UserModel.getLogin(email, password);
-            if (user) 
+            const result = await UserModel.getLogin(email, password);
+            if (result) 
             {
-                res.status(200).json({user, message: 'User logged in successfully'});
+                res.status(200).json({user: result.user, message: 'User logged in successfully', token: result.token});
             }
             else
             {
