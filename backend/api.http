@@ -6,10 +6,10 @@ POST http://localhost:5001/users/register
 Content-Type: application/json
 
 {
-    "name": "Omar",
-    "email": "omar@gmail.com",
+    "name": "Bruno",
+    "email": "bruno@gmail.com",
     "password": "123456",
-    "role_id": 1,
+    "role_id": 2,
     "phone": "1234567890"
 }
 
