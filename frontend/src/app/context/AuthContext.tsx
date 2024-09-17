@@ -45,6 +45,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         // Verifica el rol del usuario usando role_id
         if (loggedUser.role_id === 1) {
           setRole('Admin');
+          console.log('Entrando a Admin');
           router.push('/dashboard/admin');
         } else if (loggedUser.role_id === 2) {
           setRole('Donor');

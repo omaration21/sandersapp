@@ -18,7 +18,6 @@ const LoginPage = () => {
       try {
         // Esperar la llamada de login
         await authContext.login(email, password);
-        router.push('/'); // Redirigir a la página de inicio
       } catch (error) {
         setError('Error en la autenticación. Inténtalo de nuevo.');
         console.error('Error en la autenticación en front de page:', error);
