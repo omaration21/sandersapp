@@ -1,10 +1,8 @@
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
-//import jwt from 'jsonwebtoken';
 
 const saltRounds = process.env.SALT_ROUNDS || 10;
-
 dotenv.config();
 
 const config = {
@@ -18,18 +16,34 @@ const config = {
 export class UserModel {
     static async getAll() {
         let connection = null;
-
         try {
             connection = await mysql.createConnection(config);
-
-            const [users] = await connection.query('SELECT * FROM users');
+            const [users] = await connection.query('SELECT id, name, email, role_id, phone FROM users');
             return users;
-        }
-        catch (error) {
-            console.error('Error: ', error);
+        } catch (error) {
+            console.error('Error fetching users: ', error);
             return [];
+        } finally {
+            if (connection) {
+                connection.end();
+            }
         }
-        finally {
+    }
+
+    static async registerNewUser(name, email, password, role_id, phone) {
+        let connection = null;
+        try {
+            connection = await mysql.createConnection(config);
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
+            await connection.query(
+                'INSERT INTO users (name, email, password, role_id, phone) VALUES (?, ?, ?, ?, ?)',
+                [name, email, hashedPassword, role_id, phone]
+            );
+            return true;
+        } catch (error) {
+            console.error('Error: ', error);
+            return false;
+        } finally {
             if (connection) {
                 connection.end();
                 console.log('Connection closed');
@@ -37,60 +51,65 @@ export class UserModel {
         }
     }
 
-    static async registerNewUser(name, email, password, role_id, phone) 
-    {
+    static async getLogin(email, pass) {
         let connection = null;
-
-        try 
-        {
+        try {
             connection = await mysql.createConnection(config);
-
-            const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-            await connection.query('INSERT INTO users (name, email, password, role_id, phone) VALUES (?, ?, ?, ?, ?)', [name, email, hashedPassword, role_id, phone]);
-
-            return true;
-        }
-        catch (error) 
-        {
+            const [user] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
+            const hashedPassword = user[0].password;
+            const match = await bcrypt.compare(pass, hashedPassword);
+            if (match) {
+                return user;
+            }
+        } catch (error) {
             console.error('Error: ', error);
-            return false;
-        }
-        finally 
-        {
-            if (connection) 
-            {
+            return [];
+        } finally {
+            if (connection) {
                 connection.end();
                 console.log('Connection closed');
             }
         }
     }
 
-    static async getLogin(email, pass) 
-    {
+    // Update user
+    static async updateUser(id, name, email, role_id, phone) {
         let connection = null;
+        try {
+            connection = await mysql.createConnection(config);
+            await connection.query(
+                'UPDATE users SET name = ?, email = ?, role_id = ?, phone = ? WHERE id = ?',
+                [name, email, role_id, phone, id]
+            );
+            return true;
+        } catch (error) {
+            console.error('Error: ', error);
+            return false;
+        } finally {
+            if (connection) {
+                connection.end();
+                console.log('Connection closed');
+            }
+        }
+    }
 
+    // Delete user and update donations
+    static async deleteUser(id) {
+        let connection = null;
         try {
             connection = await mysql.createConnection(config);
 
-            const [user] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
+            // Primero desvincular las donaciones relacionadas con el usuario
+            await connection.query('UPDATE donations SET donor_id = NULL WHERE donor_id = ?', [id]);
 
-            const hashedPassword = user[0].password;
+            // Luego eliminar el usuario
+            await connection.query('DELETE FROM users WHERE id = ?', [id]);
 
-            const match = await bcrypt.compare(pass, hashedPassword);
-
-            if (match) 
-            {
-                // const token = jwt.sign({ email: email }, process.env.JWT_SECRET, { expiresIn: '1h' }); // check if this is correct
-                // return token;
-                return user;
-            }
-        }
-        catch (error) {
-            console.error('Error: ', error);
-            return [];
-        }
-        finally {
+            return true;
+        } catch (error) {
+            console.error('Error deleting user:', error);
+            return false;
+        } finally {
             if (connection) {
                 connection.end();
                 console.log('Connection closed');
