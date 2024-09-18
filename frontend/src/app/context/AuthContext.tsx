@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect} from 'react';
 import { useRouter } from 'next/navigation';
 
 interface User {
@@ -21,6 +21,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [role, setRole] = useState<'Admin' | 'Donor' | null>(null);
   const router = useRouter();
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token)
+    {
+      // Aquí se recupera la información del usuario si no es null
+      console.log('Token recuperado: ', token)
+    }
+  }, []);
+
   const login = async (email: string, password: string) => {
     try {
       const response = await fetch('http://localhost:5001/users/login', {
@@ -39,13 +48,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       
       // Verifica si se recibió un usuario
       if (data.user && data.user.length > 0) {
-        const loggedUser = data.user[0]; // Accede al primer (y único) usuario del array
+        const loggedUser = data.user; // Accede al primer (y único) usuario del array
         setUser({ email: loggedUser.email });
+
+        const activeToken = data.token;
+
+        localStorage.setItem('token', activeToken);
 
         // Verifica el rol del usuario usando role_id
         if (loggedUser.role_id === 1) {
           setRole('Admin');
-          console.log('Entrando a Admin');
           router.push('/dashboard/admin');
         } else if (loggedUser.role_id === 2) {
           setRole('Donor');
@@ -66,6 +78,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = () => {
     setUser(null);
     setRole(null);
+
+    localStorage.removeItem('token');
     console.log('Sesión cerrada');
     router.push('/login');
   };
