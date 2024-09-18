@@ -1,5 +1,5 @@
 ### GET ALL USERS
-GET http://localhost:5001/users/get
+GET http://localhost:5001/user/get
 
 ### POST NEW USER
 POST http://localhost:5001/users/register
