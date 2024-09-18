@@ -36,11 +36,15 @@ export class UserController {
 
     static async getLogin(req, res) {
         const {email, password} = req.body;
-        try {
-            const user = await UserModel.getLogin(email, password);
-            if (user) {
-                res.status(200).json({user, message: 'User logged in successfully'});
-            } else {
+        try 
+        {
+            const result = await UserModel.getLogin(email, password);
+            if (result) 
+            {
+                res.status(200).json({user: result.user, message: 'User logged in successfully', token: result.token});
+            }
+            else
+            {
                 res.status(401).json({ message: 'Invalid email or password' });
             }
         } catch (error) {

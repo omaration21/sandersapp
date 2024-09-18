@@ -1,6 +1,7 @@
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const saltRounds = process.env.SALT_ROUNDS || 10;
 dotenv.config();
@@ -58,8 +59,23 @@ export class UserModel {
             const [user] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
             const hashedPassword = user[0].password;
             const match = await bcrypt.compare(pass, hashedPassword);
-            if (match) {
-                return user;
+
+            if (match) 
+            {
+                const token = jwt.sign(
+                    {
+                        id: user[0].id,
+                        email: user[0].email,
+                        password: user[0].password,
+                        role_id: user[0].role_id,
+                        phone: user[0].phone
+                    },
+                    process.env.JWT_SECRET,
+                    {
+                        expiresIn: '1h'
+                    }
+                )
+                return {user: user[0], token};
             }
         } catch (error) {
             console.error('Error: ', error);

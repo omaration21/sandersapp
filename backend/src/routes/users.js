@@ -1,12 +1,10 @@
 import { Router } from 'express';
 import { UserController } from '../controllers/users.js';
+import { verifyToken } from '../middlewares/token.js'
 
 export const usersRouter = Router();
 
-// Obtener todos los usuarios
-usersRouter.get('/get', UserController.getAll);
-
-// Registrar un nuevo usuario
+usersRouter.get('/get', verifyToken,  UserController.getAll);
 usersRouter.post('/register', UserController.registerNewUser);
 
 // Iniciar sesión de un usuario
