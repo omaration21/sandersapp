@@ -47,11 +47,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const data = await response.json();
       
       // Verifica si se recibió un usuario
-      if (data.user && data.user.length > 0) {
+      if (data.user) {
         const loggedUser = data.user; // Accede al primer (y único) usuario del array
         setUser({ email: loggedUser.email });
 
         const activeToken = data.token;
+
+        console.log(activeToken)
 
         localStorage.setItem('token', activeToken);
 
