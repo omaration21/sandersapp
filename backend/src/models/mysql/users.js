@@ -10,7 +10,7 @@ const config = {
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
     port: process.env.DB_PORT || 3306,
-    password: process.env.DB_PASS || 'password', // Change this to your MySQL password
+    password: process.env.DB_PASS || 'bcqoz1!B', // Change this to your MySQL password
     database: process.env.DB_NAME || 'sanders_db', // Change this to your MySQL database name
 }
 

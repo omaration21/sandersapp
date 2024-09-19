@@ -1,12 +1,20 @@
 import express, { json } from 'express';
+import https from 'https';
+import fs from 'fs';
 import { usersRouter } from './routes/users.js';
 import cors from 'cors';
 
+// Leer los certificados
+const privateKey = fs.readFileSync('./certs/server.key', 'utf8');
+const certificate = fs.readFileSync('./certs/server.crt', 'utf8');
+
+const credentials = { key: privateKey, cert: certificate };
+
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:3000',  // Permitir solicitudes desde este origen
-    methods: 'GET,POST,PUT,DELETE',  // Permitir estos métodos HTTP
-    credentials: true  // Permitir el envío de cookies o cabeceras de autorización
+    origin: 'https://localhost:3000',  // Cambiar a HTTPS
+    methods: 'GET,POST,PUT,DELETE',
+    credentials: true
 }));
 
 app.use(json());
@@ -14,6 +22,7 @@ app.use('/users', usersRouter);
 
 const PORT = process.env.PORT ?? 5001;
 
-app.listen(PORT, () => {
-    console.log(`Server listening on port http://localhost:${PORT}`);
+// Iniciar el servidor HTTPS
+https.createServer(credentials, app).listen(PORT, () => {
+    console.log(`HTTPS Server running on https://localhost:${PORT}`);
 });
