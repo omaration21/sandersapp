@@ -4,14 +4,20 @@ import { verifyToken } from '../middlewares/token.js'
 
 export const usersRouter = Router();
 
+// Get all users
 usersRouter.get('/get', verifyToken,  UserController.getAll);
+
+// Register user
 usersRouter.post('/register', verifyToken,  UserController.registerNewUser);
 
-// Iniciar sesión de un usuario
+// Login user
 usersRouter.post('/login', UserController.getLogin);
 
-// Actualizar un usuario existente
+// Update existing user
 usersRouter.put('/update/:id', verifyToken,  UserController.updateUser);
 
-// Eliminar un usuario
+// Delete user
 usersRouter.delete('/:id', verifyToken, UserController.deleteUser);
+
+// Register donation
+usersRouter.post('/registerDonation', verifyToken, UserController.registerNewDonation)

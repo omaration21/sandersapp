@@ -21,3 +21,16 @@ Content-Type: application/json
     "email": "omar@gmail.com",
     "password": "123456"
 }
+
+### Register donation
+POST https://localhost:5001/users/registerDonation
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkUVdpM2l1VGhLZVV4OG9aNWo1Zi5kdTM3MUpxWFdEdGNqVERtei9pNnoxa3BSRERHODh3cWEiLCJyb2xlX2lkIjoyLCJwaG9uZSI6MTIzNDU2Nzg5MCwiaWF0IjoxNzI2OTcxNTQzLCJleHAiOjE3MjY5NzUxNDN9.521rKxDMCgJCJ8J0M8Iq0EeU5sQQ1RvzBBZqwBRvPAU
+
+{
+    "amount": 45000,
+    "donor_id": 3,
+    "type_id": 2,
+    "comment": "From web",
+    "sector_id": 2
+}

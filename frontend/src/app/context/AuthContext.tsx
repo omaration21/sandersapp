@@ -48,12 +48,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       
       // Verifica si se recibió un usuario
       if (data.user) {
-        const loggedUser = data.user; // Accede al primer (y único) usuario del array
+        const loggedUser = data.user;
         setUser({ email: loggedUser.email });
 
         const activeToken = data.token;
-
-        console.log(activeToken)
 
         localStorage.setItem('token', activeToken);
 

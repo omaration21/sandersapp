@@ -23,7 +23,7 @@ const AdminDashboard = () => {
   }, [authContext, router]);
 
   if (!authContext?.user || authContext.role !== 'Admin') {
-    return null; // Renderiza nada mientras redirige
+    return null; 
   }
 
   console.log('Rendering Admin Dashboard');
