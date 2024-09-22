@@ -36,14 +36,25 @@ export class UserModel {
         try {
             connection = await mysql.createConnection(config);
             const hashedPassword = await bcrypt.hash(password, saltRounds);
+    
             await connection.query(
                 'INSERT INTO users (name, email, password, role_id, phone) VALUES (?, ?, ?, ?, ?)',
                 [name, email, hashedPassword, role_id, phone]
             );
-            return true;
+    
+            return { success: true, message: 'Usuario registrado correctamente' };
+    
         } catch (error) {
             console.error('Error: ', error);
-            return false;
+    
+            // Capturar el código de error de MySQL para entradas duplicadas
+            if (error.code === 'ER_DUP_ENTRY') {
+                // Devolver un mensaje detallado para entradas duplicadas
+                return { success: false, message: 'El correo electrónico o teléfono ya está registrado.' };
+            }
+            
+            return { success: false, message: 'Ocurrió un error al registrar el usuario.' };
+    
         } finally {
             if (connection) {
                 connection.end();

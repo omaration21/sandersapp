@@ -14,11 +14,11 @@ Content-Type: application/json
 }
 
 ### LOGIN USER
-POST http://localhost:5001/users/login
+POST https://localhost:5001/users/login
 Content-Type: application/json
 
 {
-    "email": "omar@gmail.com",
+    "email": "bruno@gmail.com",
     "password": "123456"
 }
 

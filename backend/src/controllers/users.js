@@ -22,15 +22,19 @@ export class UserController {
     }
 
     static async registerNewUser(req, res) {
-        const {name, email, password, role_id, phone} = req.body;
+        const { name, email, password, role_id, phone } = req.body;
+        
         try {
-            const newUser = await UserModel.registerNewUser(name, email, password, role_id, phone);
-            if (newUser) {
+            const result = await UserModel.registerNewUser(name, email, password, role_id, phone);
+    
+            if (result.success) {
                 res.status(201).json({ message: 'User registered successfully' });
+            } else {
+                res.status(400).json({ message: result.message });
             }
         } catch (error) {
             console.error('Error registering user:', error);
-            res.status(500).json({ message: 'Failed to register user' });
+            res.status(500).json({ message: 'Failed to register user due to server error' });
         }
     }
 
