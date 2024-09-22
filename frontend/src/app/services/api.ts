@@ -9,6 +9,14 @@ export interface User {
     password?: string;
   }
 
+export interface DonationData {
+  amount: string;
+  donor_id: number;
+  type_id: number;
+  comment: string;
+  sector_id: number;
+}
+
 // Obtener todos los usuarios
 export async function fetchUsers(): Promise<User[]> {
 
@@ -102,4 +110,29 @@ export async function deleteUser(id: number): Promise<void> {
     if (!response.ok) {
         throw new Error('Failed to delete user');
     }
+}
+
+// New method to call method in backend
+export async function registerNewDonation(donationData: DonationData): Promise<void>
+{
+  const token = localStorage.getItem('token');
+
+  if (!token)
+  {
+    throw new Error('No token found. Please login.')
+  }
+
+  const response = await fetch(`${API_URL}/users/registerDonation`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(donationData)
+  });
+
+  if (!response.ok)
+  {
+    throw new Error('Failed to register new donation');
+  }
 }
