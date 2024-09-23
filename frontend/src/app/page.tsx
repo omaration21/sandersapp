@@ -10,6 +10,10 @@ export default function HomePage() {
     router.push('/login'); // Redirige a la página de login
   };
 
+  const handleRegisterClick = () => {
+    router.push('/signup'); //Redirige a la página de signup
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header con logo como imagen y navegación */}
@@ -26,6 +30,13 @@ export default function HomePage() {
               className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             >
               Login
+            </button>
+            {/* Botón SignUp */}
+            <button
+              onClick={handleRegisterClick}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+            >
+              Registrate
             </button>
           </nav>
         </div>

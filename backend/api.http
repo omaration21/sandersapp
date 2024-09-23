@@ -1,5 +1,7 @@
 ### GET ALL USERS
 GET https://localhost:5001/users/get
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJvbWFyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJHpkaS5kSzJOLmdKdTlsS1dRcTZPRy5qSWd2TWJQekVvL2xtZkIzUVlpdS93WERrMDdUbjJ1Iiwicm9sZV9pZCI6MSwicGhvbmUiOjEyMzQ1Njc4OTAsImlhdCI6MTcyNzEzMTI5NiwiZXhwIjoxNzI3MTM0ODk2fQ.ERfCFJhl5Kxf8SpJzFaUnV2xAnBh-FUKuKeqAHXOIE4
+
 
 ### POST NEW USER
 POST https://localhost:5001/users/register
@@ -18,14 +20,14 @@ POST https://localhost:5001/users/login
 Content-Type: application/json
 
 {
-    "email": "bruno@gmail.com",
+    "email": "omar@gmail.com",
     "password": "123456"
 }
 
 ### Register donation
 POST https://localhost:5001/users/registerDonation
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkUVdpM2l1VGhLZVV4OG9aNWo1Zi5kdTM3MUpxWFdEdGNqVERtei9pNnoxa3BSRERHODh3cWEiLCJyb2xlX2lkIjoyLCJwaG9uZSI6MTIzNDU2Nzg5MCwiaWF0IjoxNzI2OTcxNTQzLCJleHAiOjE3MjY5NzUxNDN9.521rKxDMCgJCJ8J0M8Iq0EeU5sQQ1RvzBBZqwBRvPAU
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJvbWFyQGdtYWlsLmNvbSIsInBhc3N3b3JkIjoiJDJiJDEwJHpkaS5kSzJOLmdKdTlsS1dRcTZPRy5qSWd2TWJQekVvL2xtZkIzUVlpdS93WERrMDdUbjJ1Iiwicm9sZV9pZCI6MSwicGhvbmUiOjEyMzQ1Njc4OTAsImlhdCI6MTcyNzEzMTI5NiwiZXhwIjoxNzI3MTM0ODk2fQ.ERfCFJhl5Kxf8SpJzFaUnV2xAnBh-FUKuKeqAHXOIE4
 
 {
     "amount": 45000,
