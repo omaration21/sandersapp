@@ -8,7 +8,7 @@ export const usersRouter = Router();
 usersRouter.get('/get', verifyToken,  UserController.getAll);
 
 // Register user
-usersRouter.post('/register', verifyToken,  UserController.registerNewUser);
+usersRouter.post('/register',  UserController.registerNewUser);
 
 // Login user
 usersRouter.post('/login', UserController.getLogin);
