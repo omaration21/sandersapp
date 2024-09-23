@@ -26,16 +26,26 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-no-repeat bg-cover bg-center"
-      style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/images/nopales.jpg')` }}>
-      <div className="w-full max-w-md bg-[rgba(255,255,255,0.5)] rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-semibold text-center mb-6 text-[#202451]">Login</h2>
+    <div className="flex items-center justify-center min-h-screen bg-no-repeat bg-cover bg-center">
+       <div
+  style={{
+    background: 'linear-gradient(to top right, #232959 50%, #1F244D 50%)',
+  }}
+  className="absolute top-0 left-0 w-full h-full"
+></div>
+      <div className="relative z-10 items-center justify-center w-full max-w-md bg-[rgba(255,255,255)] rounded-lg shadow-md p-6">
+        <div className="flex items-center justify-center ">
+          <img src="/images/logoAzul.png" alt="Logo Fundación Sanders" className="h-12 w-13" />
+          <h2 className="text-2xl font-semibold text-center text-[#202451] m-11 ">Login</h2>
+        </div>
+        
+
         <form onSubmit={handleSubmit}>
           {error && <p className="text-red-500 mb-4">{error}</p>} {/* Mostrar el error si existe */}
           <div className="mb-4">
             <label htmlFor="email" className="block text-[#202451]">Email</label>
             <input
-              id="email" // Asocia este campo de entrada con la etiqueta del correo electrónico
+              id="email"
               type="email"
               className="w-full px-4 py-2 border rounded-lg text-[#202451]"
               value={email}
@@ -46,7 +56,7 @@ const LoginPage = () => {
           <div className="mb-4 relative">
             <label htmlFor="password" className="block text-[#202451]">Password</label>
             <input
-              id="password" // Asocia este campo de entrada con la etiqueta de la contraseña
+              id="password"
               type="password"
               className="w-full px-4 py-2 border rounded-lg text-gray-900"
               value={password}
@@ -56,11 +66,12 @@ const LoginPage = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-[#202451] text-[rgba(255,255,255,0.5)] py-2 rounded-lg hover:bg-[#778DA9] text-[#202451]"
+            className="w-full bg-[#202451] text-[rgba(255,255,255,0.5)] py-3 rounded-lg hover:bg-[#778DA9] text-[#202451]"
           >
             Login
           </button>
         </form>
+
       </div>
     </div>
   );
