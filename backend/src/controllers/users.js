@@ -22,25 +22,33 @@ export class UserController {
     }
 
     static async registerNewUser(req, res) {
-        const {name, email, password, role_id, phone} = req.body;
+        const { name, email, password, role_id, phone } = req.body;
+        
         try {
-            const newUser = await UserModel.registerNewUser(name, email, password, role_id, phone);
-            if (newUser) {
+            const result = await UserModel.registerNewUser(name, email, password, role_id, phone);
+    
+            if (result.success) {
                 res.status(201).json({ message: 'User registered successfully' });
+            } else {
+                res.status(400).json({ message: result.message });
             }
         } catch (error) {
             console.error('Error registering user:', error);
-            res.status(500).json({ message: 'Failed to register user' });
+            res.status(500).json({ message: 'Failed to register user due to server error' });
         }
     }
 
     static async getLogin(req, res) {
         const {email, password} = req.body;
-        try {
-            const user = await UserModel.getLogin(email, password);
-            if (user) {
-                res.status(200).json({user, message: 'User logged in successfully'});
-            } else {
+        try 
+        {
+            const result = await UserModel.getLogin(email, password);
+            if (result) 
+            {
+                res.status(200).json({user: result.user, message: 'User logged in successfully', token: result.token});
+            }
+            else
+            {
                 res.status(401).json({ message: 'Invalid email or password' });
             }
         } catch (error) {
@@ -76,6 +84,31 @@ export class UserController {
                 res.status(500).json({ message: 'Failed to delete user' });
             }
         } catch (error) {
+            console.error('Error deleting user:', error);
+            res.status(500).json({ message: 'Error deleting user' });
+        }
+    }
+
+    // Method to register a new donation
+    static async registerNewDonation(req, res)
+    {
+        const { amount, donor_id, type_id, comment, sector_id } = req.body;
+
+        try
+        {
+            const donationRegister = await UserModel.registerNewDonation(amount, donor_id, type_id, comment, sector_id);
+
+            if (donationRegister)
+            {
+                res.status(200).json({ message: 'Donation register succesfully' });
+            }
+            else
+            {
+                res.status(500).json({ message: 'Failed to register donation'});
+            }
+        }
+        catch(error)
+        {
             console.error('Error deleting user:', error);
             res.status(500).json({ message: 'Error deleting user' });
         }

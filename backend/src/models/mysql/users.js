@@ -1,6 +1,7 @@
 import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const saltRounds = process.env.SALT_ROUNDS || 10;
 dotenv.config();
@@ -9,9 +10,9 @@ const config = {
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
     port: process.env.DB_PORT || 3306,
-    password: process.env.DB_PASS || 'bcqoz1!B',
-    database: process.env.DB_NAME || 'sanders_db',
-};
+    password: process.env.DB_PASS || 'bcqoz1!B', // Change this to your MySQL password
+    database: process.env.DB_NAME || 'sanders_db', // Change this to your MySQL database name
+}
 
 export class UserModel {
     static async getAll() {
@@ -35,14 +36,25 @@ export class UserModel {
         try {
             connection = await mysql.createConnection(config);
             const hashedPassword = await bcrypt.hash(password, saltRounds);
+    
             await connection.query(
                 'INSERT INTO users (name, email, password, role_id, phone) VALUES (?, ?, ?, ?, ?)',
                 [name, email, hashedPassword, role_id, phone]
             );
-            return true;
+    
+            return { success: true, message: 'Usuario registrado correctamente' };
+    
         } catch (error) {
             console.error('Error: ', error);
-            return false;
+    
+            // Capturar el código de error de MySQL para entradas duplicadas
+            if (error.code === 'ER_DUP_ENTRY') {
+                // Devolver un mensaje detallado para entradas duplicadas
+                return { success: false, message: 'El correo electrónico o teléfono ya está registrado.' };
+            }
+            
+            return { success: false, message: 'Ocurrió un error al registrar el usuario.' };
+    
         } finally {
             if (connection) {
                 connection.end();
@@ -58,8 +70,23 @@ export class UserModel {
             const [user] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
             const hashedPassword = user[0].password;
             const match = await bcrypt.compare(pass, hashedPassword);
-            if (match) {
-                return user;
+
+            if (match) 
+            {
+                const token = jwt.sign(
+                    {
+                        id: user[0].id,
+                        email: user[0].email,
+                        password: user[0].password,
+                        role_id: user[0].role_id,
+                        phone: user[0].phone
+                    },
+                    process.env.JWT_SECRET,
+                    {
+                        expiresIn: '1h'
+                    }
+                )
+                return {user: user[0], token};
             }
         } catch (error) {
             console.error('Error: ', error);
@@ -72,7 +99,6 @@ export class UserModel {
         }
     }
 
-    // Update user
     static async updateUser(id, name, email, role_id, phone) {
         let connection = null;
         try {
@@ -93,7 +119,7 @@ export class UserModel {
         }
     }
 
-    // Delete user and update donations
+
     static async deleteUser(id) {
         let connection = null;
         try {
@@ -113,6 +139,37 @@ export class UserModel {
             if (connection) {
                 connection.end();
                 console.log('Connection closed');
+            }
+        }
+    }
+
+    // Method to register a new donation in database
+    static async registerNewDonation(amount, donor_id, type_id, comment, sector_id)
+    {
+        let connection = null;
+
+        try
+        {
+            connection = await mysql.createConnection(config);
+
+            await connection.query(
+                'INSERT INTO donations (amount, donor_id, type_id, comment, sector_id) VALUES (?, ?, ?, ?, ?)',
+                [amount, donor_id, type_id, comment, sector_id]);
+
+            return true;
+
+        }
+        catch(error)
+        {
+            console.log('Error in register new donation: ', error);
+            return false;
+        }
+        finally
+        {
+            if (connection)
+            {
+                connection.end();
+                console.log('Conection closed');
             }
         }
     }

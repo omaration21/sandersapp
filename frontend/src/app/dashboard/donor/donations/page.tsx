@@ -1,26 +1,70 @@
 "use client";
 
-import React, { useState } from 'react';
-import Sidebar from '../../../components/Sidebar'; // Asegúrate de que la ruta sea correcta
+import React, { useContext, useState } from 'react';
+import Sidebar from '../../../components/Sidebar';
+import { AuthContext } from '../../../context/AuthContext';
+import { registerNewDonation } from '../../../services/api';
 
 const DonationsPage = () => {
+  const authContext = useContext(AuthContext);
+
+  if (!authContext)
+  {
+    return <div>Cargando...</div>
+  }
+
+  const { user } = authContext;
+
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
+    amount: '',
+    comment: '',
+    sector_id: 1,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value, type } = e.target;
+
+    if (type === 'number') {
+      setFormData({
+        ...formData,
+        [name]: value === '' ? '' : Number(value), // Permitir vacío si no hay valor
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aquí puedes agregar la llamada a la API
-    console.log('Form Submitted: ', formData);
+
+    if (!user)
+    {
+      console.error('No se encontró un usuario logueado');
+      return;
+    }
+
+    const donationData = {
+      amount: formData.amount,
+      donor_id: user.id,
+      // A donation from user (donor) always will in web manner
+      type_id: 2,
+      comment: formData.comment,
+      sector_id: formData.sector_id,
+    }
+
+    try
+    {
+      await registerNewDonation(donationData);
+      console.log('Donación registrada exitsamente');
+    }
+    catch(error)
+    {
+      console.log('Form Submitted: ', formData);
+      console.error('Error al registrar la donación:', error);
+    }
   };
 
   return (
@@ -28,45 +72,50 @@ const DonationsPage = () => {
       <Sidebar role="Donor"/>
       <div className="flex-1 p-10">
         <form data-testid="donor-form" onSubmit={handleSubmit} className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold mb-6 text-[#202451]">Registro del Donador</h2>
+          <h2 className="text-2xl font-semibold mb-6 text-[#202451]">Registro de donación</h2>
 
           <div className="mb-4">
-            <label htmlFor="name" className="block text-sm font-medium text-[#202451]">Nombre Completo</label>
+            <label htmlFor="amount" className="block text-sm font-medium text-[#202451]">Monto</label>
+            <input
+              type="number"
+              id="amount"
+              name="amount"
+              value={formData.amount}
+              onChange={handleChange}
+              required
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 custom-input text-black"
+              placeholder="Introduce el monto"
+            />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="comment" className="block text-sm font-medium text-[#202451]">Comentario</label>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={formData.name}
+              id="comment"
+              name="comment"
+              value={formData.comment}
               onChange={handleChange}
               required
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-black"
+              placeholder="Describe tu donación"
             />
           </div>
 
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-[#202451]">Email</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
+            <label htmlFor="sector_id" className="block text-sm font-medium text-[#202451]">Sector deseado</label>
+            <select
+              id="sector_id"
+              name="sector_id"
+              value={formData.sector_id}
               onChange={handleChange}
               required
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label htmlFor="phone" className="block text-sm font-medium text-[#202451]">Número Telefónico</label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-            />
+              className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-black"
+            >
+              <option value={1}>Water</option>
+              <option value={2}>Sexuality</option>
+              <option value={3}>Education</option>
+            </select>
           </div>
 
           <button

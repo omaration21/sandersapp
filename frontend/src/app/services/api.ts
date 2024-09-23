@@ -1,4 +1,4 @@
-export const API_URL = 'http://localhost:5001';
+export const API_URL = 'https://localhost:5001';
 
 export interface User {
     id: number;
@@ -9,9 +9,32 @@ export interface User {
     password?: string;
   }
 
+export interface DonationData {
+  amount: string;
+  donor_id: number;
+  type_id: number;
+  comment: string;
+  sector_id: number;
+}
+
 // Obtener todos los usuarios
 export async function fetchUsers(): Promise<User[]> {
-    const response = await fetch(`${API_URL}/users/get`);
+
+    const token = localStorage.getItem('token');
+
+    if (!token)
+    {
+      throw new Error('No token found. Please login.')
+    }
+
+    const response = await fetch(`${API_URL}/users/get`, 
+    {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
     if (!response.ok) {
       throw new Error('Failed to fetch users');
     }
@@ -20,13 +43,23 @@ export async function fetchUsers(): Promise<User[]> {
 
 // Crear un nuevo usuario
 export async function createUser(user: Omit<User, 'id'>): Promise<void> {
-    const response = await fetch(`${API_URL}/users/register`, {
+  
+  const token = localStorage.getItem('token');
+
+  if (!token)
+  {
+    throw new Error('No token found. Please login.')
+  }
+  
+  const response = await fetch(`${API_URL}/users/register`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(user),
     });
+
     if (!response.ok) {
         throw new Error('Failed to create user');
     }
@@ -34,13 +67,23 @@ export async function createUser(user: Omit<User, 'id'>): Promise<void> {
 
 // Actualizar usuario
 export async function updateUser(id: number, updatedUser: User): Promise<void> {
-    const response = await fetch(`${API_URL}/users/update/${id}`, {
+  
+  const token = localStorage.getItem('token');
+
+    if (!token)
+    {
+      throw new Error('No token found. Please login.')
+    }
+
+  const response = await fetch(`${API_URL}/users/update/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify(updatedUser),
     });
+
     if (!response.ok) {
       throw new Error('Failed to update user');
     }
@@ -48,11 +91,48 @@ export async function updateUser(id: number, updatedUser: User): Promise<void> {
 
 // Eliminar un usuario
 export async function deleteUser(id: number): Promise<void> {
-    const response = await fetch(`${API_URL}/users/${id}`, {
+    
+  const token = localStorage.getItem('token');
+
+    if (!token)
+    {
+      throw new Error('No token found. Please login.')
+    }
+  
+  const response = await fetch(`${API_URL}/users/${id}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        }
     });
 
     if (!response.ok) {
         throw new Error('Failed to delete user');
     }
+}
+
+// New method to call method in backend
+export async function registerNewDonation(donationData: DonationData): Promise<void>
+{
+  const token = localStorage.getItem('token');
+
+  if (!token)
+  {
+    throw new Error('No token found. Please login.')
+  }
+
+  const response = await fetch(`${API_URL}/users/registerDonation`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    body: JSON.stringify(donationData)
+  });
+
+  if (!response.ok)
+  {
+    throw new Error('Failed to register new donation');
+  }
 }

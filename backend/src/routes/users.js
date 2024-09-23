@@ -1,19 +1,23 @@
 import { Router } from 'express';
 import { UserController } from '../controllers/users.js';
+import { verifyToken } from '../middlewares/token.js'
 
 export const usersRouter = Router();
 
-// Obtener todos los usuarios
-usersRouter.get('/get', UserController.getAll);
+// Get all users
+usersRouter.get('/get', verifyToken,  UserController.getAll);
 
-// Registrar un nuevo usuario
-usersRouter.post('/register', UserController.registerNewUser);
+// Register user
+usersRouter.post('/register',  UserController.registerNewUser);
 
-// Iniciar sesión de un usuario
+// Login user
 usersRouter.post('/login', UserController.getLogin);
 
-// Actualizar un usuario existente
-usersRouter.put('/update/:id', UserController.updateUser);
+// Update existing user
+usersRouter.put('/update/:id', verifyToken,  UserController.updateUser);
 
-// Eliminar un usuario
-usersRouter.delete('/:id', UserController.deleteUser);
+// Delete user
+usersRouter.delete('/:id', verifyToken, UserController.deleteUser);
+
+// Register donation
+usersRouter.post('/registerDonation', verifyToken, UserController.registerNewDonation)
