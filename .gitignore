@@ -141,3 +141,6 @@ dist/
 .DS_Store
 Thumbs.db
 *.swp
+
+# Files
+backend/api.http
