@@ -3,6 +3,7 @@ import https from 'https';
 import fs from 'fs';
 import { usersRouter } from './routes/users.js';
 import cors from 'cors';
+import { donationsRouter } from './routes/donations.js';
 
 // Leer los certificados
 const privateKey = fs.readFileSync('./certs/server.key', 'utf8');
@@ -19,6 +20,7 @@ app.use(cors({
 
 app.use(json());
 app.use('/users', usersRouter);
+app.use('/donations', donationsRouter);
 
 const PORT = process.env.PORT ?? 5001;
 
