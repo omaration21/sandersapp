@@ -14,6 +14,10 @@ export default function HomePage() {
     router.push('/signup'); //Redirige a la página de signup
   };
 
+  const handleDonationClick = () => {
+    router.push('/userdona'); //Redirige a la página de donaciones
+  }
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header con logo como imagen y navegación */}
@@ -37,6 +41,13 @@ export default function HomePage() {
               className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             >
               Registrate
+            </button>
+            {/* Botón Donacion */}
+            <button
+              onClick={handleDonationClick}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+            >
+              ¡Dona ya!
             </button>
           </nav>
         </div>
