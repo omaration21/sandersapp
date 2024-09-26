@@ -4,6 +4,7 @@ import React, { useEffect, useContext } from 'react';
 import Sidebar from '../../components/Sidebar';
 import { useRouter } from 'next/navigation';
 import { AuthContext } from '../../context/AuthContext';
+import IncomePanel from '../../components/IncomePanel';
 
 const AdminDashboard = () => {
   const authContext = useContext(AuthContext);
@@ -15,10 +16,10 @@ const AdminDashboard = () => {
 
     if (!authContext?.user) {
       console.log('No user found, redirecting to login');
-      router.push('/login'); // Redirige si no hay un usuario autenticado
+      router.push('/login'); // Redirect if no authenticated user
     } else if (authContext.role !== 'Admin') {
       console.log('User is not Admin, redirecting to login');
-      router.push('/login'); // Redirige si el rol no es Admin
+      router.push('/login'); // Redirect if user is not an Admin
     }
   }, [authContext, router]);
 
@@ -29,16 +30,14 @@ const AdminDashboard = () => {
   console.log('Rendering Admin Dashboard');
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-blue-500">
       <Sidebar role="Admin" />
       <div className="flex-1 p-10 ml-64">
         <h2 className="text-2xl font-semibold">Admin Dashboard Overview</h2>
-        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {/* Contenido específico del dashboard de Admin */}
-          <div className="bg-white p-4 rounded-lg shadow-md">
-            <h3 className="text-lg font-semibold">Admin Card 1</h3>
-            <p className="mt-2">Admin-specific content goes here.</p>
-          </div>
+        
+        {/* Render only the IncomePanel component */}
+        <div className="mt-6">
+          <IncomePanel />  {/* IncomePanel component is rendered */}
         </div>
       </div>
     </div>

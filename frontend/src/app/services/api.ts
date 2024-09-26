@@ -7,24 +7,27 @@ export interface User {
     role_id: number;
     phone: string;
     password?: string;
-  }
+}
 
 export interface DonationData {
+  // Optional: Include ID when retrieving donations
+  id?: number;
   amount: string;
   donor_id: number;
   type_id: number;
   comment: string;
   sector_id: number;
+   // Optional: Date field
+  fecha?: string;
 }
 
-// Obtener todos los usuarios
+// Fetch all users
 export async function fetchUsers(): Promise<User[]> {
 
     const token = localStorage.getItem('token');
 
-    if (!token)
-    {
-      throw new Error('No token found. Please login.')
+    if (!token) {
+      throw new Error('No token found. Please login.');
     }
 
     const response = await fetch(`${API_URL}/users/get`, 
@@ -39,16 +42,15 @@ export async function fetchUsers(): Promise<User[]> {
       throw new Error('Failed to fetch users');
     }
     return await response.json();
-  }
+}
 
-// Crear un nuevo usuario
+// Create a new user
 export async function createUser(user: Omit<User, 'id'>): Promise<void> {
   
   const token = localStorage.getItem('token');
 
-  if (!token)
-  {
-    throw new Error('No token found. Please login.')
+  if (!token) {
+    throw new Error('No token found. Please login.');
   }
   
   const response = await fetch(`${API_URL}/users/register`, {
@@ -65,14 +67,13 @@ export async function createUser(user: Omit<User, 'id'>): Promise<void> {
     }
 }
 
-// Actualizar usuario
+// Update an existing user
 export async function updateUser(id: number, updatedUser: User): Promise<void> {
   
   const token = localStorage.getItem('token');
 
-    if (!token)
-    {
-      throw new Error('No token found. Please login.')
+    if (!token) {
+      throw new Error('No token found. Please login.');
     }
 
   const response = await fetch(`${API_URL}/users/update/${id}`, {
@@ -87,16 +88,15 @@ export async function updateUser(id: number, updatedUser: User): Promise<void> {
     if (!response.ok) {
       throw new Error('Failed to update user');
     }
-  }
+}
 
-// Eliminar un usuario
+// Delete a user
 export async function deleteUser(id: number): Promise<void> {
     
   const token = localStorage.getItem('token');
 
-    if (!token)
-    {
-      throw new Error('No token found. Please login.')
+    if (!token) {
+      throw new Error('No token found. Please login.');
     }
   
   const response = await fetch(`${API_URL}/users/${id}`, {
@@ -112,17 +112,15 @@ export async function deleteUser(id: number): Promise<void> {
     }
 }
 
-// New method to call method in backend
-export async function registerNewDonation(donationData: DonationData): Promise<void>
-{
+// Method to register a new donation
+export async function registerNewDonation(donationData: DonationData): Promise<void> {
   const token = localStorage.getItem('token');
 
-  if (!token)
-  {
-    throw new Error('No token found. Please login.')
+  if (!token) {
+    throw new Error('No token found. Please login.');
   }
 
-  const response = await fetch(`${API_URL}/users/registerDonation`, {
+  const response = await fetch(`${API_URL}/donations/register`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -131,8 +129,29 @@ export async function registerNewDonation(donationData: DonationData): Promise<v
     body: JSON.stringify(donationData)
   });
 
-  if (!response.ok)
-  {
+  if (!response.ok) {
     throw new Error('Failed to register new donation');
   }
+}
+
+// Fetch all donations
+export async function fetchDonations(): Promise<DonationData[]> {
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    throw new Error('No token found. Please login.');
+  }
+
+  const response = await fetch(`${API_URL}/donations/get`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    }
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to fetch donations');
+  }
+
+  return await response.json();
 }
