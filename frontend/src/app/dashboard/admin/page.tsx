@@ -30,14 +30,19 @@ const AdminDashboard = () => {
   console.log('Rendering Admin Dashboard');
 
   return (
-    <div className="flex min-h-screen bg-blue-500">
+    <div className="flex min-h-screen" style={{ backgroundColor: '#2c3e50' }}> {/* Fondo gris medianoche */}
       <Sidebar role="Admin" />
       <div className="flex-1 p-10 ml-64">
-        <h2 className="text-2xl font-semibold">Admin Dashboard Overview</h2>
+        <h2 className="text-2xl font-semibold text-white">Admin Dashboard Overview</h2>
         
-        {/* Render only the IncomePanel component */}
+        {/* Adjusted IncomePanel size and aligned to the left */}
+        <div className="mt-6" style={{ width: '60%' }}>  {/* Alineado a la izquierda */}
+          <IncomePanel />  {/* Renderizado del componente IncomePanel */}
+        </div>
+
+        {/* Aquí es donde puedes agregar otro componente */}
         <div className="mt-6">
-          <IncomePanel />  {/* IncomePanel component is rendered */}
+          {/* Componente adicional vendrá aquí */}
         </div>
       </div>
     </div>
