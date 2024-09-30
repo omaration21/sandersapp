@@ -8,22 +8,22 @@ const Sidebar = ({ role }: { role: string }) => {
   return (
     <div className="w-64 bg-gray-800 text-white h-full fixed">
       <div className="p-4">
-        <h1 className="text-lg font-semibold">{role} Dashboard</h1>
+        <h1 className="text-lg font-semibold">Panel de {role}</h1>
       </div>
       <nav className="mt-5">
         <Link href={role === 'Admin' ? "/dashboard/admin" : "/dashboard/donor"}>
           <span className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
-            Dashboard
+            Tablero
           </span>
         </Link>
         <Link href={role === 'Admin' ? "/dashboard/admin/users" : "/dashboard/donor/donations"}>
           <span className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
-            {role === 'Admin' ? "Users" : "Donations"}
+            {role === 'Admin' ? "Usuarios" : "Donaciones"}
           </span>
         </Link>
         <Link href={role === 'Admin' ? "/dashboard/admin/settings" : "/dashboard/donor/settings"}>
           <span className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white">
-            Settings
+            Configuración
           </span>
         </Link>
         <button
@@ -32,7 +32,7 @@ const Sidebar = ({ role }: { role: string }) => {
           }}
           className="block w-full py-2.5 px-4 mt-4 bg-red-600 text-white rounded transition duration-200 hover:bg-red-700"
         >
-          Logout
+          Cerrar Sesión
         </button>
       </nav>
     </div>
