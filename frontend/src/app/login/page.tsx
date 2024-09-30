@@ -36,7 +36,7 @@ const LoginPage = () => {
       <div className="relative z-10 items-center justify-center w-full max-w-md bg-[rgba(255,255,255)] rounded-lg shadow-md p-6">
         <div className="flex items-center justify-center ">
           <img src="/images/logoAzul.png" alt="Logo Fundación Sanders" className="h-12 w-13" />
-          <h2 className="text-2xl font-semibold text-center text-[#202451] m-11 ">Login</h2>
+          <h2 className="text-2xl font-semibold text-center text-[#202451] m-11 ">Inicio de sesión</h2>
         </div>
         
 
@@ -54,7 +54,7 @@ const LoginPage = () => {
             />
           </div>
           <div className="mb-4 relative">
-            <label htmlFor="password" className="block text-[#202451]">Password</label>
+            <label htmlFor="password" className="block text-[#202451]">Contraseña</label>
             <input
               id="password"
               type="password"
@@ -68,7 +68,7 @@ const LoginPage = () => {
             type="submit"
             className="w-full bg-[#202451] text-[rgba(255,255,255,0.5)] py-3 rounded-lg hover:bg-[#778DA9] text-[#202451]"
           >
-            Login
+            Iniciar Sesión
           </button>
         </form>
 

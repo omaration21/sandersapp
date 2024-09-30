@@ -49,7 +49,7 @@ const SignUp = () => {
       <div className="relative z-10 items-center justify-center w-full max-w-md bg-[rgba(255,255,255)] rounded-lg shadow-md p-6">
         <div className="flex items-center justify-center">
           <img src="/images/logoAzul.png" alt="Logo Fundación Sanders" className="h-12 w-13" />
-          <h2 className="text-2xl font-semibold text-center text-[#202451] m-11 ">Registro</h2>
+          <h2 className="text-2xl font-semibold text-center text-[#202451] m-11">Registro</h2>
         </div>
 
         <form onSubmit={handleSubmit}>

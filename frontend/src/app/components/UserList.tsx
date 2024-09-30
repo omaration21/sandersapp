@@ -5,8 +5,8 @@ import { useData } from '../context/DataProvider';
 const UserList: React.FC = () => {
     const { users, loading, error } = useData();
 
-    if (loading) return <p>Loading users...</p>;
-    if (error) return <p>Error loading users: {error}</p>;
+    if (loading) return <p>Cargando usuarios...</p>;
+    if (error) return <p>Error cargando usuarios: {error}</p>;
 
     return (
         <ul>

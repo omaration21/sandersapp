@@ -102,17 +102,17 @@ const UsersPage = () => {
     <div className="flex h-screen bg-gray-100">
       <Sidebar role="Admin" />
       <div className="flex-1 p-10 ml-64">
-        <h2 className="text-2xl font-semibold mb-4 text-gray-900">User Management</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-gray-900">Gestion de Usuario</h2>
 
         <div className="overflow-x-auto bg-white shadow-md rounded-lg">
           <table className="min-w-full bg-white">
             <thead className="bg-gray-100">
               <tr>
-                <th className="text-left p-4 text-gray-900">Name</th>
+                <th className="text-left p-4 text-gray-900">Nombre</th>
                 <th className="text-left p-4 text-gray-900">Email</th>
-                <th className="text-left p-4 text-gray-900">Role ID</th>
-                <th className="text-left p-4 text-gray-900">Phone</th>
-                <th className="text-left p-4 text-gray-900">Actions</th>
+                <th className="text-left p-4 text-gray-900">Rol ID</th>
+                <th className="text-left p-4 text-gray-900">Telefono</th>
+                <th className="text-left p-4 text-gray-900">Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -133,7 +133,7 @@ const UsersPage = () => {
                       className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
                       onClick={() => handleDelete(user.id)}
                     >
-                      Delete
+                      Borrar
                     </button>
                   </td>
                 </tr>
@@ -145,7 +145,7 @@ const UsersPage = () => {
         {/* Formulario para Crear Usuario */}
         {isCreatingUser && (
           <div className="mt-4 p-4 bg-white shadow-md rounded-lg">
-            <h3 className="text-2xl font-semibold mb-4 text-gray-900">Create New User</h3>
+            <h3 className="text-2xl font-semibold mb-4 text-gray-900">Crear Nuevo Usuario</h3>
             <input
               type="text"
               placeholder="Name"
@@ -198,7 +198,7 @@ const UsersPage = () => {
         {/* Formulario para Editar Usuario */}
         {isEditingUser && userToEdit && (
           <div className="mt-4 p-4 bg-white shadow-md rounded-lg">
-            <h3 className="text-2xl font-semibold mb-4 text-gray-900">Edit User</h3>
+            <h3 className="text-2xl font-semibold mb-4 text-gray-900">Editar Usuario</h3>
             <input
               type="text"
               placeholder="Name"
