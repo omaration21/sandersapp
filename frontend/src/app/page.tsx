@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link'; 
 
 export default function HomePage() {
   const router = useRouter();
@@ -16,16 +17,18 @@ export default function HomePage() {
 
   const handleDonationClick = () => {
     router.push('/userdona'); //Redirige a la página de donaciones
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header con logo como imagen y navegación */}
       <header className="bg-[#202451] text-white py-4 shadow-md">
         <div className="container mx-auto flex justify-between items-center">
-          {/* Imagen del logo */}
+          {/* Imagen del logo con enlace */}
           <div>
-            <img src="/images/logo.webp" alt="Logo Fundación Sanders" className="h-12" />
+            <Link href="/">
+              <img src="/images/logo.webp" alt="Logo Fundación Sanders" className="h-12 cursor-pointer" />
+            </Link>
           </div>
           <nav className="space-x-6">
             {/* Botón Login */}
