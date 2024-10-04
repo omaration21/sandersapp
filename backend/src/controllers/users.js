@@ -88,29 +88,4 @@ export class UserController {
             res.status(500).json({ message: 'Error deleting user' });
         }
     }
-
-    // Method to register a new donation
-    static async registerNewDonation(req, res)
-    {
-        const { amount, donor_id, type_id, comment, sector_id } = req.body;
-
-        try
-        {
-            const donationRegister = await UserModel.registerNewDonation(amount, donor_id, type_id, comment, sector_id);
-
-            if (donationRegister)
-            {
-                res.status(200).json({ message: 'Donation register succesfully' });
-            }
-            else
-            {
-                res.status(500).json({ message: 'Failed to register donation'});
-            }
-        }
-        catch(error)
-        {
-            console.error('Error deleting user:', error);
-            res.status(500).json({ message: 'Error deleting user' });
-        }
-    }
 }

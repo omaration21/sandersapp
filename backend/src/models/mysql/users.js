@@ -142,35 +142,4 @@ export class UserModel {
             }
         }
     }
-
-    // Method to register a new donation in database
-    static async registerNewDonation(amount, donor_id, type_id, comment, sector_id)
-    {
-        let connection = null;
-
-        try
-        {
-            connection = await mysql.createConnection(config);
-
-            await connection.query(
-                'INSERT INTO donations (amount, donor_id, type_id, comment, sector_id) VALUES (?, ?, ?, ?, ?)',
-                [amount, donor_id, type_id, comment, sector_id]);
-
-            return true;
-
-        }
-        catch(error)
-        {
-            console.log('Error in register new donation: ', error);
-            return false;
-        }
-        finally
-        {
-            if (connection)
-            {
-                connection.end();
-                console.log('Conection closed');
-            }
-        }
-    }
 }

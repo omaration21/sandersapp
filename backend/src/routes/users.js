@@ -18,6 +18,3 @@ usersRouter.put('/update/:id', verifyToken,  UserController.updateUser);
 
 // Delete user
 usersRouter.delete('/:id', verifyToken, UserController.deleteUser);
-
-// Register donation
-usersRouter.post('/registerDonation', verifyToken, UserController.registerNewDonation)
