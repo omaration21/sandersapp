@@ -146,8 +146,6 @@ const IncomePanel: React.FC = () => {
   };
 
   return (
-    <div style={styles.container}>
-      {/* Box with rounded edges that groups the title, chart, and options */}
       <div style={styles.panelContainer}>
         <h2 style={styles.title}>Income Panel</h2>
 
@@ -171,24 +169,19 @@ const IncomePanel: React.FC = () => {
           <Bar data={chartData} options={chartOptions} />
         </div>
       </div>
-    </div>
   );
 };
 
 // CSS styles for the box with rounded edges and black text color
 const styles = {
-  container: {
-    // Set all text to black
-    color: "black",
-  },
   panelContainer: {
     backgroundColor: "#f9f9f9",
     padding: "20px",
     borderRadius: "10px",
     boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-    margin: "20px 0",
-    // Adjust the panel width
-    width: "100%",
+    width: "55%",
+    height: "100%",
+    color: "black"
   },
   title: {
     fontSize: "24px",
@@ -206,7 +199,7 @@ const styles = {
     fontSize: "16px",
   },
   chartContainer: {
-    marginTop: "20px",
+    marginTop: "20px"
   },
 };
 
