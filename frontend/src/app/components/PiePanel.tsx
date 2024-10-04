@@ -40,21 +40,21 @@ const PiePanel: React.FC = () => {
     const amount = typeof donation.amount === 'string' ? parseFloat(donation.amount) : donation.amount;
 
     totalDonations += amount;
-    if (donation.sector_id === 1) {
+    if (donation.sector_name === "Agua") {
       sectorTotals.sector1 += amount;
-    } else if (donation.sector_id === 2) {
+    } else if (donation.sector_name === "Educación sexual") {
       sectorTotals.sector2 += amount;
-    } else if (donation.sector_id === 3) {
+    } else if (donation.sector_name === "Nutrición") {
       sectorTotals.sector3 += amount;
     }
   });
 
   // Prepare data for the Pie chart
   const chartData = {
-    labels: ["Sector 1", "Sector 2", "Sector 3"], // Names of the sectors
+    labels: ["Agua", "Educación sexual", "Nutrición"], // Names of the sectors
     datasets: [
       {
-        label: "Donations by Sector",
+        label: "Monto total recaudado",
         data: [
           (sectorTotals.sector1 / totalDonations) * 100 || 0, // Percentage for Sector 1
           (sectorTotals.sector2 / totalDonations) * 100 || 0, // Percentage for Sector 2
@@ -75,7 +75,7 @@ const PiePanel: React.FC = () => {
       },
       title: {
         display: true,
-        text: "Donations by Sector",
+        text: "Donaciones por sector",
       },
     },
   };
