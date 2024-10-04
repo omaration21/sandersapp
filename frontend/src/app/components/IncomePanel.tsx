@@ -15,12 +15,12 @@ import {
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 // Define the filter options
-type FilterOption = "daily" | "weekly" | "monthly";
+type FilterOption = "Diariamente" | "Semanalmente" | "Mensualmente";
 
 const IncomePanel: React.FC = () => {
   const [donations, setDonations] = useState<DonationData[]>([]);
   const [filteredDonations, setFilteredDonations] = useState<DonationData[]>([]);
-  const [filter, setFilter] = useState<FilterOption>("daily");
+  const [filter, setFilter] = useState<FilterOption>("Diariamente");
   const [totalAmount, setTotalAmount] = useState<number>(0);
 
   // Fetch all donations on component mount
@@ -37,35 +37,49 @@ const IncomePanel: React.FC = () => {
     loadDonations();
   }, []);
 
-  // Filter donations based on the selected filter (daily, weekly, monthly)
+  // Filter donations based on the selected filter
   const filterDonations = (filterOption: FilterOption) => {
     const now = new Date();
     let filtered: DonationData[] = [];
 
     switch (filterOption) {
-      case "daily":
-        filtered = donations.filter((donation) => {
-          const donationDate = new Date(donation.fecha || "");
-          return (
-            donationDate.getDate() === now.getDate() &&
-            donationDate.getMonth() === now.getMonth() &&
-            donationDate.getFullYear() === now.getFullYear()
+      case "Diariamente":
+          filtered = donations.filter((donation) => {
+          // Normalizamos las dates eliminando la información de hora y zona horaria
+          const donationDate = new Date(donation.date || "");
+        
+          const normalizedDonationDate = new Date(
+            donationDate.getUTCFullYear(),
+            donationDate.getUTCMonth() + 1,
+            donationDate.getUTCDate()
           );
+        
+          const normalizedNow = new Date(
+            now.getUTCFullYear(),
+            now.getUTCMonth() + 1, 
+            now.getUTCDate()
+          );
+        
+          // Comparamos solo la parte del día, mes y año
+          return normalizedDonationDate.getTime() === normalizedNow.getTime();
         });
         break;
 
-      case "weekly":
+      case "Semanalmente":
         // Get the first day of the week (Sunday)
         const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
         filtered = donations.filter((donation) => {
-          const donationDate = new Date(donation.fecha || "");
-          return donationDate >= startOfWeek && donationDate <= now;
+          const donationDate = new Date(donation.date || "");
+
+          const nowDate = new Date();
+
+          return donationDate >= startOfWeek && donationDate <= nowDate;
         });
         break;
 
-      case "monthly":
+      case "Mensualmente":
         filtered = donations.filter((donation) => {
-          const donationDate = new Date(donation.fecha || "");
+          const donationDate = new Date(donation.date || "");
           return (
             donationDate.getMonth() === now.getMonth() &&
             donationDate.getFullYear() === now.getFullYear()
@@ -99,11 +113,11 @@ const IncomePanel: React.FC = () => {
   const chartData = {
     // Dates on the X-axis
     labels: filteredDonations.map((donation) =>
-      new Date(donation.fecha || "").toLocaleDateString()
+      new Date(donation.date || "").toLocaleDateString()
     ),
     datasets: [
       {
-        label: "Donation Amount",
+        label: "Donación",
         // Amount on the Y-axis
         data: filteredDonations.map((donation) => donation.amount),
         // Bar colors
@@ -124,7 +138,7 @@ const IncomePanel: React.FC = () => {
       },
       title: {
         display: true,
-        text: `Donations (${filter.charAt(0).toUpperCase() + filter.slice(1)})`,
+        text: `Donaciones (${filter.charAt(0).toUpperCase() + filter.slice(1)})`,
       },
     },
     scales: {
@@ -132,14 +146,14 @@ const IncomePanel: React.FC = () => {
         title: {
           display: true,
           // Now the X-axis shows the date
-          text: 'Date',
+          text: 'Fecha',
         },
       },
       y: {
         title: {
           display: true,
           // The Y-axis shows the donation amount
-          text: 'Donation Amount (USD)',
+          text: 'Monto de donación (MXN)',
         },
       },
     },
@@ -147,20 +161,20 @@ const IncomePanel: React.FC = () => {
 
   return (
       <div style={styles.panelContainer}>
-        <h2 style={styles.title}>Income Panel</h2>
+        <h2 style={styles.title}>Ingresos</h2>
 
         {/* Filter options as a dropdown */}
         <div style={styles.filterContainer}>
-          <label htmlFor="filterSelect">Filter by:</label>
+          <label htmlFor="filterSelect">Filtrado por:</label>
           <select
             id="filterSelect"
             value={filter}
             onChange={(e) => setFilter(e.target.value as FilterOption)}
             style={styles.select}
           >
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
+            <option value="Diariamente">Diariamente</option>
+            <option value="Semanalmente">Semanalmente</option>
+            <option value="Mensualmente">Mensualmente</option>
           </select>
         </div>
 

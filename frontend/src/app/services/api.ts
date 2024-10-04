@@ -12,13 +12,15 @@ export interface User {
 export interface DonationData {
   // Optional: Include ID when retrieving donations
   id?: number;
-  amount: string;
-  donor_id: number;
-  type_id: number;
-  comment: string;
-  sector_id: number;
+  amount: number;
+  donor_name?: string;
+  donor_id?: number;
+  type_id?: number;
+  comment?: string;
+  sector_name?: string;
+  sector_id?: number;
    // Optional: Date field
-  fecha?: string;
+  date?: string;
 }
 
 // Fetch all users
