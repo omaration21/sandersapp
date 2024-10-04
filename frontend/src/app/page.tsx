@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link'; 
 
 export default function HomePage() {
   const router = useRouter();
@@ -14,14 +15,20 @@ export default function HomePage() {
     router.push('/signup'); //Redirige a la página de signup
   };
 
+  const handleDonationClick = () => {
+    router.push('/userdona'); //Redirige a la página de donaciones
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header con logo como imagen y navegación */}
       <header className="bg-[#202451] text-white py-4 shadow-md">
         <div className="container mx-auto flex justify-between items-center">
-          {/* Imagen del logo */}
+          {/* Imagen del logo con enlace */}
           <div>
-            <img src="/images/logo.webp" alt="Logo Fundación Sanders" className="h-12" />
+            <Link href="/">
+              <img src="/images/logo.webp" alt="Logo Fundación Sanders" className="h-12 cursor-pointer" />
+            </Link>
           </div>
           <nav className="space-x-6">
             {/* Botón Login */}
@@ -29,7 +36,7 @@ export default function HomePage() {
               onClick={handleLoginClick}
               className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             >
-              Login
+              Iniciar sesión
             </button>
             {/* Botón SignUp */}
             <button
@@ -37,6 +44,13 @@ export default function HomePage() {
               className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             >
               Registrate
+            </button>
+            {/* Botón Donacion */}
+            <button
+              onClick={handleDonationClick}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+            >
+              ¡Dona ya!
             </button>
           </nav>
         </div>

@@ -13,16 +13,23 @@ const AdminDashboard = () => {
   const router = useRouter();
 
   useEffect(() => {
+    console.log('Usuario:', authContext?.user);
+    console.log('Rol:', authContext?.role);
+
     if (!authContext?.user) {
-      router.push('/login'); // Redirect if no authenticated user
+      console.log('No se encontró un usuario, redirigiendo al inicio de sesión');
+      router.push('/login'); // Redirige si no hay un usuario autenticado
     } else if (authContext.role !== 'Admin') {
-      router.push('/login'); // Redirect if user is not an Admin
+      console.log('El usuario no es administrador, redirigiendo al inicio de sesión');
+      router.push('/login'); // Redirige si el rol no es Admin
     }
   }, [authContext, router]);
 
   if (!authContext?.user || authContext.role !== 'Admin') {
     return null; 
   }
+
+  console.log('Renderizando Panel de Administrador');
 
   return (
     <div className="flex min-h-screen" style={{ backgroundColor: '#2c3e50' }}> {/* Fondo gris medianoche */}
