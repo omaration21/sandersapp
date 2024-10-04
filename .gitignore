@@ -143,4 +143,4 @@ Thumbs.db
 *.swp
 
 # Files
-backend/api.http
+api.http

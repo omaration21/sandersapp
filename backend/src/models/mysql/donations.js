@@ -53,7 +53,21 @@ export class DonationsModel {
         {
             connection = await mysql.createConnection(config);
 
-            const [donations] = await connection.query('SELECT * FROM donations');
+            const [donations] = await connection.query(
+                `SELECT 
+                d.id,
+                d.amount,
+                u.name AS donor_name,   
+                d.comment,
+                s.description AS sector_name,   
+                dt.description AS type_name,
+                d.date
+                FROM donations d
+                JOIN users u ON d.donor_id = u.id  
+                JOIN sectors s ON d.sector_id = s.id
+                JOIN donation_types dt ON d.type_id = dt.id`
+            );
+
             return donations;
         }
         catch (error)
