@@ -35,10 +35,10 @@ const AdminDashboard = () => {
     <div className="flex min-h-screen" style={{ backgroundColor: '#2c3e50' }}> {/* Fondo gris medianoche */}
       <Sidebar role="Admin" />
       <div className="flex-1 p-10 ml-64">
-        <h2 className="text-2xl font-semibold text-white">Admin Dashboard Overview</h2>
+        <h2 className="text-2xl font-semibold text-white">Panel de administrador</h2>
         
         {/* Contenedor para alinear IncomePanel y PiePanel uno al lado del otro */}
-        <div className="flex mt-6 justify-between" style={{ height: '550px' }}>
+        <div className="flex mt-6 justify-between" style={{ height: '600px' }}>
             <IncomePanel />  {/* Renderizado del componente IncomePanel */}
 
             <PiePanel />  {/* Renderizado del componente PiePanel */}

@@ -13,7 +13,7 @@ const RecentDonations: React.FC = () => {
         const fetchedDonations = await fetchDonations(); // Fetch all donations
         // Sort donations by date and get the last 3 donations
         const lastThreeDonations = fetchedDonations
-          .sort((a, b) => new Date(b.fecha || "").getTime() - new Date(a.fecha || "").getTime())
+          .sort((a, b) => new Date(b.date || "").getTime() - new Date(a.date || "").getTime())
           .slice(0, 3); // Take only the last 3 donations
         setRecentDonations(lastThreeDonations);
       } catch (error) {
@@ -26,15 +26,15 @@ const RecentDonations: React.FC = () => {
 
   return (
     <div style={styles.container}>
-      <h2 style={styles.title}>Recent Donations</h2>
+      <h2 style={styles.title}>Donaciones recientes</h2>
       <ul style={styles.list}>
         {recentDonations.map((donation) => (
           <li key={donation.id} style={styles.donation}>
-            <p><strong>Donor ID:</strong> {donation.donor_id}</p>
-            <p><strong>Amount:</strong> ${donation.amount}</p>
-            <p><strong>Date:</strong> {new Date(donation.fecha || "").toLocaleDateString()}</p>
-            <p><strong>Sector ID:</strong> {donation.sector_id}</p>
-            <p><strong>Comment:</strong> {donation.comment}</p>
+            <p><strong>Nombre:</strong> {donation.donor_name}</p>
+            <p><strong>Monto:</strong> ${donation.amount}</p>
+            <p><strong>Fecha:</strong> {new Date(donation.date || "").toLocaleDateString()}</p>
+            <p><strong>Sector:</strong> {donation.sector_name}</p>
+            <p><strong>Comentario:</strong> {donation.comment}</p>
           </li>
         ))}
       </ul>
