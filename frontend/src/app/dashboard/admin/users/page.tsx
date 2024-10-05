@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Sidebar from "../../../components/Sidebar";
 import { fetchUsers, deleteUser, createUser, updateUser } from "../../../services/api";
+import { UpperBar } from "src/app/components/UpperBar";
+import { AuthContext } from "src/app/context/AuthContext";
 
-export interface User {
+interface User {
   id: number;
   name: string;
   email: string;
@@ -31,6 +33,8 @@ const UsersPage = () => {
     phone: '',
     password: '',
   });
+
+  const authContext = useContext(AuthContext);
 
   useEffect(() => {
     const getUsers = async () => {
@@ -100,6 +104,7 @@ const UsersPage = () => {
 
   return (
     <div className="flex h-screen bg-gray-100">
+    {authContext?.user && <UpperBar user={authContext.user} onToggleSidebar={() => console.log("Toggle Sidebar")} />}
       <Sidebar role="Admin" />
       <div className="flex-1 p-10 ml-64">
         <h2 className="text-2xl font-semibold mb-4 text-gray-900">Gestion de Usuario</h2>

@@ -4,11 +4,13 @@ import Sidebar from "../../../components/Sidebar";
 import { useContext } from "react";
 import { ProfileUser } from "../../../components/ProfileUser";
 import { AuthContext } from "src/app/context/AuthContext";
+import { UpperBar } from "../../../components/UpperBar";
 
 const SettingsPage = () => {
     const authContext = useContext(AuthContext);
 
-    if (!authContext || !authContext.user) {
+    // Asegurándonos de que el authContext y el user no sean nulos antes de renderizar
+    if (!authContext?.user) {
         return <div>No estás autenticado</div>;
     }
 
@@ -16,6 +18,9 @@ const SettingsPage = () => {
 
     return (
         <div className="flex h-screen bg-gray-100">
+            {/* Renderizamos UpperBar */}
+            <UpperBar user={user} onToggleSidebar={() => console.log("Toggle Sidebar")} />
+
             {/* Sidebar */}
             <Sidebar role={user.role_id === 1 ? 'Admin' : 'Donor'} />
 

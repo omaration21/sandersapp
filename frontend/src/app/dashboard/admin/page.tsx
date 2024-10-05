@@ -6,7 +6,8 @@ import { useRouter } from 'next/navigation';
 import { AuthContext } from '../../context/AuthContext';
 import IncomePanel from '../../components/IncomePanel';
 import PiePanel from '../../components/PiePanel';
-import RecentDonations from '../../components/RecentDonations'; // Import RecentDonations
+import RecentDonations from '../../components/RecentDonations'; 
+import { UpperBar } from 'src/app/components/UpperBar';
 
 const AdminDashboard = () => {
   const authContext = useContext(AuthContext);
@@ -32,21 +33,25 @@ const AdminDashboard = () => {
   console.log('Renderizando Panel de Administrador');
 
   return (
-    <div className="flex min-h-screen" style={{ backgroundColor: '#1F244D' }}> {/* Fondo gris medianoche */}
-      <Sidebar role="Admin" />
-      <div className="flex-1 p-10 ml-64">
-        <h2 className="text-2xl font-semibold text-white">Panel de administrador</h2>
-        
-        {/* Contenedor para alinear IncomePanel y PiePanel uno al lado del otro */}
-        <div className="flex mt-6 justify-between" style={{ height: '600px' }}>
+    <div className="flex flex-col min-h-screen" style={{ backgroundColor: '#1F244D' }}> {/* Fondo gris medianoche */}
+      {/* Renderizamos UpperBar pasando el usuario */}
+      <UpperBar user={authContext.user} onToggleSidebar={() => console.log("Toggle Sidebar")} />
+
+      <div className="flex flex-grow">
+        <Sidebar role="Admin"/>
+        <div className="flex-1 p-10 ml-64">
+          <h2 className="text-2xl font-semibold text-white">Panel de administrador</h2>
+          
+          {/* Contenedor para alinear IncomePanel y PiePanel uno al lado del otro */}
+          <div className="flex mt-6 justify-between" style={{ height: '600px' }}>
             <IncomePanel />  {/* Renderizado del componente IncomePanel */}
-
             <PiePanel />  {/* Renderizado del componente PiePanel */}
-        </div>
+          </div>
 
-        {/* Componente de donaciones recientes a toda la página */}
-        <div className="mt-6">
-          <RecentDonations />  {/* Renderizado del componente RecentDonations */}
+          {/* Componente de donaciones recientes a toda la página */}
+          <div className="mt-6">
+            <RecentDonations />  {/* Renderizado del componente RecentDonations */}
+          </div>
         </div>
       </div>
     </div>
