@@ -2,6 +2,7 @@
 
 import React, { createContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Cookies from 'js-cookie';
 
 interface User {
   id: number;
@@ -26,10 +27,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = Cookies.get('token');
     if (token) {
-      // Aquí puedes manejar la lógica para verificar el token y cargar la info del usuario desde el localStorage si lo deseas
-      console.log('Token recuperado: ', token);
+      console.log('Token recuperado de cookies: ', token);
     }
   }, []);
 
@@ -61,8 +61,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         });
 
         const activeToken = data.token;
+        const refreshToken = data.refreshToken;
 
-        localStorage.setItem('token', activeToken);
+        // Guardar el token en cookies
+        Cookies.set('token', activeToken, { expires: 1 / 24 });
+        Cookies.set('refreshToken', refreshToken, {expires: 7});
 
         // Verifica el rol del usuario usando role_id
         if (loggedUser.role_id === 1) {
@@ -88,7 +91,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null);
     setRole(null);
 
-    localStorage.removeItem('token');
+    Cookies.remove('token');
     console.log('Sesión cerrada');
     router.push('/login');
   };
