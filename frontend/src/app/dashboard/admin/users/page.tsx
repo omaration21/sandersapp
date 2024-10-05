@@ -14,8 +14,8 @@ export interface User {
 }
 
 const roles = [
-  { id: 1, name: "Admin" },
-  { id: 2, name: "User" },
+  { id: 1, name: "Administrador" },
+  { id: 2, name: "Usuario" },
 ];
 
 const UsersPage = () => {

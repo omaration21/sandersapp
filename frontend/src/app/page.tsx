@@ -98,7 +98,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 bg-gray-800 text-white text-center">
+      <footer className="py-8 bg-[#202451] text-white text-center">
         <p className="text-lg">© {new Date().getFullYear()} Fundación Sanders. Todos los derechos reservados.</p>
       </footer>
     </div>

@@ -121,9 +121,9 @@ const IncomePanel: React.FC = () => {
         // Amount on the Y-axis
         data: filteredDonations.map((donation) => donation.amount),
         // Bar colors
-        backgroundColor: "rgba(75, 192, 192, 0.5)",
+        backgroundColor: "rgba(31, 36, 77, 0.5)",
         // Bar border colors
-        borderColor: "rgba(75, 192, 192, 1)",
+        borderColor: "rgba(31, 36, 77, 1)",
         borderWidth: 1,
       },
     ],

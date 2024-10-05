@@ -4,7 +4,7 @@ import React, { createContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 
-interface User {
+export interface User {
   id: number;
   name: string;
   email: string;
