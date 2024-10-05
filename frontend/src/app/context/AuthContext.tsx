@@ -91,6 +91,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null);
     setRole(null);
 
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    Cookies.remove('refreshToken');
     Cookies.remove('token');
     console.log('Sesión cerrada');
     router.push('/login');

@@ -1,6 +1,6 @@
 export const API_URL = "https://localhost:5001";
 import Cookies from "js-cookie";
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from "jwt-decode";
 
 interface TokenPayload {
   exp: number;
@@ -29,7 +29,7 @@ export interface DonationData {
 
 // Function to check if the actual token has expired
 function isTokenExpired(token: string): boolean {
-  const decoded: TokenPayload = jwt_decode.jwtDecode(token);
+  const decoded: TokenPayload = jwtDecode(token);
   const currentTime = Math.floor(Date.now() / 1000); 
   return decoded.exp < currentTime; 
 }
@@ -65,6 +65,7 @@ export async function fetchUsers(): Promise<User[]> {
   if (isTokenExpired(token)) {
     const refreshToken = Cookies.get("refreshToken");
     token = await refreshAccessToken(refreshToken || "");
+    console.log(token);
   }
 
   const response = await fetch(`${API_URL}/users/get`, {
