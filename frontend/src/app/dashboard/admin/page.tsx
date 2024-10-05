@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import Sidebar from '../../components/Sidebar';
 import { useRouter } from 'next/navigation';
 import { AuthContext } from '../../context/AuthContext';
@@ -26,6 +26,14 @@ const AdminDashboard = () => {
     }
   }, [authContext, router]);
 
+  // Estado para controlar la visibilidad del sidebar
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  // Función para alternar la visibilidad del sidebar
+  const handleToggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   if (!authContext?.user || authContext.role !== 'Admin') {
     return null; 
   }
@@ -35,10 +43,10 @@ const AdminDashboard = () => {
   return (
     <div className="flex flex-col min-h-screen" style={{ backgroundColor: '#1F244D' }}> {/* Fondo gris medianoche */}
       {/* Renderizamos UpperBar pasando el usuario */}
-      <UpperBar user={authContext.user} onToggleSidebar={() => console.log("Toggle Sidebar")} />
+      <UpperBar user={authContext.user} onToggleSidebar={handleToggleSidebar} />
 
       <div className="flex flex-grow">
-        <Sidebar role="Admin"/>
+      {isSidebarOpen && (<Sidebar role="Admin"/>)}
         <div className="flex-1 p-10 ml-64">
           <h2 className="text-2xl font-semibold text-white">Panel de administrador</h2>
           
