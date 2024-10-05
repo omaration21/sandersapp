@@ -85,8 +85,23 @@ export class UserModel {
                     {
                         expiresIn: '1h'
                     }
-                )
-                return {user: user[0], token};
+                );
+
+                const refreshToken = jwt.sign(
+                    {
+                        id: user[0].id,
+                        email: user[0].email,
+                        password: user[0].password,
+                        role_id: user[0].role_id,
+                        phone: user[0].phone
+                    },
+                    process.env.JWT_SECRET,
+                    {
+                        expiresIn: '7d'
+                    }
+                );
+                
+                return {user: user[0], token, refreshToken};
             }
         } catch (error) {
             console.error('Error: ', error);
@@ -141,5 +156,35 @@ export class UserModel {
                 console.log('Connection closed');
             }
         }
+    }
+
+    static async refreshToken(refreshToken)
+    {
+        try 
+        {
+            // Verificar si el Refresh Token es válido
+            const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
+            
+            // Generar un nuevo Access Token usando el mismo payload que ya estaba en el Refresh Token
+            const newToken = jwt.sign(
+                { id: decoded.id, email: decoded.email, role: decoded.role }, // Usamos el mismo payload del token anterior
+                process.env.JWT_SECRET,
+                { expiresIn: '1h' } // Expira en 1 hora
+            );
+
+            // Generar un nuevo Refresh Token
+            const newRefreshToken = jwt.sign(
+                { id: decoded.id, email: decoded.email, role: decoded.role }, // Usamos el mismo payload
+                process.env.JWT_SECRET,
+                { expiresIn: '7d' } // Expira en 7 días
+            );
+
+            return { token: newToken, refreshToken: newRefreshToken };
+        }
+        catch (error)
+        {
+            console.log('Error al refrescar los tokens: ', error);
+            return false;
+        } 
     }
 }

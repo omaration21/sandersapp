@@ -45,7 +45,7 @@ export class UserController {
             const result = await UserModel.getLogin(email, password);
             if (result) 
             {
-                res.status(200).json({user: result.user, message: 'User logged in successfully', token: result.token});
+                res.status(200).json({user: result.user, message: 'User logged in successfully', token: result.token, refreshToken: result.refreshToken});
             }
             else
             {
@@ -86,6 +86,25 @@ export class UserController {
         } catch (error) {
             console.error('Error deleting user:', error);
             res.status(500).json({ message: 'Error deleting user' });
+        }
+    }
+
+    static async refreshToken(req, res)
+    {
+        const { token } = req.body;
+        try 
+        {
+            const newTokens = await UserModel.refreshToken(token);
+
+            if (newTokens)
+            {
+                res.status(200).json(newTokens);
+            }
+        }
+        catch(error)
+        {
+            console.log('Failed to refresh token: ', error);
+            res.status(500).json({ message: 'Error to refresh token'});
         }
     }
 }
