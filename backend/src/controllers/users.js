@@ -10,7 +10,8 @@ export class UserController {
                 name: user.name, 
                 email: user.email,
                 role_id: user.role_id,
-                phone: user.phone
+                phone: user.phone,
+                profile_image_url: user.profile_image_url
             }));
             
             
@@ -105,6 +106,29 @@ export class UserController {
         {
             console.log('Failed to refresh token: ', error);
             res.status(500).json({ message: 'Error to refresh token'});
+        }
+    }
+
+    static async uploadProfileImage(req, res) {
+        // Aquí, `multer` ya habrá manejado la subida del archivo y estará disponible en `req.file`
+        if (!req.file) {
+            return res.status(400).json({ error: 'No se ha subido ninguna imagen' });
+        }
+
+        const imageUrl = `/uploads/${req.file.filename}`;  // Ruta donde la imagen fue guardada
+
+        try {
+            const userId = req.params.id;  // Asume que el ID del usuario se pasa en los parámetros de la ruta
+            const updatedUser = await UserModel.updateProfileImage(userId, imageUrl);
+
+            if (updatedUser) {
+                res.status(200).json({ message: 'Imagen de perfil actualizada', profile_image_url: imageUrl });
+            } else {
+                res.status(404).json({ message: 'Usuario no encontrado' });
+            }
+        } catch (error) {
+            console.error('Error al actualizar la imagen de perfil:', error);
+            res.status(500).json({ message: 'Error al actualizar la imagen de perfil' });
         }
     }
 }

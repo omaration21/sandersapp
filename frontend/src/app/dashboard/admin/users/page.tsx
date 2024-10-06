@@ -13,6 +13,7 @@ interface User {
   role_id: number;
   phone: string;
   password?: string; 
+  profile_image_url: string;
 }
 
 const roles = [
@@ -32,6 +33,7 @@ const UsersPage = () => {
     role_id: 0,
     phone: '',
     password: '',
+    profile_image_url: '',
   });
 
   const authContext = useContext(AuthContext);
@@ -73,7 +75,7 @@ const UsersPage = () => {
       const updatedUsers = await fetchUsers();
       setUsers(updatedUsers);
       setIsCreatingUser(false); 
-      setNewUser({ id: 0, name: "", email: "", role_id: 0, phone: "", password: "" });
+      setNewUser({ id: 0, name: "", email: "", role_id: 0, phone: "", password: "" , profile_image_url: ""});
     } catch (error) {
       console.error("Failed to create user:", error);
       alert("Failed to create user");

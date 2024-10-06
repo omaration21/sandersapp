@@ -6,13 +6,14 @@ interface TokenPayload {
   exp: number;
 }
 
-export interface User {
+interface User {
   id: number;
   name: string;
   email: string;
   role_id: number;
   phone: string;
   password?: string;
+  profile_image_url: string;
 }
 
 export interface DonationData {

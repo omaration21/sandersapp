@@ -4,6 +4,12 @@ import fs from 'fs';
 import { usersRouter } from './routes/users.js';
 import cors from 'cors';
 import { donationsRouter } from './routes/donations.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Obtener __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Leer los certificados
 const privateKey = fs.readFileSync('./certs/server.key', 'utf8');
@@ -18,9 +24,13 @@ app.use(cors({
     credentials: true
 }));
 
+
+
 app.use(json());
 app.use('/users', usersRouter);
 app.use('/donations', donationsRouter);
+// Servir archivos estáticos desde la carpeta 'uploads'
+app.use('/uploads', express.static(path.join(__dirname, './uploads')));
 
 const PORT = process.env.PORT ?? 5001;
 

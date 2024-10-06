@@ -10,6 +10,7 @@ export interface User {
   email: string;
   role_id: number;
   phone: string;
+  profile_image_url: string;
 }
 
 interface AuthContextType {
@@ -58,6 +59,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           email: loggedUser.email,
           role_id: loggedUser.role_id,
           phone: loggedUser.phone,
+          profile_image_url: loggedUser.profile_image_url,
         });
 
         const activeToken = data.token;
