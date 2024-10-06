@@ -23,10 +23,10 @@ export class UserController {
     }
 
     static async registerNewUser(req, res) {
-        const { name, email, password, role_id, phone } = req.body;
+        const { name, email, password, role_id, phone, profile_image_url } = req.body;
         
         try {
-            const result = await UserModel.registerNewUser(name, email, password, role_id, phone);
+            const result = await UserModel.registerNewUser(name, email, password, role_id, phone, profile_image_url);
     
             if (result.success) {
                 res.status(201).json({ message: 'User registered successfully' });

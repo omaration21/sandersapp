@@ -13,7 +13,7 @@ interface User {
   role_id: number;
   phone: string;
   password?: string; 
-  profile_image_url: string;
+  profile_image_url?: string;
 }
 
 const roles = [

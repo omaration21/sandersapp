@@ -27,7 +27,8 @@ const SignUp = () => {
       email,
       password,
       phone,
-      role_id: 2, // Aquí puedes especificar el rol que corresponde.
+      role_id: 2,
+      profile_image_url: '/uploads/default-profile.jpg', // Imagen de perfil por defecto
     };
 
     try {

@@ -6,14 +6,14 @@ interface TokenPayload {
   exp: number;
 }
 
-interface User {
+export interface User {
   id: number;
   name: string;
   email: string;
   role_id: number;
   phone: string;
   password?: string;
-  profile_image_url: string;
+  profile_image_url?: string;
 }
 
 export interface DonationData {
@@ -31,28 +31,27 @@ export interface DonationData {
 // Function to check if the actual token has expired
 function isTokenExpired(token: string): boolean {
   const decoded: TokenPayload = jwtDecode(token);
-  const currentTime = Math.floor(Date.now() / 1000); 
-  return decoded.exp < currentTime; 
+  const currentTime = Math.floor(Date.now() / 1000);
+  return decoded.exp < currentTime;
 }
 
 // Function to refresh token
 async function refreshAccessToken(token: string): Promise<string> {
   const response = await fetch(`${API_URL}/users/refreshToken`, {
-    method: 'POST',
-    body:
-      JSON.stringify(token),
+    method: "POST",
+    body: JSON.stringify(token),
   });
 
   if (!response.ok) {
-    throw new Error('No se pudo refrescar el token');
+    throw new Error("No se pudo refrescar el token");
   }
 
   const data = await response.json();
 
-  Cookies.set('token', data.token);
-  Cookies.set('refreshToken', data.refreshToken);
-  
-  return data.token; 
+  Cookies.set("token", data.token);
+  Cookies.set("refreshToken", data.refreshToken);
+
+  return data.token;
 }
 
 // Fetch all users
@@ -216,4 +215,25 @@ export async function fetchDonations(): Promise<DonationData[]> {
   }
 
   return await response.json();
+}
+
+// Method to get a profile image
+export async function fetchProfileImage(
+  profile_image_url: string
+): Promise<string> {
+  try {
+    // Hacer la solicitud a la URL de la imagen
+    const response = await fetch(`${API_URL}${profile_image_url}`, {
+      method: "GET",
+    });
+
+    if (!response.ok) {
+      throw new Error("No se pudo obtener la imagen de perfil");
+    }
+
+    return `${API_URL}${profile_image_url}`;
+  } catch (error) {
+    console.error("Error fetching profile image: ", error);
+    throw error;
+  }
 }

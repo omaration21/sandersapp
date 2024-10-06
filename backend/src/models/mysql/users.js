@@ -33,15 +33,15 @@ export class UserModel {
     }
   }
 
-  static async registerNewUser(name, email, password, role_id, phone) {
+  static async registerNewUser(name, email, password, role_id, phone, profile_image_url) {
     let connection = null;
     try {
       connection = await mysql.createConnection(config);
       const hashedPassword = await bcrypt.hash(password, saltRounds);
 
       await connection.query(
-        "INSERT INTO users (name, email, password, role_id, phone) VALUES (?, ?, ?, ?, ?)",
-        [name, email, hashedPassword, role_id, phone]
+        "INSERT INTO users (name, email, password, role_id, phone, profile_image_url) VALUES (?, ?, ?, ?, ?, ?)",
+        [name, email, hashedPassword, role_id, phone, profile_image_url]
       );
 
       return { success: true, message: "Usuario registrado correctamente" };
