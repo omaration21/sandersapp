@@ -67,6 +67,11 @@ export const ProfileUser = () => {
         )}
       </div>
 
+      {/* Mostrar el rol del usuario */}
+      <p>
+        Rol: {editableUser.role_id === 1 ? "Administrador" : "Donante"}
+      </p>
+
       {isEditing ? (
         <div>
           <input

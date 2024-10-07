@@ -38,7 +38,7 @@ const SettingsPage = () => {
             <div className={`${isSidebarOpen ? 'ml-64' : 'ml-0'} flex-grow p-8 text-black`}>  
                 <h1 className="text-2xl font-semibold mb-6">Configuración</h1>
                 {/* Renderiza el componente ProfileUser con el objeto user */}
-                <ProfileUser user={user} />
+                <ProfileUser />
             </div>
         </div>
     );
