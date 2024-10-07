@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
+import PayPalPayment from '../components/PayPalPayment';
 
 const DonacionInvitado = () => {
   const [monto, setMonto] = useState<number | string>(''); // Inicia vacío para forzar selección
@@ -8,121 +9,109 @@ const DonacionInvitado = () => {
   const [error, setError] = useState<string | null>(null);
 
   const handleMontoClick = (montoSeleccionado: number) => {
-    // Si el monto seleccionado ya está activo, limpiarlo
     if (monto === montoSeleccionado) {
       setMonto('');
     } else {
       setMonto(montoSeleccionado);
       setCustomMonto(''); // Limpiar el monto personalizado si se selecciona una opción predefinida
-      setError(null); // Quitar el error si ya se seleccionó una opción válida
+      setError(null);
     }
   };
 
   const handleCustomMonto = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCustomMonto(e.target.value);
-    setMonto(''); // Limpiar las selecciones predefinidas si se introduce un monto personalizado
-    setError(null); // Quitar el error si se introduce un monto válido
+    setMonto('');
+    setError(null);
   };
 
-  const handleDonation = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const finalMonto = monto || customMonto; 
-    if (!finalMonto || parseFloat(finalMonto as string) <= 0) {
-      setError('Por favor, introduce un monto válido.');
-      return;
-    }
-
-    // Aquí puedes agregar lógica para manejar la donación.
-    alert(`Gracias por tu donación de $${finalMonto}.`);
-  };
+  const finalMonto = monto || customMonto;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      {/* Bloque centrado */}
-      <div className="w-full max-w-4xl p-8 bg-white shadow-lg rounded-lg relative text-center">
-        {/* Imagen de encabezado con transparencia */}
-        <div className="relative w-full h-72 mb-8">
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-80"
-            style={{ backgroundImage: "url('/images/waterF.jpg')" }}
-          ></div>
-          <div className="relative flex items-center justify-center h-full">
-            <h1 className="text-[#202440] text-4xl font-bold z-5">Dona ahora!</h1>
-          </div>
+    <div className="flex items-center justify-center min-h-screen bg-no-repeat bg-cover bg-center relative">
+      {/* Fondo con gradiente y imagen */}
+      <div
+        style={{
+          background: 'linear-gradient(to top right, #ffff 40%, transparent), url(/images/hands.jpg) center/cover no-repeat',
+        }}
+        className="absolute top-0 left-0 w-full h-full"
+      ></div>
+      
+      <div className="max-w-6xl w-full flex flex-col md:flex-row bg-white shadow-lg rounded-lg relative z-10">
+        {/* Columna izquierda con título y imagen */}
+        <div className="md:w-1/2 flex flex-col justify-center items-center bg-[#f7f7f7] p-10">
+          <h1 className="text-4xl font-bold text-[#202440] mb-10 text-center">
+            ¡Únete a la causa!
+          </h1>
+          <img
+            src="/images/boy.jpg" // Cambia esta ruta a tu imagen preferida
+            alt="Cause illustration"
+            className="max-w-full h-auto object-cover"
+          />
         </div>
 
-        {/* Título y descripción */}
-        <h2 className="text-[#202451] text-2xl font-semibold text-center mb-10">Su donación ayudará a proporcionar agua a quienes más la necesitan</h2>
+        {/* Columna derecha con botones de acción y PayPal */}
+        <div className="md:w-1/2 p-10 flex flex-col justify-center">
+          {/* Descripción */}
+          <h2 className="text-[#202451] text-2xl font-semibold mb-6 text-center">
+            Tu donación ayudará a nuestras causas en agua, educación sexual y alimentación.
+          </h2>
 
-        {/* Botones de monto y campo de monto personalizado */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <button
-            onClick={() => handleMontoClick(50)}
-            className={`p-4 rounded-lg text-center ${monto === 50 ? 'bg-[#202451] text-white' : 'bg-[#778DA9] text-white'}`}
-          >
-            <h3 className="text-xl font-semibold">$50</h3>
-            <p>Podría comprar kits portátiles de análisis de agua para las comunidades</p>
-          </button>
-          <button
-            onClick={() => handleMontoClick(150)}
-            className={`p-4 rounded-lg text-center ${monto === 150 ? 'bg-[#202451] text-white' : 'bg-[#778DA9] text-white'}`}
-          >
-            <h3 className="text-xl font-semibold">$150</h3>
-            <p>Podría abastecer a un pueblo con filtración de agua durante todo un año</p>
-          </button>
-          <button
-            onClick={() => handleMontoClick(250)}
-            className={`p-4 rounded-lg text-center ${monto === 250 ? 'bg-[#202451] text-white' : 'bg-[#778DA9] text-white'}`}
-          >
-            <h3 className="text-xl font-semibold">$250</h3>
-            <p>Podría construir un sistema de agua sostenible para una aldea remota</p>
-          </button>
-          <button
-            onClick={() => handleMontoClick(500)}
-            className={`p-4 rounded-lg text-center ${monto === 500 ? 'bg-[#202451] text-white' : 'bg-[#778DA9] text-white'}`}
-          >
-            <h3 className="text-xl font-semibold">$500</h3>
-            <p>Podría proporcionar agua potable a una familia durante un mes</p>
-          </button>
-          <button
-            onClick={() => handleMontoClick(1000)}
-            className={`p-4 rounded-lg text-center ${monto === 1000 ? 'bg-[#202451] text-white' : 'bg-[#778DA9] text-white'}`}
-          >
-            <h3 className="text-xl font-semibold">$1000</h3>
-            <p>Podría apoyar la construcción de nuevos pozos en zonas con escasez de agua</p>
-          </button>
-          {/* Espacio para otro monto */}
-          <div className="p-4 rounded-lg text-center bg-white border-2 border-gray-300">
-            <input
-              type="number"
-              placeholder="Otro monto"
-              value={customMonto}
-              onChange={handleCustomMonto}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg"
-            />
+          {/* Botones de monto */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <button
+              onClick={() => handleMontoClick(50)}
+              className={`p-4 rounded-lg text-center ${monto === 50 ? 'bg-[#202451] text-white' : 'bg-[#778DA9] text-white'}`}
+            >
+              <h3 className="text-xl font-semibold">$50</h3>
+              <p>Apoya la compra de kits de análisis de agua</p>
+            </button>
+            <button
+              onClick={() => handleMontoClick(150)}
+              className={`p-4 rounded-lg text-center ${monto === 150 ? 'bg-[#202451] text-white' : 'bg-[#778DA9] text-white'}`}
+            >
+              <h3 className="text-xl font-semibold">$150</h3>
+              <p>Contribuye a la educación sexual en comunidades rurales</p>
+            </button>
+            <button
+              onClick={() => handleMontoClick(250)}
+              className={`p-4 rounded-lg text-center ${monto === 250 ? 'bg-[#202451] text-white' : 'bg-[#778DA9] text-white'}`}
+            >
+              <h3 className="text-xl font-semibold">$250</h3>
+              <p>Ayuda a proporcionar alimentación sostenible</p>
+            </button>
+            <button
+              onClick={() => handleMontoClick(500)}
+              className={`p-4 rounded-lg text-center ${monto === 500 ? 'bg-[#202451] text-white' : 'bg-[#778DA9] text-white'}`}
+            >
+              <h3 className="text-xl font-semibold">$500</h3>
+              <p>Brinda agua potable a una familia durante un mes</p>
+            </button>
+            <button
+              onClick={() => handleMontoClick(1000)}
+              className={`p-4 rounded-lg text-center ${monto === 1000 ? 'bg-[#202451] text-white' : 'bg-[#778DA9] text-white'}`}
+            >
+              <h3 className="text-xl font-semibold">$1000</h3>
+              <p>Apoya la construcción de pozos en comunidades sin acceso al agua</p>
+            </button>
+            <div className="p-4 rounded-lg text-center bg-white border-2 border-gray-300">
+              <input
+                type="number"
+                placeholder="Otro monto"
+                value={customMonto}
+                onChange={handleCustomMonto}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg"
+              />
+            </div>
           </div>
-        </div>
 
-        {/* Mostrar error si aplica */}
-        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+          {/* Mostrar el botón de PayPal solo si se seleccionó un monto válido */}
+          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
-        {/* Botones de pago */}
-        <div className="flex justify-center gap-4">
-          <button
-            onClick={handleDonation}
-            className="w-full md:w-1/3 bg-[#202451] text-white py-3 rounded-lg hover:bg-[#778DA9]"
-          >
-            Donar con Tarjeta de Crédito
-          </button>
-
-          {/* Botón de PayPal con espacio para el logo */}
-          <button
-            onClick={handleDonation}
-            className="w-full md:w-1/3 bg-[#202451] text-white py-3 rounded-lg hover:bg-[#778DA9] flex justify-center items-center"
-          >
-            <img src="/images/paypal.webp" alt="PayPal Logo" className="h-6 mr-2" /> Donar con PayPal
-          </button>
+          {finalMonto && parseFloat(finalMonto as string) > 0 && (
+            <div className="mt-8">
+              <PayPalPayment monto={finalMonto} />
+            </div>
+          )}
         </div>
       </div>
     </div>
