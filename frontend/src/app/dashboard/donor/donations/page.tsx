@@ -69,7 +69,7 @@ const DonationsPage = () => {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      <Sidebar role="Donor"/>
+      <Sidebar/>
       <div className="flex-1 p-10">
         <form data-testid="donor-form" onSubmit={handleSubmit} className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold mb-6 text-[#202451]">Registro de donación</h2>

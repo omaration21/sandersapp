@@ -6,7 +6,7 @@ import Sidebar from '../../components/Sidebar';
 const DonorDashboard = () => {
   return (
     <div className="flex h-screen bg-gray-100">
-      <Sidebar role="Donor" />
+      <Sidebar />
       <div className="flex-1 p-10 ml-64">
         <h2 className="text-2xl font-semibold">Donor Dashboard Overview</h2>
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
