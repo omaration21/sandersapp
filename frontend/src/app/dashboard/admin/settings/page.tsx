@@ -31,7 +31,7 @@ const SettingsPage = () => {
 
             {/* Sidebar */}
             {isSidebarOpen && (
-                <Sidebar role={user.role_id === 1 ? 'Admin' : 'Donor'} />
+                <Sidebar />
             )}
 
             {/* Contenido principal con margen izquierdo dinámico */}

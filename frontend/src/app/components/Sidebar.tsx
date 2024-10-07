@@ -1,16 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import Cookies from 'js-cookie';
+// import { useRouter } from 'next/navigation';
+import { useAuth } from '../context/AuthContext';  // Importa el hook useAuth
 
-
-const Sidebar = ({ role }: { role: string }) => {
-  const router = useRouter();
+const Sidebar = () => {
+  // const router = useRouter();
+  const { role, logout } = useAuth();  // Utiliza useAuth para acceder al rol y al método logout
 
   return (
-    <div className="w-64 text-white h-full fixed" style={{ backgroundColor: '#232959' }}>
+    <div className="w-64 text-white h-full fixed mt-24" style={{ backgroundColor: '#232959' }}> 
       <div className="p-4">
-        <h1 className="text-lg font-semibold">Panel de {role}</h1>
+        <h1 className="text-lg font-semibold">{role === 'Admin' ? 'Administrador' : 'Donante'}</h1>
       </div>
       <nav className="mt-5">
         <Link href={role === 'Admin' ? "/dashboard/admin" : "/dashboard/donor"}>
@@ -30,11 +30,7 @@ const Sidebar = ({ role }: { role: string }) => {
         </Link>
         <button
           onClick={() => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('refreshToken');
-            Cookies.remove('refreshToken');
-            Cookies.remove('token');
-            router.push('/login');
+            logout();  // Llama al método logout
           }}
           className="block w-full py-2.5 px-4 mt-4 bg-red-600 text-white rounded transition duration-200 hover:bg-red-700"
         >

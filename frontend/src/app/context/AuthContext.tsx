@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 
@@ -18,6 +18,7 @@ interface AuthContextType {
   role: 'Admin' | 'Donor' | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
+  setUser: (user: User | null) => void;  // Añadimos setUser
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -31,6 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const token = Cookies.get('token');
     if (token) {
       console.log('Token recuperado de cookies: ', token);
+      // Aquí podrías hacer una solicitud para obtener los datos del usuario
     }
   }, []);
 
@@ -50,7 +52,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       const data = await response.json();
 
-      // Verifica si se recibió un usuario y almacena los campos necesarios
       if (data.user) {
         const loggedUser = data.user;
         setUser({
@@ -65,11 +66,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const activeToken = data.token;
         const refreshToken = data.refreshToken;
 
-        // Guardar el token en cookies
         Cookies.set('token', activeToken, { expires: 1 / 24 });
-        Cookies.set('refreshToken', refreshToken, {expires: 7});
+        Cookies.set('refreshToken', refreshToken, { expires: 7 });
 
-        // Verifica el rol del usuario usando role_id
         if (loggedUser.role_id === 1) {
           setRole('Admin');
           router.push('/dashboard/admin');
@@ -92,7 +91,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const logout = () => {
     setUser(null);
     setRole(null);
-
     localStorage.removeItem('token');
     localStorage.removeItem('refreshToken');
     Cookies.remove('refreshToken');
@@ -102,8 +100,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, role, login, logout }}>
+    <AuthContext.Provider value={{ user, role, login, logout, setUser }}>
       {children}
     </AuthContext.Provider>
   );
+};
+
+// Hook personalizado para acceder al contexto
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth debe estar dentro de un AuthProvider');
+  }
+  return context;
 };

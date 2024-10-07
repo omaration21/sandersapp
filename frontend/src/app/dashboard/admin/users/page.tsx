@@ -115,7 +115,7 @@ const UsersPage = () => {
   return (
     <div className="flex h-screen bg-gray-100">
     {authContext?.user && <UpperBar user={authContext.user} onToggleSidebar={handleToggleSidebar} />}
-    {isSidebarOpen && (<Sidebar role="Admin" />)}
+    {isSidebarOpen && (<Sidebar />)}
       <div className="flex-1 p-10 ml-64">
         <h2 className="text-2xl font-semibold mb-4 text-gray-900">Gestion de Usuario</h2>
 

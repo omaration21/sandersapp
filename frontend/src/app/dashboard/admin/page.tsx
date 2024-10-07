@@ -46,15 +46,14 @@ const AdminDashboard = () => {
       <UpperBar user={authContext.user} onToggleSidebar={handleToggleSidebar} />
 
       <div className="flex flex-grow">
-      {isSidebarOpen && (<Sidebar role="Admin"/>)}
-        <div className="flex-1 p-10 ml-64">
-          <h2 className="text-2xl font-semibold text-white">Panel de administrador</h2>
+        {isSidebarOpen && (<Sidebar/>)}
+        <div className={`flex-1 p-10 ${isSidebarOpen ? 'ml-64' : 'ml-0'} mt-16`}>
           
           {/* Contenedor para alinear IncomePanel y PiePanel uno al lado del otro */}
-          <div className="flex mt-6 justify-between" style={{ height: '600px' }}>
+          <div className="flex justify-between" style={{ height: '600px' }}>
             <IncomePanel />  {/* Renderizado del componente IncomePanel */}
             <PiePanel />  {/* Renderizado del componente PiePanel */}
-          </div>
+          </div>  
 
           {/* Componente de donaciones recientes a toda la página */}
           <div className="mt-6">

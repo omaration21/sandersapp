@@ -237,3 +237,30 @@ export async function fetchProfileImage(
     throw error;
   }
 }
+
+// Función para actualizar la imagen de perfil
+export async function updateProfileImage(userId: number, imageFile: File): Promise<string> {
+  const token = Cookies.get("token");
+
+  if (!token) {
+    throw new Error("No se encontró token. Por favor inicie sesión.");
+  }
+
+  const formData = new FormData();
+  formData.append("profileImage", imageFile);
+
+  const response = await fetch(`${API_URL}/users/${userId}/uploadProfileImage`, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  });
+
+  if (!response.ok) {
+    throw new Error("No se pudo actualizar la imagen de perfil");
+  }
+
+  const data = await response.json();
+  return data.profile_image_url; // Retorna la nueva URL de la imagen de perfil
+}
