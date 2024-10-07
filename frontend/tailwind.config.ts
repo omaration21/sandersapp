@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  darkMode: 'class', // Habilita el modo oscuro por clase
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,6 +9,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        primary: '#232959',   // Colores personalizados
+        secondary: '#3E4A97',
+        accent: '#FF6384',
+        backgroundDark: '#121212',  // Color de fondo para modo oscuro
+        textDark: '#ffffff',       // Color del texto para modo oscuro
+      },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
@@ -17,4 +25,5 @@ const config: Config = {
   },
   plugins: [],
 };
+
 export default config;
