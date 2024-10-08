@@ -2,30 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0; /* Color del texto: Negro */
-  --background-start-rgb: 255, 255, 255; /* Color de inicio del fondo: Blanco */
-  --background-end-rgb: 255, 255, 255;   /* Color del final del fondo: Blanco */
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255; /* Cambiar el texto a blanco en modo oscuro */
-    --background-start-rgb: 0, 0, 0; /* Fondo de inicio en modo oscuro: Negro */
-    --background-end-rgb: 0, 0, 0;   /* Fondo de fin en modo oscuro: Negro */
-  }
-}
-
-body {
-  color: rgb(var(--foreground-rgb)); /* Usar la variable para el color del texto */
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgba(255, 255, 255, 0.9) /* Cambiar el final del gradiente a un blanco semitransparente */
-    )
-    rgb(var(--background-start-rgb)); /* Fondo sólido en el inicio */
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;

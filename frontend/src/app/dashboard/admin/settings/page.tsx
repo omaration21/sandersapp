@@ -25,7 +25,7 @@ const SettingsPage = () => {
     };
 
     return (
-        <div className="flex h-screen bg-gray-100">
+        <div className="flex h-screen bg-gray-100 dark:bg-[#141D32] transition-colors"> {/* Color claro grisáceo y oscuro adaptado */}
             {/* Renderizamos UpperBar */}
             <UpperBar user={user} onToggleSidebar={handleToggleSidebar} />
 
@@ -35,7 +35,7 @@ const SettingsPage = () => {
             )}
 
             {/* Contenido principal con margen izquierdo dinámico */}
-            <div className={`${isSidebarOpen ? 'ml-64' : 'ml-0'} flex-grow p-8 text-black`}>  
+            <div className={`${isSidebarOpen ? 'ml-64' : 'ml-0'} flex-grow p-8 text-black dark:text-white`}>  
                 <h1 className="text-2xl font-semibold mb-6">Configuración</h1>
                 {/* Renderiza el componente ProfileUser con el objeto user */}
                 <ProfileUser />

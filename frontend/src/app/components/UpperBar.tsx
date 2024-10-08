@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
 import { User } from "../context/AuthContext";
 import { fetchProfileImage } from "../services/api";
@@ -28,13 +26,13 @@ export const UpperBar = ({ user, onToggleSidebar }: UpperBarProps) => {
   }, [user.profile_image_url]);
 
   return (
-    <header className="bg-[#202451] text-white py-6 shadow-md fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6">
+    <header className="bg-[#202451] dark:bg-gray-900 text-white dark:text-gray-300 py-6 shadow-md fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 transition-colors">
       {/* Botón con 3 líneas para mostrar/ocultar sidebar */}
-      <button onClick={onToggleSidebar} className="text-white focus:outline-none">
+      <button onClick={onToggleSidebar} className="text-white dark:text-gray-300 focus:outline-none">
         <div className="space-y-2">
-          <span className="block w-8 h-0.5 bg-white"></span>
-          <span className="block w-8 h-0.5 bg-white"></span>
-          <span className="block w-8 h-0.5 bg-white"></span>
+          <span className="block w-8 h-0.5 bg-white dark:bg-gray-300"></span>
+          <span className="block w-8 h-0.5 bg-white dark:bg-gray-300"></span>
+          <span className="block w-8 h-0.5 bg-white dark:bg-gray-300"></span>
         </div>
       </button>
 
@@ -47,7 +45,7 @@ export const UpperBar = ({ user, onToggleSidebar }: UpperBarProps) => {
             className="w-8 h-8 rounded-full"
           />
         )}
-        <div className="text-white font-semibold">{user.name}</div>
+        <div className="text-white dark:text-gray-300 font-semibold">{user.name}</div>
       </div>
     </header>
   );

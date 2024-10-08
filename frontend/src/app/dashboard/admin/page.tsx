@@ -41,7 +41,7 @@ const AdminDashboard = () => {
   console.log('Renderizando Panel de Administrador');
 
   return (
-    <div className="flex flex-col min-h-screen" style={{ backgroundColor: '#1F244D' }}> {/* Fondo gris medianoche */}
+    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-[#141D32]"> 
       {/* Renderizamos UpperBar pasando el usuario */}
       <UpperBar user={authContext.user} onToggleSidebar={handleToggleSidebar} />
 
@@ -50,7 +50,7 @@ const AdminDashboard = () => {
         <div className={`flex-1 p-10 ${isSidebarOpen ? 'ml-64' : 'ml-0'} mt-16`}>
           
           {/* Contenedor para alinear IncomePanel y PiePanel uno al lado del otro */}
-          <div className="flex justify-between" style={{ height: '600px' }}>
+          <div className="flex justify-between gap-6" style={{ height: '600px' }}>
             <IncomePanel />  {/* Renderizado del componente IncomePanel */}
             <PiePanel />  {/* Renderizado del componente PiePanel */}
           </div>  

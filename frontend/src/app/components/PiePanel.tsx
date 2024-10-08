@@ -81,25 +81,10 @@ const PiePanel: React.FC = () => {
   };
 
   return (
-    <div style={styles.container}>
+    <div className="flex justify-center items-center w-1/2 h-full p-5 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-lg transition-colors">
       <Pie data={chartData} options={chartOptions} /> {/* Render the Pie chart */}
     </div>
   );
-};
-
-// Basic styles for the component
-const styles = {
-  container: {
-    display: "flex",                
-    justifyContent: "center",       
-    alignItems: "center",         
-    width: "40%",
-    height: "100%",
-    padding: "20px",
-    backgroundColor: "#f9f9f9",
-    borderRadius: "10px",
-    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-  },
 };
 
 export default PiePanel;

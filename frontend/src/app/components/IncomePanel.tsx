@@ -44,35 +44,27 @@ const IncomePanel: React.FC = () => {
 
     switch (filterOption) {
       case "Diariamente":
-          filtered = donations.filter((donation) => {
-          // Normalizamos las dates eliminando la información de hora y zona horaria
+        filtered = donations.filter((donation) => {
           const donationDate = new Date(donation.date || "");
-        
           const normalizedDonationDate = new Date(
             donationDate.getUTCFullYear(),
             donationDate.getUTCMonth() + 1,
             donationDate.getUTCDate()
           );
-        
           const normalizedNow = new Date(
             now.getUTCFullYear(),
             now.getUTCMonth() + 1, 
             now.getUTCDate()
           );
-        
-          // Comparamos solo la parte del día, mes y año
           return normalizedDonationDate.getTime() === normalizedNow.getTime();
         });
         break;
 
       case "Semanalmente":
-        // Get the first day of the week (Sunday)
         const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
         filtered = donations.filter((donation) => {
           const donationDate = new Date(donation.date || "");
-
           const nowDate = new Date();
-
           return donationDate >= startOfWeek && donationDate <= nowDate;
         });
         break;
@@ -95,9 +87,7 @@ const IncomePanel: React.FC = () => {
     setFilteredDonations(filtered);
 
     // Calculate the total amount of donations for the filtered donations
-    // Ensure donation.amount is a number
     const total = filtered.reduce((acc: number, donation: DonationData) => {
-      // Ensure donation.amount is a number before adding it
       const amount = typeof donation.amount === 'string' ? parseFloat(donation.amount) : donation.amount;
       return acc + (amount || 0);
     }, 0);
@@ -111,18 +101,14 @@ const IncomePanel: React.FC = () => {
 
   // Prepare data for the bar chart
   const chartData = {
-    // Dates on the X-axis
     labels: filteredDonations.map((donation) =>
       new Date(donation.date || "").toLocaleDateString()
     ),
     datasets: [
       {
         label: "Donación",
-        // Amount on the Y-axis
         data: filteredDonations.map((donation) => donation.amount),
-        // Bar colors
         backgroundColor: "rgba(31, 36, 77, 0.5)",
-        // Bar border colors
         borderColor: "rgba(31, 36, 77, 1)",
         borderWidth: 1,
       },
@@ -145,14 +131,12 @@ const IncomePanel: React.FC = () => {
       x: {
         title: {
           display: true,
-          // Now the X-axis shows the date
           text: 'Fecha',
         },
       },
       y: {
         title: {
           display: true,
-          // The Y-axis shows the donation amount
           text: 'Monto de donación (MXN)',
         },
       },
@@ -160,61 +144,28 @@ const IncomePanel: React.FC = () => {
   };
 
   return (
-      <div style={styles.panelContainer}>
-        <h2 style={styles.title}>Ingresos</h2>
+    <div className="bg-gray-100 dark:bg-gray-900 text-black dark:text-white p-6 rounded-lg shadow-md transition-colors w-3/4 h-full">
+      <h2 className="text-2xl font-semibold mb-4">Ingresos</h2>
 
-        {/* Filter options as a dropdown */}
-        <div style={styles.filterContainer}>
-          <label htmlFor="filterSelect">Filtrado por:</label>
-          <select
-            id="filterSelect"
-            value={filter}
-            onChange={(e) => setFilter(e.target.value as FilterOption)}
-            style={styles.select}
-          >
-            <option value="Diariamente">Diariamente</option>
-            <option value="Semanalmente">Semanalmente</option>
-            <option value="Mensualmente">Mensualmente</option>
-          </select>
-        </div>
-
-        {/* Display bar chart instead of listing donations */}
-        <div style={styles.chartContainer}>
-          <Bar data={chartData} options={chartOptions} />
-        </div>
+      <div className="mb-4">
+        <label htmlFor="filterSelect">Filtrado por:</label>
+        <select
+          id="filterSelect"
+          value={filter}
+          onChange={(e) => setFilter(e.target.value as FilterOption)}
+          className="ml-2 p-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+        >
+          <option value="Diariamente">Diariamente</option>
+          <option value="Semanalmente">Semanalmente</option>
+          <option value="Mensualmente">Mensualmente</option>
+        </select>
       </div>
-  );
-};
 
-// CSS styles for the box with rounded edges and black text color
-const styles = {
-  panelContainer: {
-    backgroundColor: "#f9f9f9",
-    padding: "20px",
-    borderRadius: "10px",
-    boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-    width: "55%",
-    height: "100%",
-    color: "black"
-  },
-  title: {
-    fontSize: "24px",
-    fontWeight: "bold",
-    marginBottom: "20px",
-  },
-  filterContainer: {
-    marginBottom: "20px",
-  },
-  select: {
-    padding: "8px",
-    borderRadius: "5px",
-    border: "1px solid #ccc",
-    marginLeft: "10px",
-    fontSize: "16px",
-  },
-  chartContainer: {
-    marginTop: "20px"
-  },
+      <div className="mt-6">
+        <Bar data={chartData} options={chartOptions} />
+      </div>
+    </div>
+  );
 };
 
 export default IncomePanel;
