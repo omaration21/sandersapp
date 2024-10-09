@@ -31,26 +31,29 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const token = Cookies.get('token');
     if (token) {
-      console.log('Token recuperado de cookies: ', token);
-      // Aquí podrías hacer una solicitud para obtener los datos del usuario
+      console.log('Token recuperado: ', token);
     }
   }, []);
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await fetch('https://localhost:5001/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+        const response = await fetch('https://localhost:5001/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
 
-      if (!response.ok) {
-        throw new Error('Error en la autenticación');
-      }
+        if (!response.ok) {
+            if (response.status === 401) {
+                throw new Error('Correo electrónico o contraseña incorrectos');
+            } else {
+                throw new Error('Error en la autenticación');
+            }
+        }
 
-      const data = await response.json();
+        const data = await response.json();
 
       if (data.user) {
         const loggedUser = data.user;
@@ -79,14 +82,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           throw new Error('Rol no reconocido');
         }
 
-        console.log(`Usuario autenticado como: ${loggedUser.email}, Rol: ${loggedUser.role_id}`);
-      } else {
-        throw new Error('Usuario no encontrado en la respuesta');
-      }
+            console.log(`Usuario autenticado como: ${loggedUser.email}, Rol: ${loggedUser.role_id}`);
+        } else {
+            throw new Error('Usuario no encontrado');
+        }
     } catch (error) {
-      console.error('Error en la autenticación en AuthContext', error);
+        console.error('Error en la autenticación en AuthContext', error);
+        throw error;
     }
-  };
+};
+
+
 
   const logout = () => {
     setUser(null);

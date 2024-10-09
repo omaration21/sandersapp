@@ -17,8 +17,8 @@ export class UserController {
             
             res.status(200).json(transformedUsers);
         } catch (error) {
-            console.error('Error fetching users:', error);
-            res.status(500).json({ message: 'Failed to fetch users' });
+            console.error('Error obteniendo usuarios:', error);
+            res.status(500).json({ message: 'Error al obtener usuarios' });
         }
     }
 
@@ -29,20 +29,19 @@ export class UserController {
             const result = await UserModel.registerNewUser(name, email, password, role_id, phone, profile_image_url);
     
             if (result.success) {
-                res.status(201).json({ message: 'User registered successfully' });
+                res.status(201).json({ message: 'Usuario registrado correctamente' });
             } else {
                 res.status(400).json({ message: result.message });
             }
         } catch (error) {
-            console.error('Error registering user:', error);
-            res.status(500).json({ message: 'Failed to register user due to server error' });
+            console.error('Error registrando usuario:', error);
+            res.status(500).json({ message: 'Error para registrar usuario debido a error en el servidor' });
         }
     }
 
     static async getLogin(req, res) {
-        const {email, password} = req.body;
-        try 
-        {
+        const { email, password } = req.body;
+        try {
             const result = await UserModel.getLogin(email, password);
             if (result) 
             {
@@ -54,7 +53,7 @@ export class UserController {
             }
         } catch (error) {
             console.error('Error logging in user:', error);
-            res.status(500).json({ message: 'Failed to log in user' });
+            res.status(500).json({ message: 'Error en el servidor al intentar iniciar sesión' });
         }
     }
 
@@ -65,13 +64,13 @@ export class UserController {
         try {
           const updatedUser = await UserModel.updateUser(id, name, email, role_id, phone);
           if (updatedUser) {
-            res.status(200).json({ message: 'User updated successfully' });
+            res.status(200).json({ message: 'Usuario actualizado correctamente' });
           } else {
-            res.status(404).json({ message: 'User not found' });
+            res.status(404).json({ message: 'Usuario no encontrado' });
           }
         } catch (error) {
-          console.error('Error updating user:', error);
-          res.status(500).json({ message: 'Failed to update user' });
+          console.error('Error actualizando usuario:', error);
+          res.status(500).json({ message: 'Error en actualizar usuario' });
         }
     }
 
@@ -80,13 +79,13 @@ export class UserController {
         try {
             const userDeleted = await UserModel.deleteUser(id); 
             if (userDeleted) {
-                res.status(200).json({ message: 'User deleted successfully, donations updated' });
+                res.status(200).json({ message: 'Usuario eliminado correctamente, donaciones actualizadas' });
             } else {
-                res.status(500).json({ message: 'Failed to delete user' });
+                res.status(500).json({ message: 'Error al eliminar usuario' });
             }
         } catch (error) {
-            console.error('Error deleting user:', error);
-            res.status(500).json({ message: 'Error deleting user' });
+            console.error('Error borrando el usuario:', error);
+            res.status(500).json({ message: 'Error borrando usuario' });
         }
     }
 

@@ -8,7 +8,7 @@ import Link from 'next/link'; // Importamos Link para el logo
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null); // Para manejar errores
+  const [error, setError] = useState<string | null>(null); 
   const authContext = useContext(AuthContext);
   const router = useRouter();
 
@@ -16,13 +16,12 @@ const LoginPage = () => {
     e.preventDefault();
 
     if (authContext) {
-      try {
-        // Esperar la llamada de login
-        await authContext.login(email, password);
-      } catch (error) {
-        setError('Error en la autenticación. Inténtalo de nuevo.');
-        console.error('Error en la autenticación en front de page:', error);
-      }
+        try {
+            await authContext.login(email, password);
+        } catch (error: any) {
+            setError(error.message || 'Error en la autenticación. Inténtalo de nuevo.');
+            console.error('Error en la autenticación en front de page:', error);
+        }
     }
   };
 
