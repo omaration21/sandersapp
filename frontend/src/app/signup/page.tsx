@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link'; // Importamos Link para los enlaces
-import Link from 'next/link'; // Importamos Link para los enlaces
 import { createUser } from '../services/api'; // Asegúrate de que esta ruta sea la correcta
 
 const SignUp = () => {
@@ -213,7 +212,6 @@ const SignUp = () => {
           </form>
         </div>
       </div>
-    </div>
   );
 };
 
