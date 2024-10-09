@@ -14,7 +14,6 @@ import {
 // Register the necessary Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-// Define the filter options
 type FilterOption = "Diariamente" | "Semanalmente" | "Mensualmente";
 
 const IncomePanel: React.FC = () => {
@@ -22,8 +21,11 @@ const IncomePanel: React.FC = () => {
   const [filteredDonations, setFilteredDonations] = useState<DonationData[]>([]);
   const [filter, setFilter] = useState<FilterOption>("Diariamente");
   const [totalAmount, setTotalAmount] = useState<number>(0);
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
+    const savedDarkMode = localStorage.getItem("isDarkMode");
+    return savedDarkMode === "true";
+  });
 
-  // Fetch all donations on component mount
   useEffect(() => {
     async function loadDonations() {
       try {
@@ -37,7 +39,10 @@ const IncomePanel: React.FC = () => {
     loadDonations();
   }, []);
 
-  // Filter donations based on the selected filter
+  useEffect(() => {
+    filterDonations(filter);
+  }, [filter, donations]);
+
   const filterDonations = (filterOption: FilterOption) => {
     const now = new Date();
     let filtered: DonationData[] = [];
@@ -48,18 +53,17 @@ const IncomePanel: React.FC = () => {
           const donationDate = new Date(donation.date || "");
           const normalizedDonationDate = new Date(
             donationDate.getUTCFullYear(),
-            donationDate.getUTCMonth() + 1,
+            donationDate.getUTCMonth(),
             donationDate.getUTCDate()
           );
           const normalizedNow = new Date(
             now.getUTCFullYear(),
-            now.getUTCMonth() + 1, 
+            now.getUTCMonth(),
             now.getUTCDate()
           );
           return normalizedDonationDate.getTime() === normalizedNow.getTime();
         });
         break;
-
       case "Semanalmente":
         const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
         filtered = donations.filter((donation) => {
@@ -68,7 +72,6 @@ const IncomePanel: React.FC = () => {
           return donationDate >= startOfWeek && donationDate <= nowDate;
         });
         break;
-
       case "Mensualmente":
         filtered = donations.filter((donation) => {
           const donationDate = new Date(donation.date || "");
@@ -78,7 +81,6 @@ const IncomePanel: React.FC = () => {
           );
         });
         break;
-
       default:
         filtered = donations;
         break;
@@ -86,67 +88,70 @@ const IncomePanel: React.FC = () => {
 
     setFilteredDonations(filtered);
 
-    // Calculate the total amount of donations for the filtered donations
-    const total = filtered.reduce((acc: number, donation: DonationData) => {
-      const amount = typeof donation.amount === 'string' ? parseFloat(donation.amount) : donation.amount;
+    const total = filtered.reduce((acc, donation) => {
+      const amount = typeof donation.amount === "string" ? parseFloat(donation.amount) : donation.amount;
       return acc + (amount || 0);
     }, 0);
     setTotalAmount(total);
   };
 
-  // Update filtered donations whenever the filter or donations change
-  useEffect(() => {
-    filterDonations(filter);
-  }, [filter, donations]);
-
-  // Prepare data for the bar chart
   const chartData = {
     labels: filteredDonations.map((donation) =>
       new Date(donation.date || "").toLocaleDateString()
     ),
     datasets: [
       {
-        label: "Donación",
+        label: "Donaciones",
         data: filteredDonations.map((donation) => donation.amount),
-        backgroundColor: "rgba(31, 36, 77, 0.5)",
-        borderColor: "rgba(31, 36, 77, 1)",
+        backgroundColor: isDarkMode ? "#3E4A97" : "rgba(31, 36, 77, 0.5)",
+        borderColor: isDarkMode ? "#3E4A97" : "rgba(31, 36, 77, 1)",
         borderWidth: 1,
       },
     ],
   };
 
-  // Chart configuration
   const chartOptions = {
     responsive: true,
     plugins: {
       legend: {
         display: true,
+        labels: {
+          color: isDarkMode ? "#ffffff" : "#000000",
+        },
       },
       title: {
         display: true,
         text: `Donaciones (${filter.charAt(0).toUpperCase() + filter.slice(1)})`,
+        color: isDarkMode ? "#ffffff" : "#000000",
       },
     },
     scales: {
       x: {
         title: {
           display: true,
-          text: 'Fecha',
+          text: "Fecha",
+          color: isDarkMode ? "#FFFFFF" : "#000000",
+        },
+        ticks: {
+          color: isDarkMode ? "#ffffff" : "#000000",
         },
       },
       y: {
         title: {
           display: true,
-          text: 'Monto de donación (MXN)',
+          text: "Monto de donación (MXN)",
+          color: isDarkMode ? "#ffffff" : "#000000",
+        },
+        ticks: {
+          color: isDarkMode ? "#ffffff" : "#000000",
         },
       },
     },
   };
 
   return (
-    <div className="bg-gray-100 dark:bg-gray-900 text-black dark:text-white p-6 rounded-lg shadow-md transition-colors w-3/4 h-full">
+    <div className={`bg-gray-100 dark:bg-gray-900 text-black dark:text-white p-6 rounded-lg shadow-md transition-colors w-3/4 h-full`}>
       <h2 className="text-2xl font-semibold mb-4">Ingresos</h2>
-
       <div className="mb-4">
         <label htmlFor="filterSelect">Filtrado por:</label>
         <select

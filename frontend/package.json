@@ -11,11 +11,12 @@
     "test": "jest"
   },
   "dependencies": {
-    "@types/js-cookie": "^3.0.6",
     "@paypal/react-paypal-js": "^8.7.0",
+    "@types/js-cookie": "^3.0.6",
     "autoprefixer": "^10.4.20",
     "chart.js": "^4.4.4",
-    "express": "^4.19.2",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.1",
     "https-localhost": "^4.7.1",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^4.0.0",

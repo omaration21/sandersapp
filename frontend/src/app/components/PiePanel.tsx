@@ -60,7 +60,7 @@ const PiePanel: React.FC = () => {
           (sectorTotals.sector2 / totalDonations) * 100 || 0, // Percentage for Sector 2
           (sectorTotals.sector3 / totalDonations) * 100 || 0, // Percentage for Sector 3
         ],
-        backgroundColor: ["#232959", " #3E4A97", "#1B1F47"], // Colors for the sectors
+        backgroundColor: ["#232959", "#3E4A97", "#1B1F47"], // Colors for the sectors
         hoverBackgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
       },
     ],
