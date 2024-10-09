@@ -42,21 +42,14 @@ export class UserController {
         const { email, password } = req.body;
         try {
             const result = await UserModel.getLogin(email, password);
-    
-            if (!result.success) {
-                if (result.message === 'Usuario no encontrado') {
-                    return res.status(404).json({ message: result.message });
-                }
-                if (result.message === 'Contraseña incorrecta') {
-                    return res.status(401).json({ message: result.message });
-                }
-                return res.status(500).json({ message: result.message });
+            if (result) {
+                res.status(200).json({ user: result.user, message: 'User logged in successfully', token: result.token });
+            } else {
+                res.status(401).json({ message: 'Correo o contraseña inválidos' });
             }
-    
-            res.status(200).json({ user: result.user, message: 'Inicio de sesión exitoso', token: result.token });
         } catch (error) {
-            console.error('Error en el login del usuario:', error);
-            res.status(500).json({ message: 'Error en el servidor. Por favor, inténtelo más tarde.' });
+            console.error('Error logging in user:', error);
+            res.status(500).json({ message: 'Error en el servidor al intentar iniciar sesión' });
         }
     }
 

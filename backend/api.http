@@ -8,11 +8,11 @@ POST https://localhost:5001/users/register
 Content-Type: application/json
 
 {
-    "name": "Omar",
-    "email": "omar@gmail.com",
-    "password": "123456",
+    "name": "Zumaya",
+    "email": "zumaya@gmail.com",
+    "password": "hola",
     "role_id": 1,
-    "phone": "1234567890"
+    "phone": "5577889966"
 }
 
 ### LOGIN USER

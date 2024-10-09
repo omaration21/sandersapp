@@ -61,41 +61,38 @@ export class UserModel {
         }
     }
 
-    static async getLogin(email, pass) {
+    static async getLogin(email, password) {
         let connection = null;
         try {
             connection = await mysql.createConnection(config);
-            const [user] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
-            const hashedPassword = user[0].password;
-            const match = await bcrypt.compare(pass, hashedPassword);
-
-            if (match) 
-            {
-                const token = jwt.sign(
-                    {
-                        id: user[0].id,
-                        email: user[0].email,
-                        password: user[0].password,
-                        role_id: user[0].role_id,
-                        phone: user[0].phone
-                    },
-                    process.env.JWT_SECRET,
-                    {
-                        expiresIn: '1h'
-                    }
-                )
-                return {user: user[0], token};
+            const [users] = await connection.query('SELECT * FROM users WHERE email = ?', [email]);
+    
+            if (users.length === 0) {
+                return null;
             }
+    
+            const user = users[0];
+            const match = await bcrypt.compare(password, user.password);
+    
+            if (!match) {
+                return null;
+            }
+    
+            const token = jwt.sign({ id: user.id, email: user.email, role_id: user.role_id }, process.env.JWT_SECRET, {
+                expiresIn: '1h',
+            });
+    
+            return { user, token };
         } catch (error) {
             console.error('Error: ', error);
-            return [];
+            return null;
         } finally {
             if (connection) {
                 connection.end();
-                console.log('Connection closed');
             }
         }
     }
+    
 
     static async updateUser(id, name, email, role_id, phone) {
         let connection = null;
