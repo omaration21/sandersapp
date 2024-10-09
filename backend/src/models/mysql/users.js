@@ -10,8 +10,8 @@ const config = {
     host: process.env.DB_HOST || 'localhost',
     user: process.env.DB_USER || 'root',
     port: process.env.DB_PORT || 3306,
-    password: process.env.DB_PASS || 'bcqoz1!B', // Change this to your MySQL password
-    database: process.env.DB_NAME || 'sanders_db', // Change this to your MySQL database name
+    password: process.env.DB_PASS || 'bcqoz1!B', 
+    database: process.env.DB_NAME || 'sanders_db',
 }
 
 export class UserModel {
@@ -47,9 +47,7 @@ export class UserModel {
         } catch (error) {
             console.error('Error: ', error);
     
-            // Capturar el código de error de MySQL para entradas duplicadas
             if (error.code === 'ER_DUP_ENTRY') {
-                // Devolver un mensaje detallado para entradas duplicadas
                 return { success: false, message: 'El correo electrónico o teléfono ya está registrado.' };
             }
             
@@ -125,15 +123,13 @@ export class UserModel {
         try {
             connection = await mysql.createConnection(config);
 
-            // Primero desvincular las donaciones relacionadas con el usuario
             await connection.query('UPDATE donations SET donor_id = NULL WHERE donor_id = ?', [id]);
 
-            // Luego eliminar el usuario
             await connection.query('DELETE FROM users WHERE id = ?', [id]);
 
             return true;
         } catch (error) {
-            console.error('Error deleting user:', error);
+            console.error('Error eliminando usuario:', error);
             return false;
         } finally {
             if (connection) {
@@ -143,7 +139,6 @@ export class UserModel {
         }
     }
 
-    // Method to register a new donation in database
     static async registerNewDonation(amount, donor_id, type_id, comment, sector_id)
     {
         let connection = null;
@@ -161,7 +156,7 @@ export class UserModel {
         }
         catch(error)
         {
-            console.log('Error in register new donation: ', error);
+            console.log('Error registrando nueva donación: ', error);
             return false;
         }
         finally
