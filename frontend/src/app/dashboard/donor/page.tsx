@@ -11,11 +11,13 @@ import { AuthContext } from '../../context/AuthContext';
 import { useRouter } from 'next/navigation';
 
 const DonorDashboard = () => {
-  // Estado para controlar la visibilidad del sidebar
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  console.log('Renderizando panel de usuario donador');
 
   const authContext = useContext(AuthContext);
   const router = useRouter();
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   useEffect(() => {
     console.log('Usuario:', authContext?.user);
@@ -27,7 +29,7 @@ const DonorDashboard = () => {
     } 
   }, [authContext, router]);
 
-  if (!authContext?.user || authContext.role !== 'Admin') {
+  if (!authContext?.user) {
     return null; 
   }
 
@@ -36,7 +38,7 @@ const DonorDashboard = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  console.log('Renderizando panel de usuario donador'); 
+  console.log('Renderizando panel de usuario donador con usuario:', authContext?.user);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-[#141D32]">
