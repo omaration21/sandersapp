@@ -14,15 +14,14 @@ const SignUp = () => {
   const [error, setError] = useState<string | null>(null); 
   const router = useRouter();
 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     if (password !== confirmPassword) {
       setError('Las contraseñas no coinciden.');
       return;
     }
-  
+
     const userData = {
       name,
       email,
@@ -31,7 +30,7 @@ const SignUp = () => {
       role_id: 2,
       profile_image_url: '/uploads/default-profile.jpg',
     };
-  
+
     try {
       await createUser(userData);
       router.push('/login'); 
@@ -40,7 +39,6 @@ const SignUp = () => {
       console.error('Error en el registro:', error);
     }
   };
-  
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -148,71 +146,8 @@ const SignUp = () => {
             </button>
           </form>
         </div>
-          <form onSubmit={handleSubmit}>
-            {error && <p className="text-red-500 mb-4">{error}</p>}
-            <div className="mb-4">
-              <label htmlFor="name" className="block text-[#202451]">Nombre</label>
-              <input
-                id="name"
-                type="text"
-                className="w-full px-4 py-2 border rounded-lg text-[#202451]"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="email" className="block text-[#202451]">Email</label>
-              <input
-                id="email"
-                type="email"
-                className="w-full px-4 py-2 border rounded-lg text-[#202451]"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="phone" className="block text-[#202451]">Teléfono</label>
-              <input
-                id="phone"
-                type="tel"
-                className="w-full px-4 py-2 border rounded-lg text-[#202451]"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-            </div>
-            <div className="mb-4 relative">
-              <label htmlFor="password" className="block text-[#202451]">Contraseña</label>
-              <input
-                id="password"
-                type="password"
-                className="w-full px-4 py-2 border rounded-lg text-gray-900"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-4 relative">
-              <label htmlFor="confirmPassword" className="block text-[#202451]">Confirmar Contraseña</label>
-              <input
-                id="confirmPassword"
-                type="password"
-                className="w-full px-4 py-2 border rounded-lg text-gray-900"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              className="w-full bg-[#202451] text-white py-2 px-4 rounded-lg hover:bg-[#1f3b6d] transition-colors duration-300"
-            >
-              Registrarse
-            </button>
-          </form>
-        </div>
       </div>
+    </div>
   );
 };
 
