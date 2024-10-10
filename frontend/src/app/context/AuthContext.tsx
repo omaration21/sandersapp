@@ -77,6 +77,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           router.push('/dashboard/admin');
         } else if (loggedUser.role_id === 2) {
           setRole('Donor');
+          console.log('Usuario donante autenticado');
           router.push('/dashboard/donor');
         } else {
           throw new Error('Rol no reconocido');

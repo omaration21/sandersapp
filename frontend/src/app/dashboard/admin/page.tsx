@@ -44,7 +44,7 @@ const AdminDashboard = () => {
   return (
     <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-[#141D32]"> 
       {/* Renderizamos UpperBar pasando el usuario */}
-      <UpperBar user={authContext.user} onToggleSidebar={handleToggleSidebar} />
+      <UpperBar user={authContext.user} onToggleSidebar={handleToggleSidebar}/>
 
       <div className="flex flex-grow">
         {isSidebarOpen && (<Sidebar/>)}
