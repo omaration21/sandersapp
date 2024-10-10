@@ -1,11 +1,14 @@
 import { Router } from 'express';
 import { DonationsController } from '../controllers/donations.js';
-import { verifyToken } from '../middlewares/token.js'
+import { verifyToken } from '../middlewares/token.js';
 
 export const donationsRouter = Router();
 
-// Register new donation
+// Register new donation (authenticated)
 donationsRouter.post('/registerDonation', verifyToken, DonationsController.registerNewDonation);
 
-// Get all doantions
+// Register anonymous donation (no authentication required)
+donationsRouter.post('/anonymous-donation', DonationsController.registerAnonymousDonation);
+
+// Get all donations (authenticated)
 donationsRouter.get('/get', verifyToken, DonationsController.getAll);

@@ -3,7 +3,7 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link'; // Importamos Link para el logo
+import Link from 'next/link'; 
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
@@ -26,19 +26,17 @@ const LoginPage = () => {
   };
 
   const handleRegisterClick = () => {
-    router.push('/signup'); // Redirige a la página de signup
+    router.push('/signup'); 
   };
 
   const handleDonationClick = () => {
-    router.push('/userdona'); // Redirige a la página de donaciones
+    router.push('/userdona'); 
   };
 
   return (
     <div className="min-h-screen bg-gray-100 relative">
-      {/* Header con logo como imagen y navegación */}
       <header className="bg-[#202451] text-white py-4 shadow-md relative z-10">
         <div className="container mx-auto flex justify-between items-center">
-          {/* Imagen del logo con enlace */}
           <div>
             <Link href="/">
               <img src="/images/logo.webp" alt="Logo Fundación Sanders" className="h-12 cursor-pointer" />

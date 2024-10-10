@@ -7,7 +7,6 @@ import { donationsRouter } from './routes/donations.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Obtener __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -19,7 +18,7 @@ const credentials = { key: privateKey, cert: certificate };
 
 const app = express();
 app.use(cors({
-    origin: 'https://localhost:3000',  // Cambiar a HTTPS
+    origin: 'https://localhost:3000', 
     methods: 'GET,POST,PUT,DELETE',
     credentials: true
 }));
@@ -29,7 +28,6 @@ app.use(cors({
 app.use(json());
 app.use('/users', usersRouter);
 app.use('/donations', donationsRouter);
-// Servir archivos estáticos desde la carpeta 'uploads'
 app.use('/uploads', express.static(path.join(__dirname, './uploads')));
 
 const PORT = process.env.PORT ?? 5001;
