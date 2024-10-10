@@ -120,9 +120,9 @@ const IncomePanel: React.FC = () => {
         },
       },
       title: {
-        display: true,
-        text: `Donaciones (${filter.charAt(0).toUpperCase() + filter.slice(1)})`,
-        color: isDarkMode ? "#ffffff" : "#000000",
+        //display: false,
+        //text: `Donaciones (${filter.charAt(0).toUpperCase() + filter.slice(1)})`,
+        //color: isDarkMode ? "#ffffff" : "#000000",
       },
     },
     scales: {
@@ -153,9 +153,9 @@ const IncomePanel: React.FC = () => {
 
   return (
     <div className={`bg-gray-100 dark:bg-gray-900 text-black dark:text-white p-6 rounded-lg shadow-md transition-colors w-3/4 h-full`}>
-      <h2 className="text-2xl font-semibold mb-4">Ingresos</h2>
+      <h2 className="text-2xl font-semibold mb-4">Ingresos por donaciones</h2>
       <div className="mb-4">
-        <label htmlFor="filterSelect">Filtrado por:</label>
+        <label htmlFor="filterSelect">Filtrar por:</label>
         <select
           id="filterSelect"
           value={filter}
