@@ -65,7 +65,8 @@ export class DonationsModel {
                 FROM donations d
                 JOIN users u ON d.donor_id = u.id  
                 JOIN sectors s ON d.sector_id = s.id
-                JOIN donation_types dt ON d.type_id = dt.id`
+                JOIN donation_types dt ON d.type_id = dt.id
+                ORDER BY d.date`
             );
 
             return donations;

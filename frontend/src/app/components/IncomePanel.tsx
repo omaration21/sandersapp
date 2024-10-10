@@ -51,14 +51,25 @@ const IncomePanel: React.FC = () => {
       case "Diariamente":
         filtered = donations.filter((donation) => {
           const donationDate = new Date(donation.date || "");
-          return donationDate.toDateString() === now.toDateString();
+          const normalizedDonationDate = new Date(
+            donationDate.getUTCFullYear(),
+            donationDate.getUTCMonth(),
+            donationDate.getUTCDate()
+          );
+          const normalizedNow = new Date(
+            now.getUTCFullYear(),
+            now.getUTCMonth(),
+            now.getUTCDate()
+          );
+          return normalizedDonationDate.getTime() === normalizedNow.getTime();
         });
         break;
       case "Semanalmente":
         const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
         filtered = donations.filter((donation) => {
           const donationDate = new Date(donation.date || "");
-          return donationDate >= startOfWeek && donationDate <= new Date();
+          const nowDate = new Date();
+          return donationDate >= startOfWeek && donationDate <= nowDate;
         });
         break;
       case "Mensualmente":
@@ -78,24 +89,20 @@ const IncomePanel: React.FC = () => {
     setFilteredDonations(filtered);
 
     const total = filtered.reduce((acc, donation) => {
-      return acc + (Number(donation.amount) || 0);
+      const amount = typeof donation.amount === "string" ? parseFloat(donation.amount) : donation.amount;
+      return acc + (amount || 0);
     }, 0);
     setTotalAmount(total);
   };
 
-  // Agregar una clave a la gráfica que dependa del modo oscuro
-  const chartKey = isDarkMode ? 'dark-mode' : 'light-mode';
-
   const chartData = {
     labels: filteredDonations.map((donation) =>
-      new Date(donation.date || "").toLocaleDateString('en-US', {
-        day: 'numeric', month: 'short', year: 'numeric'
-      })
+      new Date(donation.date || "").toLocaleDateString()
     ),
     datasets: [
       {
         label: "Donaciones",
-        data: filteredDonations.map((donation) => Number(donation.amount)),
+        data: filteredDonations.map((donation) => donation.amount),
         backgroundColor: isDarkMode ? "#3E4A97" : "rgba(31, 36, 77, 0.5)",
         borderColor: isDarkMode ? "#3E4A97" : "rgba(31, 36, 77, 1)",
         borderWidth: 1,
@@ -123,15 +130,12 @@ const IncomePanel: React.FC = () => {
         title: {
           display: true,
           text: "Fecha",
-          color: isDarkMode ? "#ffffff" : "#000000",
+          color: isDarkMode ? "#FFFFFF" : "#000000",
         },
         ticks: {
           color: isDarkMode ? "#ffffff" : "#000000",
-          callback: function(tickValue: string | number, index: number, ticks: { value: string | number }[]) {
-            const value = typeof tickValue === 'number' ? tickValue.toString() : tickValue;
-            return index % 5 === 0 ? value : '';
-          },
-          autoSkip: false, 
+          autoSkip: true,
+          maxTicksLimit: 5
         },
       },
       y: {
@@ -165,7 +169,8 @@ const IncomePanel: React.FC = () => {
       </div>
 
       <div className="mt-6">
-        <Bar data={chartData} options={chartOptions} key={chartKey} />
+        <Bar data={chartData} options={chartOptions} />
+        <h2 className="text-2xl font-semibold mt-4 p-8">Ingresos totales: ${totalAmount.toFixed(2)}</h2>
       </div>
     </div>
   );
