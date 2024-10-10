@@ -83,28 +83,17 @@ export async function fetchUsers(): Promise<User[]> {
 
 // Create a new user
 export async function createUser(user: Omit<User, "id">): Promise<void> {
-  let token = Cookies.get("token");
-
-  if (!token) {
-    throw new Error("No se encontró token. Por favor inicie sesión.");
-  }
-
-  if (isTokenExpired(token)) {
-    const refreshToken = Cookies.get("refreshToken");
-    token = await refreshAccessToken(refreshToken || "");
-  }
-
   const response = await fetch(`${API_URL}/users/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(user),
   });
 
   if (!response.ok) {
-    throw new Error("No se pudo crear el usuario");
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'No se pudo crear el usuario');
   }
 }
 

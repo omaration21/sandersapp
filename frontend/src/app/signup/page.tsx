@@ -2,8 +2,8 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link'; // Importamos Link para los enlaces
-import { createUser } from '../services/api'; // Asegúrate de que esta ruta sea la correcta
+import Link from 'next/link'; 
+import { createUser } from '../services/api'; 
 
 const SignUp = () => {
   const [name, setName] = useState('');
@@ -11,41 +11,42 @@ const SignUp = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [phone, setPhone] = useState('');
-  const [error, setError] = useState<string | null>(null); // Para manejar errores
+  const [error, setError] = useState<string | null>(null); 
   const router = useRouter();
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+  
     if (password !== confirmPassword) {
       setError('Las contraseñas no coinciden.');
       return;
     }
-
+  
     const userData = {
       name,
       email,
       password,
       phone,
       role_id: 2,
-      profile_image_url: '/uploads/default-profile.jpg', // Imagen de perfil por defecto
+      profile_image_url: '/uploads/default-profile.jpg',
     };
-
+  
     try {
-      await createUser(userData); // Llamamos a la función para crear el usuario
-      router.push('/login'); // Redirigimos al usuario al login después del registro
+      await createUser(userData);
+      router.push('/login'); 
     } catch (error) {
       setError('Error en el registro. Inténtalo de nuevo.');
       console.error('Error en el registro:', error);
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header con logo como imagen y navegación */}
       <header className="bg-[#202451] text-white py-4 shadow-md relative z-10">
         <div className="container mx-auto flex justify-between items-center">
-          {/* Imagen del logo con enlace */}
           <div>
             <Link href="/">
               <img src="/images/logo.webp" alt="Logo Fundación Sanders" className="h-12 cursor-pointer" />
@@ -148,7 +149,7 @@ const SignUp = () => {
           </form>
         </div>
           <form onSubmit={handleSubmit}>
-            {error && <p className="text-red-500 mb-4">{error}</p>} {/* Mostrar el error si existe */}
+            {error && <p className="text-red-500 mb-4">{error}</p>}
             <div className="mb-4">
               <label htmlFor="name" className="block text-[#202451]">Nombre</label>
               <input

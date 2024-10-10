@@ -10,8 +10,8 @@ const config = {
   host: process.env.DB_HOST || "localhost",
   user: process.env.DB_USER || "root",
   port: process.env.DB_PORT || 3306,
-  password: process.env.DB_PASS || "bcqoz1!B", // Change this to your MySQL password
-  database: process.env.DB_NAME || "sanders_db", // Change this to your MySQL database name
+  password: process.env.DB_PASS || "bcqoz1!B",
+  database: process.env.DB_NAME || "sanders_db",
 };
 
 export class UserModel {
@@ -47,16 +47,12 @@ export class UserModel {
       return { success: true, message: "Usuario registrado correctamente" };
     } catch (error) {
       console.error("Error: ", error);
-
-      // Capturar el código de error de MySQL para entradas duplicadas
       if (error.code === "ER_DUP_ENTRY") {
-        // Devolver un mensaje detallado para entradas duplicadas
         return {
           success: false,
           message: "El correo electrónico o teléfono ya está registrado.",
         };
       }
-
       return {
         success: false,
         message: "Ocurrió un error al registrar el usuario.",
@@ -72,50 +68,76 @@ export class UserModel {
   static async getLogin(email, pass) {
     let connection = null;
     try {
-      connection = await mysql.createConnection(config);
-      const [user] = await connection.query(
-        "SELECT * FROM users WHERE email = ?",
-        [email]
-      );
-      const hashedPassword = user[0].password;
-      const match = await bcrypt.compare(pass, hashedPassword);
+        connection = await mysql.createConnection(config);
+        const [user] = await connection.query("SELECT * FROM users WHERE email = ?", [email]);
 
-      if (match) {
-        const token = jwt.sign(
-          {
-            id: user[0].id,
-            email: user[0].email,
-            password: user[0].password,
-            role_id: user[0].role_id,
-            phone: user[0].phone,
-            profile_image_url: user[0].profile_image_url,
-          },
-          process.env.JWT_SECRET,
-          {
-            expiresIn: "1h",
-          }
-        );
+        if (!user.length) {
+            console.error('Usuario no encontrado');
+            return { success: false, message: 'Usuario no encontrado' };
+        }
 
-        const refreshToken = jwt.sign(
-          {
-            id: user[0].id,
-            email: user[0].email,
-            password: user[0].password,
-            role_id: user[0].role_id,
-            phone: user[0].phone,
-            profile_image_url: user[0].profile_image_url,
-          },
-          process.env.JWT_SECRET,
-          {
-            expiresIn: "7d",
-          }
-        );
+        const hashedPassword = user[0].password;
+        const match = await bcrypt.compare(pass, hashedPassword);
 
-        return { user: user[0], token, refreshToken };
-      }
+        if (match) {
+            const token = jwt.sign(
+                {
+                    id: user[0].id,
+                    email: user[0].email,
+                    role_id: user[0].role_id,
+                    phone: user[0].phone,
+                    profile_image_url: user[0].profile_image_url,
+                },
+                process.env.JWT_SECRET, // Usamos la clave secreta global
+                { expiresIn: "1h" }
+            );
+
+            const refreshToken = jwt.sign(
+                {
+                    id: user[0].id,
+                    email: user[0].email,
+                    role_id: user[0].role_id,
+                    phone: user[0].phone,
+                    profile_image_url: user[0].profile_image_url,
+                },
+                process.env.JWT_SECRET, // Usamos la clave secreta global
+                { expiresIn: "7d" }
+            );
+
+            console.log('Token generado:', token);
+            return { user: user[0], token, refreshToken, success: true };
+        } else {
+            console.error('Contraseña incorrecta');
+            return { success: false, message: 'Contraseña incorrecta' };
+        }
     } catch (error) {
-      console.error("Error: ", error);
-      return [];
+        console.error("Error: ", error);
+        return { success: false, message: 'Error interno' };
+    } finally {
+        if (connection) {
+            connection.end();
+            console.log("Connection closed");
+        }
+    }
+}
+
+  static async getUserSecretKeyById(userId) {
+    let connection = null;
+    try {
+      connection = await mysql.createConnection(config);
+      const [rows] = await connection.query(
+        "SELECT secret_key FROM users WHERE id = ?",
+        [userId]
+      );
+
+      if (rows.length > 0) {
+        return rows[0].secret_key;
+      }
+
+      return null; // Retorna null si no se encontró el secret_key
+    } catch (error) {
+      console.error("Error fetching secret key:", error);
+      throw error;
     } finally {
       if (connection) {
         connection.end();
@@ -149,13 +171,11 @@ export class UserModel {
     try {
       connection = await mysql.createConnection(config);
 
-      // Primero desvincular las donaciones relacionadas con el usuario
       await connection.query(
         "UPDATE donations SET donor_id = NULL WHERE donor_id = ?",
         [id]
       );
 
-      // Luego eliminar el usuario
       await connection.query("DELETE FROM users WHERE id = ?", [id]);
 
       return true;
@@ -172,21 +192,18 @@ export class UserModel {
 
   static async refreshToken(refreshToken) {
     try {
-      // Verificar si el Refresh Token es válido
       const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
 
-      // Generar un nuevo Access Token usando el mismo payload que ya estaba en el Refresh Token
       const newToken = jwt.sign(
-        { id: decoded.id, email: decoded.email, role: decoded.role }, // Usamos el mismo payload del token anterior
+        { id: decoded.id, email: decoded.email, role: decoded.role },
         process.env.JWT_SECRET,
-        { expiresIn: "1h" } // Expira en 1 hora
+        { expiresIn: "1h" }
       );
 
-      // Generar un nuevo Refresh Token
       const newRefreshToken = jwt.sign(
-        { id: decoded.id, email: decoded.email, role: decoded.role }, // Usamos el mismo payload
+        { id: decoded.id, email: decoded.email, role: decoded.role },
         process.env.JWT_SECRET,
-        { expiresIn: "7d" } // Expira en 7 días
+        { expiresIn: "7d" }
       );
 
       return { token: newToken, refreshToken: newRefreshToken };
@@ -198,7 +215,6 @@ export class UserModel {
 
   static async updateProfileImage(userId, profileImageUrl) {
     let connection = null;
-
     try {
       connection = await mysql.createConnection(config);
       const [result] = await connection.query(
@@ -210,12 +226,11 @@ export class UserModel {
     } catch (error) {
       console.error("Error actualizando la imagen de perfil:", error);
       throw error;
-    }
-    finally {
-        if (connection) {
-            connection.end();
-            console.log('Conexión cerrada');
-        }
+    } finally {
+      if (connection) {
+        connection.end();
+        console.log('Conexión cerrada');
+      }
     }
   }
 }
