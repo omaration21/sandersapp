@@ -7,6 +7,7 @@ import { AuthContext } from '../../context/AuthContext';
 import IncomePanel from '../../components/IncomePanel';
 import PiePanel from '../../components/PiePanel';
 import RecentDonations from '../../components/RecentDonations'; 
+import { PersonalizedReport } from 'src/app/components/PersonalizedReport';
 import { UpperBar } from 'src/app/components/UpperBar';
 
 const AdminDashboard = () => {
@@ -59,6 +60,11 @@ const AdminDashboard = () => {
           <div className="mt-6">
             <RecentDonations />  {/* Renderizado del componente RecentDonations */}
           </div>
+
+          <div className="mt-6">
+            <PersonalizedReport />  {/* Renderizado del componente PersonalizedReport */}
+          </div>
+          
         </div>
       </div>
     </div>
