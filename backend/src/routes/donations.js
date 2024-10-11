@@ -12,3 +12,6 @@ donationsRouter.post('/anonymous-donation', DonationsController.registerAnonymou
 
 // Get all donations (authenticated)
 donationsRouter.get('/get', verifyToken, DonationsController.getAll);
+
+// Get donations by donor (authenticated)
+donationsRouter.get('/getByUser/:id', verifyToken, DonationsController.getByUser);

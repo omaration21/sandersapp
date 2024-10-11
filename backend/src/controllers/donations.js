@@ -97,4 +97,19 @@ export class DonationsController {
             res.status(500).json({ message: 'Failed to fetch donations' });
         }
     }
+
+    // Método para obtener donaciones por usuario
+    static async getByUser(req, res) { 
+        const { id } = req.params;
+        console.log('ID de usuario:', id);
+
+        try {
+            const donations = await DonationsModel.getDonationsByUser(id);
+            console.log('Donaciones obtenidas:', donations);
+            res.status(200).json(donations);
+        } catch (error) {
+            console.error('Error al obtener las donaciones:', error);
+            res.status(500).json({ message: 'Failed to fetch donations' });
+        }
+    }
 }
