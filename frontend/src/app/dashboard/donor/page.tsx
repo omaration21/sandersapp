@@ -11,11 +11,13 @@ import { AuthContext } from '../../context/AuthContext';
 import { useRouter } from 'next/navigation';
 
 const DonorDashboard = () => {
-  // Estado para controlar la visibilidad del sidebar
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  console.log('Renderizando panel de usuario donador');
 
   const authContext = useContext(AuthContext);
   const router = useRouter();
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
   useEffect(() => {
     console.log('Usuario:', authContext?.user);
@@ -27,7 +29,7 @@ const DonorDashboard = () => {
     } 
   }, [authContext, router]);
 
-  if (!authContext?.user || authContext.role !== 'Admin') {
+  if (!authContext?.user) {
     return null; 
   }
 
@@ -36,37 +38,32 @@ const DonorDashboard = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  console.log('Renderizando panel de usuario donador'); 
+  console.log('Renderizando panel de usuario donador con usuario:', authContext?.user);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-[#141D32]">
-      {/* Renderizamos UpperBar, pero sin funcionalidad específica para el donador */}
+    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-[#141D32]"> 
+      {/* Renderizamos UpperBar pasando el usuario */}
       <UpperBar user={authContext.user} onToggleSidebar={handleToggleSidebar}/>
 
       <div className="flex flex-grow">
         {isSidebarOpen && (<Sidebar/>)}
         <div className={`flex-1 p-10 ${isSidebarOpen ? 'ml-64' : 'ml-0'} mt-16`}>
-          <h2 className="text-2xl font-semibold">Donor Dashboard Overview</h2>
           
-          {/* Contenido específico del dashboard de Donor */}
+          {/* Contenedor para alinear IncomePanel y PiePanel uno al lado del otro */}
+          <div className="flex justify-between gap-6" style={{ height: '600px' }}>
+            <IncomePanel />  {/* Renderizado del componente IncomePanel */}
+            <PiePanel />  {/* Renderizado del componente PiePanel */}
+          </div>  
+
+          {/* Componente de donaciones recientes a toda la página */}
           <div className="mt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white p-4 rounded-lg shadow-md">
-                <h3 className="text-lg font-semibold">Your Contributions</h3>
-                <IncomePanel /> {/* Adaptamos el IncomePanel para mostrar contribuciones específicas del donador */}
-              </div>
-              <div className="bg-white p-4 rounded-lg shadow-md">
-                <h3 className="text-lg font-semibold">Impact Overview</h3>
-                <PiePanel /> {/* El PiePanel puede mostrar cómo sus donaciones están siendo utilizadas */}
-              </div>
-              <div className="bg-white p-4 rounded-lg shadow-md">
-                <RecentDonations /> {/* Muestra las donaciones recientes en la comunidad */}
-              </div>
-              <div className="bg-white p-4 rounded-lg shadow-md">
-                <PersonalizedReport /> {/* Ofrecemos un reporte personalizado de impacto */}
-              </div>
-            </div>
+            <RecentDonations />  {/* Renderizado del componente RecentDonations */}
           </div>
+
+          <div className="mt-6">
+            <PersonalizedReport />  {/* Renderizado del componente PersonalizedReport */}
+          </div>
+          
         </div>
       </div>
     </div>
