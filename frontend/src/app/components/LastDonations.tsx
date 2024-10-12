@@ -67,8 +67,11 @@ export const LastDonations = () => {
     if (user && user.id) {
       try {
         const allDonations = await getDonationsByUser(user.id);
-        let csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "Fecha, Sector, Monto, Comentario\r\n"; // Cabecera del CSV
+        
+        // Crear la cabecera del CSV
+        let csvContent = "Fecha, Sector, Monto, Comentario\r\n";
+
+        // Agregar las filas
         allDonations.forEach((donation) => {
           const row = [
             new Date(donation.date || "").toLocaleDateString(),
@@ -79,9 +82,11 @@ export const LastDonations = () => {
           csvContent += row + "\r\n";
         });
 
-        const encodedUri = encodeURI(csvContent);
+        // Crear un Blob con la codificación correcta (UTF-8) y el marcador BOM
+        const blob = new Blob([`\uFEFF${csvContent}`], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
         link.setAttribute("download", "historial-donaciones.csv");
         document.body.appendChild(link); // Requerido para Firefox
         link.click();
