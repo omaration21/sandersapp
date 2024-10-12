@@ -126,7 +126,6 @@ const DonacionUsuario = () => {
                   className="max-w-full h-auto object-cover"
                 />
               </div>
-
               <div className="md:w-1/2 p-10 flex flex-col justify-center">
                 <h2 className="text-[#202451] dark:text-gray-200 text-2xl font-semibold mb-6 text-center">
                   Tu donación ayudará a nuestras causas en agua, educación sexual y alimentación.
@@ -192,7 +191,6 @@ const DonacionUsuario = () => {
                 )}
               </div>
             </div>
-          
         </div>
       </div>
     </div>
