@@ -6,6 +6,7 @@ import cors from 'cors';
 import { donationsRouter } from './routes/donations.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { GptAdminRouter } from './routes/gpt_admin.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,6 +30,7 @@ app.use(json());
 app.use('/users', usersRouter);
 app.use('/donations', donationsRouter);
 app.use('/uploads', express.static(path.join(__dirname, './uploads')));
+app.use('/gpt_admin', GptAdminRouter);
 
 const PORT = process.env.PORT ?? 5001;
 
