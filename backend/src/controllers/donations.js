@@ -97,4 +97,6 @@ export class DonationsController {
             res.status(500).json({ message: 'Failed to fetch donations' });
         }
     }
+
+    static async getDonationsBySector(req, res) {}
 }
