@@ -15,13 +15,17 @@ interface PayPalDetails {
 interface PayPalPaymentProps {
     monto: string | number;
     donorId?: number;
-    onSuccess: () => void;
+    //onSuccess: () => void;
 }
 
-const PayPalPayment: React.FC<PayPalPaymentProps> = ({ monto, donorId, onSuccess }) => {
+const PayPalPayment: React.FC<PayPalPaymentProps> = ({ monto, donorId /*, onSuccess */}) => {
+    console.log("Monto en PayPalPayment:", monto);
+
     return (
         <PayPalScriptProvider options={{ clientId: "ASja7LRw7BXfSZN3adhaFtcKaTTKR-eEjxDUT3dMO7aJKGtYAaQPGL5Obm_H58N1kjFZnblabvbPT6PX" }}>
+            {/* Añadimos una clave para recrear el botón de PayPal cada vez que el monto cambie */}
             <PayPalButtons
+                key={monto} // Esta clave asegura que PayPalButtons se vuelva a renderizar con el nuevo monto
                 style={{ layout: 'vertical' }}
                 createOrder={(data, actions) => {
                     if (!actions || !actions.order) {
@@ -29,6 +33,7 @@ const PayPalPayment: React.FC<PayPalPaymentProps> = ({ monto, donorId, onSuccess
                     }
 
                     const formattedMonto = parseFloat(`${monto}`).toFixed(2);
+                    console.log("Monto en createOrder:", formattedMonto);
 
                     return actions.order.create({
                         intent: "CAPTURE",
@@ -84,7 +89,7 @@ const PayPalPayment: React.FC<PayPalPaymentProps> = ({ monto, donorId, onSuccess
                             .then(data => {
                                 console.log('Donación registrada exitosamente:', data);
                                 alert('Donación registrada exitosamente');
-                                onSuccess(); // Llamar la función de éxito
+                                //onSuccess(); // Llamar la función de éxito
                             })
                             .catch((error: any) => {
                                 console.error('Error registrando la donación:', error);
@@ -92,8 +97,10 @@ const PayPalPayment: React.FC<PayPalPaymentProps> = ({ monto, donorId, onSuccess
                             });
 
                         if (details.payer && details.payer.name) {
+                            //onSuccess(); // Llamar la función de éxito
                             alert('Pago completado por ' + details.payer.name.given_name);
                         } else {
+                            //onSuccess(); // Llamar la función de éxito
                             alert('Pago completado');
                         }
                     });
