@@ -2,9 +2,7 @@
 
 import React, {useEffect, useState, useContext } from 'react';
 import Sidebar from '../../components/Sidebar';
-import IncomePanel from '../../components/IncomePanel';
-import PiePanel from '../../components/PiePanel';
-import RecentDonations from '../../components/RecentDonations';
+import  { LastDonations } from "src/app/components/LastDonations";
 import { PersonalizedReport } from 'src/app/components/PersonalizedReport';
 import { UpperBar } from 'src/app/components/UpperBar';
 import { AuthContext } from '../../context/AuthContext';
@@ -48,22 +46,11 @@ const DonorDashboard = () => {
       <div className="flex flex-grow">
         {isSidebarOpen && (<Sidebar/>)}
         <div className={`flex-1 p-10 ${isSidebarOpen ? 'ml-64' : 'ml-0'} mt-16`}>
-          
-          {/* Contenedor para alinear IncomePanel y PiePanel uno al lado del otro */}
-          <div className="flex justify-between gap-6" style={{ height: '600px' }}>
-            <IncomePanel />  {/* Renderizado del componente IncomePanel */}
-            <PiePanel />  {/* Renderizado del componente PiePanel */}
-          </div>  
 
           {/* Componente de donaciones recientes a toda la página */}
-          <div className="mt-6">
-            <RecentDonations />  {/* Renderizado del componente RecentDonations */}
+          <div className="mt-2">
+            <LastDonations />  {/* Renderizado del componente RecentDonations */}
           </div>
-
-          <div className="mt-6">
-            <PersonalizedReport />  {/* Renderizado del componente PersonalizedReport */}
-          </div>
-          
         </div>
       </div>
     </div>
