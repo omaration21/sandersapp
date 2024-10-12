@@ -117,6 +117,40 @@ class DonationsModel {
             }
         }
     }
+
+    static async getDonationsByUser(user_id) {
+        let connection = null;
+
+        try {
+            connection = await mysql.createConnection(config);
+
+            const [donations] = await connection.query(
+                `SELECT 
+                d.id,
+                d.amount,
+                d.comment,
+                s.description AS sector_name,
+                dt.description AS type_name,
+                d.date
+                FROM donations d
+                JOIN sectors s ON d.sector_id = s.id
+                JOIN donation_types dt ON d.type_id = dt.id
+                WHERE d.donor_id = ?
+                ORDER BY d.date DESC`,
+                [user_id]
+            );
+
+            return donations;
+        } catch (error) {
+            console.log('Error fetching donations: ', error);
+            return [];
+        } finally {
+            if (connection) {
+                connection.end();
+                console.log('Connection closed');
+            }
+        }
+    }
 }
 
 export { DonationsModel };

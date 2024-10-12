@@ -26,6 +26,7 @@ export interface DonationData {
   sector_name?: string;
   sector_id?: number;
   date?: string;
+  type_name?: string;
 }
 
 // Function to check if the actual token has expired
@@ -252,4 +253,30 @@ export async function updateProfileImage(userId: number, imageFile: File): Promi
 
   const data = await response.json();
   return data.profile_image_url; // Retorna la nueva URL de la imagen de perfil
+}
+
+export async function getDonationsByUser(userId: number): Promise<DonationData[]> {
+  let token = Cookies.get("token");
+
+  if (!token) {
+    throw new Error("No se encontró token. Por favor inicie sesión.");
+  }
+
+  if (isTokenExpired(token)) {
+    const refreshToken = Cookies.get("refreshToken");
+    token = await refreshAccessToken(refreshToken || "");
+  }
+
+  const response = await fetch(`${API_URL}/donations/getByUser/${userId}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("No se pudieron obtener las donaciones");
+  }
+
+  return await response.json();
 }
