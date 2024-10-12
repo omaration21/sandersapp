@@ -31,6 +31,16 @@ export const LastDonations = () => {
       try {
         const allDonations = await getDonationsByUser(user.id);
         const pdf = new jsPDF();
+        const img = new Image();
+        img.src = '/images/logo.png';  
+        img.onload = function () {
+        pdf.addImage(img, 'PNG', 10, 10, 50, 40);
+        pdf.setFontSize(20);  
+        pdf.setTextColor(35, 41, 89);  
+        pdf.text(`Reporte de Donaciones Realizadas`, 70, 20); 
+        pdf.setFontSize(16); 
+        const donorName = user.name || 'Nombre no disponible';
+        pdf.text(`Por el donante: ${donorName}`, 95, 35);  
         autoTable(pdf, {
           head: [["Fecha", "Sector", "Monto", "Comentario"]],
           body: allDonations.map((donation) => [
@@ -39,8 +49,14 @@ export const LastDonations = () => {
             `$${donation.amount}`,
             donation.comment || "Sin comentario",
           ]),
+          startY: 50,
+          headStyles: {
+            fillColor: [35, 41, 89],
+            textColor: [255,255,255],
+          }
         });
         pdf.save("historial-donaciones.pdf");
+        };
       } catch (error) {
         console.error("Error al generar el PDF:", error);
       }
@@ -121,12 +137,12 @@ export const LastDonations = () => {
             Obtener mi historial completo de donaciones
         </h3>
         <button
-            className="px-4 py-2 bg-red-600 dark:bg-red-600 text-white font-semibold rounded shadow mr-4"
+            className="px-4 py-2 bg-[#232959] hover:bg-[#778DA9] dark:bg-[#232959] dark:hover:bg-gray-800 text-white font-semibold rounded shadow mr-4"
             onClick={handleDownloadPDF}>
             Descargar PDF
         </button>
         <button
-            className="px-4 py-2 bg-green-500 dark:bg-green-600 text-white font-semibold rounded shadow"
+            className="px-4 py-2 bg-[#232959] hover:bg-[#778DA9] dark:bg-[#232959] dark:hover:bg-gray-800 text-white font-semibold rounded shadow"
             onClick={handleDownloadCSV}>
             Descargar CSV
         </button>

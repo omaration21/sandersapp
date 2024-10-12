@@ -152,7 +152,7 @@ const DonacionInvitado = () => {
                 <PayPalPayment 
                   monto={finalMonto} 
                   donorId={user ? user.id : undefined} 
-                  onSuccess={() => handleDonationSuccess(finalMonto)} 
+                  //onSuccess={() => handleDonationSuccess(finalMonto)} 
                 />
               </div>
             )}

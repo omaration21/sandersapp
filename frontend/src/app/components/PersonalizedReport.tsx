@@ -18,15 +18,32 @@ export const PersonalizedReport = () => {
         });
 
         const pdf = new jsPDF();
+        const img = new Image();
+        img.src = '/images/logo.png';  
+        img.onload = function () {
+          pdf.addImage(img, 'PNG', 10, 10, 50, 40);
+          const formattedStartDate = startDate.toLocaleDateString();
+          const formattedEndDate = endDate.toLocaleDateString();
+          pdf.setFontSize(20);  
+          pdf.setTextColor(35, 41, 89);  
+        pdf.text(`Reporte de Donaciones Recibidas`, 70, 20);  
+        pdf.setFontSize(12);  
+        pdf.text(`Del ${formattedStartDate} al ${formattedEndDate}`, 90, 30);  
         autoTable(pdf, {
           head: [['Fecha', 'Donante', 'Monto']],
           body: filteredDonations.map(donation => [
             new Date(donation.date || "").toLocaleDateString(),
             donation.donor_name || 'Nombre no disponible',
-            donation.amount ? donation.amount.toString() : '0'
+            `$${donation.amount ? donation.amount.toString() : '0'}`
           ]),
+          startY: 50,
+          headStyles: {
+            fillColor: [	35, 41, 89],  
+            textColor: [255, 255, 255],  
+          }
         });
         pdf.save('reporte-donaciones.pdf');
+        };
       } catch (error) {
         console.error('Error al generar el reporte:', error);
       }
@@ -83,13 +100,14 @@ export const PersonalizedReport = () => {
           />
         </div>
         <button
-          className="px-4 py-2 bg-red-600 dark:bg-red-600 text-white font-semibold rounded shadow mr-4"
+          className="px-4 py-2 bg-[#232959] hover:bg-[#778DA9] dark:bg-[#232959] dark:hover:bg-gray-800 text-white font-semibold rounded shadow mr-4"
+          
           onClick={handleGenerateReport}
         >
           Descargar PDF
         </button>
         <button
-          className="px-4 py-2 bg-green-500 dark:bg-green-600 text-white font-semibold rounded shadow"
+          className="px-4 py-2 bg-[#232959] hover:bg-[#778DA9] dark:bg-[#232959] dark:hover:bg-gray-800 text-white font-semibold rounded shadow"
           onClick={handleExportCSV}
         >
           Descargar CSV
