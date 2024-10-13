@@ -6,7 +6,6 @@ import PayPalPayment from "../../../components/PayPalPayment";
 import { AuthContext } from "../../../context/AuthContext";
 import { UpperBar } from 'src/app/components/UpperBar';
 import { useRouter } from "next/navigation";
-// import Cookies from "js-cookie";
 
 const DonacionUsuario = () => {
   const authContext = useContext(AuthContext);
@@ -14,8 +13,10 @@ const DonacionUsuario = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [monto, setMonto] = useState<number | string>("");
   const [customMonto, setCustomMonto] = useState<string>("");
+  const [sector, setSector] = useState<string>(""); // Nuevo estado para el sector
+  const [comentario, setComentario] = useState<string>(""); // Nuevo estado para el comentario
   const [error, setError] = useState<string | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false); // Nuevo estado para controlar el proceso
+  const [isProcessing, setIsProcessing] = useState(false);
 
   useEffect(() => {
     if (!authContext?.user) {
@@ -45,63 +46,16 @@ const DonacionUsuario = () => {
     setError(null);
   };
 
+  const handleSectorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSector(e.target.value);
+    setError(null);
+  };
+
+  const handleComentarioChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setComentario(e.target.value);
+  };
+
   const finalMonto = monto || customMonto;
-
-  // const handleDonationSuccess = async () => {
-  //   console.log('Close window payment');
-  //   window.close();
-  // }
-
-  // const handleDonationSuccess = async (amount: number | string) => {
-  //   if (isProcessing) return; // Evitar que se procese más de una vez
-  //   setIsProcessing(true); // Bloquear procesamiento
-
-  //   console.log("Donation amount: ", amount);
-  //   if (!user || !user.id) {
-  //     alert("Hubo un problema con tu sesión. Por favor, inicia sesión nuevamente.");
-  //     setIsProcessing(false);
-  //     return;
-  //   }
-
-  //   const donationData = {
-  //     amount: parseFloat(`${amount}`),
-  //     donor_id: user.id,
-  //     type_id: 2,
-  //     comment: "Donación realizada a través de PayPal",
-  //     sector_id: 1,
-  //   };
-
-  //   try {
-  //     const token = Cookies.get("token");
-  //     if (!token) {
-  //       alert("Tu sesión ha expirado, por favor inicia sesión nuevamente.");
-  //       setIsProcessing(false);
-  //       return;
-  //     }
-
-  //     const response = await fetch("https://localhost:5001/donations/registerDonation", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       body: JSON.stringify(donationData),
-  //     });
-
-  //     if (!response.ok) {
-  //       alert(`Error al registrar la donación: ${response.statusText}`);
-  //       setIsProcessing(false);
-  //       return;
-  //     }
-
-  //     const data = await response.json();
-  //     alert("Donación registrada exitosamente");
-  //   } catch (error) {
-  //     alert("Hubo un problema registrando tu donación. Intenta de nuevo.");
-  //   } finally {
-  //     setIsProcessing(false); // Liberar bloqueo al final
-  //   }
-  // };
 
   const handleToggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -131,6 +85,24 @@ const DonacionUsuario = () => {
                 <h2 className="text-[#202451] dark:text-gray-200 text-2xl font-semibold mb-6 text-center">
                   Tu donación ayudará a nuestras causas en agua, educación sexual y alimentación.
                 </h2>
+
+                {/* Menú desplegable para seleccionar el sector */}
+                <div className="mb-6">
+                  <label htmlFor="sector" className="block text-gray-700 dark:text-gray-200 text-lg font-medium mb-2">
+                    Selecciona el sector al que deseas donar:
+                  </label>
+                  <select
+                    id="sector"
+                    value={sector}
+                    onChange={handleSectorChange}
+                    className="w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
+                  >
+                    <option value="" disabled>Selecciona una opción</option>
+                    <option value="agua">Agua</option>
+                    <option value="alimentacion">Alimentación</option>
+                    <option value="educacion_sexual">Educación Sexual</option>
+                  </select>
+                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                   <button
@@ -179,14 +151,30 @@ const DonacionUsuario = () => {
                   </div>
                 </div>
 
+                {/* Campo de texto para los comentarios */}
+                <div className="mb-6">
+                  <label htmlFor="comentario" className="block text-gray-700 dark:text-gray-200 text-lg font-medium mb-2">
+                    Escribe un comentario (opcional):
+                  </label>
+                  <textarea
+                    id="comentario"
+                    value={comentario}
+                    onChange={handleComentarioChange}
+                    className="w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
+                    rows={4}
+                    placeholder="Escribe aquí tu comentario..."
+                  ></textarea>
+                </div>
+
                 {error && <p className="text-red-500 dark:text-red-400 text-center mb-4">{error}</p>}
 
-                {finalMonto && parseFloat(finalMonto as string) > 0 && (
+                {finalMonto && parseFloat(finalMonto as string) > 0 && sector && (
                   <div className="mt-8">
                     <PayPalPayment
                       monto={finalMonto}
+                      sector={sector} // Pasamos el sector seleccionado a PayPalPayment
+                      comentario={comentario} // Pasamos el comentario a PayPalPayment
                       donorId={user.id}
-                      //onSuccess={() => handleDonationSuccess()}
                     />
                   </div>
                 )}

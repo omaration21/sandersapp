@@ -14,12 +14,22 @@ interface PayPalDetails {
 
 interface PayPalPaymentProps {
     monto: string | number;
+    sector: string; // Agregado: sector seleccionado
+    comentario: string; // Agregado: comentario de la donación
     donorId?: number;
-    //onSuccess: () => void;
 }
 
-const PayPalPayment: React.FC<PayPalPaymentProps> = ({ monto, donorId /*, onSuccess */}) => {
+const PayPalPayment: React.FC<PayPalPaymentProps> = ({ monto, sector, comentario, donorId }) => {
     console.log("Monto en PayPalPayment:", monto);
+    console.log("Sector en PayPalPayment:", sector);
+    console.log("Comentario en PayPalPayment:", comentario); // Para verificar que el comentario se está pasando correctamente
+
+    // Mapa para convertir el sector en su respectivo ID en la base de datos
+    const sectorIds: { [key: string]: number } = {
+        agua: 1,
+        alimentacion: 2,
+        educacion_sexual: 3
+    };
 
     return (
         <PayPalScriptProvider options={{ clientId: "ASja7LRw7BXfSZN3adhaFtcKaTTKR-eEjxDUT3dMO7aJKGtYAaQPGL5Obm_H58N1kjFZnblabvbPT6PX" }}>
@@ -48,14 +58,13 @@ const PayPalPayment: React.FC<PayPalPaymentProps> = ({ monto, donorId /*, onSucc
                     }
                     return actions.order.capture().then((details: PayPalDetails) => {
                         const donorEmail = details.payer?.email_address || 'anon@test.com';
-                        const comment = 'Donación realizada a través de PayPal';
 
                         const donationData = {
                             amount: parseFloat(`${monto}`),
                             donor_email: donorEmail,
                             type_id: 2,
-                            comment,
-                            sector_id: 1,
+                            comment: comentario, // Agregado: enviar el comentario
+                            sector_id: sectorIds[sector], // Enviar el ID del sector seleccionado
                             donor_id: donorId || null,
                         };
 
@@ -89,7 +98,6 @@ const PayPalPayment: React.FC<PayPalPaymentProps> = ({ monto, donorId /*, onSucc
                             .then(data => {
                                 console.log('Donación registrada exitosamente:', data);
                                 alert('Donación registrada exitosamente');
-                                //onSuccess(); // Llamar la función de éxito
                             })
                             .catch((error: any) => {
                                 console.error('Error registrando la donación:', error);
@@ -97,10 +105,8 @@ const PayPalPayment: React.FC<PayPalPaymentProps> = ({ monto, donorId /*, onSucc
                             });
 
                         if (details.payer && details.payer.name) {
-                            //onSuccess(); // Llamar la función de éxito
                             alert('Pago completado por ' + details.payer.name.given_name);
                         } else {
-                            //onSuccess(); // Llamar la función de éxito
                             alert('Pago completado');
                         }
                     });
