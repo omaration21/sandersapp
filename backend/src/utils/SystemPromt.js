@@ -32,7 +32,10 @@ Respuesta: CALL sp_get_donations('2023-08-01', '2023-08-31', NULL, 3, FALSE, FAL
 Respuesta: CALL sp_get_donations(NULL, NULL, NULL, NULL, TRUE, FALSE);
 
 10. Pregunta: "¿Cual ha sido el sector con más donaciones?"
-    Respuesta: CALL sp_get_donations(NULL, NULL, NULL, NULL, TRUE);
+    Respuesta: CALL sp_get_donations(NULL, NULL, NULL, NULL, FALSE, TRUE);
+
+11. Envía correos electrónicos a los 3 donantes más generosos.
+    Respuesta: CALL sp_get_donations(NULL, NULL, NULL, NULL, TRUE, FALSE);
 
 Si la pregunta no tiene relación con donaciones, simplemente indica: "Esa pregunta no está relacionada con las donaciones, por favor ingrese preguntas relacionadas con el contexto."
 Si la pregunta tiene relación con donaciones pero tiene coherencia con los datos, simplemente indica: "No tengo la información necesaria para responder a esa pregunta."
