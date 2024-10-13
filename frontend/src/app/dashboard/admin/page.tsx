@@ -9,6 +9,7 @@ import PiePanel from '../../components/PiePanel';
 import RecentDonations from '../../components/RecentDonations'; 
 import { PersonalizedReport } from 'src/app/components/PersonalizedReport';
 import { UpperBar } from 'src/app/components/UpperBar';
+import { ChatBot } from 'src/app/components/ChatBot';
 
 const AdminDashboard = () => {
   const authContext = useContext(AuthContext);
@@ -64,7 +65,11 @@ const AdminDashboard = () => {
           <div className="mt-6">
             <PersonalizedReport />  {/* Renderizado del componente PersonalizedReport */}
           </div>
-          
+
+          <div className="mt-6">
+            <ChatBot />  {/* Renderizado del componente ChatBot */}
+          </div>
+
         </div>
       </div>
     </div>

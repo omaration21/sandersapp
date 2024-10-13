@@ -53,7 +53,7 @@ export class GptAdminController {
             });
 
             const interpretation = completionInterpretation.choices[0].message.content;
-            return res.status(200).json({ interpretation });
+            return res.status(200).json({ message: interpretation });
         } catch (error) {
             console.error('Error:', error);
             return res.status(500).json({ message: 'Error del servidor interno' });

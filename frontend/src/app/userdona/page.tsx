@@ -40,10 +40,9 @@ const DonacionInvitado = () => {
     router.push('/signup'); // Redirige a la página de registro
   };
 
-  const handleDonationSuccess = (amount: string | number) => {
-    console.log('Donación exitosa de: $' + amount);
-    // Aquí puedes redirigir o mostrar un mensaje de éxito adicional
-  };
+  // const handleDonationSuccess = (amount: string | number) => {
+  //   console.log('Donación exitosa de: $' + amount);
+  // };
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -152,7 +151,7 @@ const DonacionInvitado = () => {
                 <PayPalPayment 
                   monto={finalMonto} 
                   donorId={user ? user.id : undefined} 
-                  onSuccess={() => handleDonationSuccess(finalMonto)} 
+                  //onSuccess={() => handleDonationSuccess(finalMonto)} 
                 />
               </div>
             )}
