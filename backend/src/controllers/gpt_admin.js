@@ -2,6 +2,9 @@ import { GptAdminModel } from '../models/mysql/gpt_admin.js';
 import OpenAi from "openai";
 import dotenv from 'dotenv';
 
+import { systemPrompt } from '../utils/SystemPromt.js';
+import { extractQuery } from '../utils/extractQuery.js';
+
 dotenv.config();
 
 const client = new OpenAi({
@@ -12,56 +15,50 @@ export class GptAdminController {
     static async proccessQuestion(req, res) {
         const { question } = req.body;
 
-        const systemPromt = `Eres un asistente que determina qué procedimiento almacenado ejecutar y con qué parámetros.
-        Si un parámetro no está en la pregunta, usa NULL.
-        Procedimiento: sp_get_donations(p_start_date, p_end_date, p_donor_name, p_sector_id).
-        Ejemplo: Pregunta: "¿Cuáles fueron las donaciones de enero de 2024?" 
-        Respuesta: sp_get_donations('2024-01-01', '2024-01-31', NULL, NULL)`
+        console.log('Question:', question);
 
         try {
             const completion = await client.chat.completions.create({
-                model: "gpt-4o-mini",
+                model: 'gpt-4',
                 messages: [
-                    {
-                        role: "system",
-                        content: systemPromt
-                    },
-                    {
-                        role: "user",
-                        content: question
-                    }
+                    { role: 'system', content: systemPrompt },
+                    { role: 'user', content: question }
                 ]
-            })
+            });
 
-            const answer = completion.data.choices[0].message;
-            const matchQuery = answer.match(/sp_get_donations\((.*)\)/);
+            const answer = completion.choices[0].message.content;
             console.log('Answer:', answer);
-            console.log('Match:', matchQuery);
 
-            const [results] = await GptAdminModel.processQuery(matchQuery);
+            const matchQuery = extractQuery(answer);
 
-            // const completionInterpretation = await client.chat.completions.create({
-            //     model: "gpt-4o-mini",
-            //     messages: [
-            //         {
-            //             role: "system",
-            //             content: 'Ahora que se ha ejecutado el procedimeinto interpreta la respuesta, de acuerdo a la pregunta anterior'
-            //         },
-            //         {
-            //             role: "user",
-            //             content: results
-            //         }
-            //     ]
-            // });
+            if (!matchQuery) {
+                console.log('No matching query found.');
+                return res.status(200).json({ message: answer });
+            }
 
-            // const interpretation = completionInterpretation.data.choices[0].message;
+            console.log('Match:', matchQuery[0]);
 
-            return res.status(200).json({ answer, results/*, interpretation */});
-        }
-        catch (error) 
-        {
+            const [results] = await GptAdminModel.processQuery(matchQuery[0]);
+
+            const resultsString = JSON.stringify(results, null, 2);
+
+            const contentInterpretation = `Ahora que se ha ejecutado el procedimiento, interpreta la respuesta brevemente, de acuerdo a la pregunta: ${question}`;
+
+            const completionInterpretation = await client.chat.completions.create({
+                model: 'gpt-4',
+                messages: [
+                    { role: 'system', content: contentInterpretation },
+                    { role: 'user', content: resultsString }
+                ]
+            });
+
+            const interpretation = completionInterpretation.choices[0].message.content;
+            return res.status(200).json({ interpretation });
+        } catch (error) {
             console.error('Error:', error);
             return res.status(500).json({ message: 'Error del servidor interno' });
+        } finally {
+            console.log('Fin del proceso');
         }
     }
 }

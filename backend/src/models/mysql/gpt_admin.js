@@ -17,7 +17,7 @@ export class GptAdminModel {
         let connection = null;
         try {
             connection = await mysql.createConnection(config);
-            const [result] = await connection.query(query);
+            const [result] = await connection.query(`CALL ${query}`);
             return result;
         } catch (error) {
             console.error('Error: ', error);
