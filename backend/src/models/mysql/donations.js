@@ -67,7 +67,7 @@ class DonationsModel {
             connection = await mysql.createConnection(config);
 
             await connection.query(
-                'CALL sp_register_anonymous_donation(?, NULL, ?, ?, ?)',
+                'CALL sp_register_anonymous_donation(?, ?, ?, ?, ?)',
                 [amount, donor_email, type_id, comment, sector_id]
             );
 

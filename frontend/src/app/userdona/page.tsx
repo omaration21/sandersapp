@@ -14,6 +14,11 @@ const DonacionInvitado = () => {
   const authContext = useContext(AuthContext);
   const { user } = authContext || {};
 
+  const [sector, setSector] = useState<string>("1");
+  const [comentario, setComentario] = useState<string>("");
+  const [correo, setCorreo] = useState<string>("");
+  const [nombre, setNombre] = useState<string>("");
+
   const handleMontoClick = (montoSeleccionado: number) => {
     if (monto === montoSeleccionado) {
       setMonto('');
@@ -144,13 +149,73 @@ const DonacionInvitado = () => {
               </div>
             </div>
 
+            <div className="mb-6">
+                    <label htmlFor="nombre" className="block text-sm font-medium mb-2">
+                      Nombre:
+                    </label>
+                    <input
+                      type="text"
+                      id="nombre"
+                      value={nombre}
+                      onChange={(e) => setNombre(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded"
+                    />
+                  </div>
+
+                  <div className="mb-6">
+                    <label htmlFor="correo" className="block text-sm font-medium mb-2">
+                      Correo electrónico:
+                    </label>
+                    <input
+                      type="email"
+                      id="correo"
+                      value={correo}
+                      onChange={(e) => setCorreo(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded"
+                    />
+                  </div>
+
+              {/** Selección del sector */}
+              <div className="mb-6">
+                <label htmlFor="sector" className="block text-sm font-medium mb-2 text-black">
+                  Selecciona el sector al que quieres apoyar:
+                </label>
+                <select
+                  id="sector"
+                  value={sector}
+                  onChange={(e) => setSector(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded"
+                >
+                  <option value="1">Agua</option>
+                  <option value="2">Educación sexual</option>
+                  <option value="3">Nutrición</option>
+                </select>
+              </div>
+
+              <div className="mb-6">
+                <label htmlFor="comentario" className="block text-sm font-medium mb-2 text-black">
+                  Comentario:
+                </label>
+                <textarea
+                  id="comentario"
+                  value={comentario}
+                  onChange={(e) => setComentario(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded"
+                  rows={4}
+                />
+              </div>
+
             {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
             {finalMonto && parseFloat(finalMonto as string) > 0 && (
               <div className="mt-8">
                 <PayPalPayment 
                   monto={finalMonto} 
-                  donorId={user ? user.id : undefined} 
+                  donorId={user ? user.id : undefined}
+                  email={correo}
+                  sectorId={sector}
+                  comentario={comentario}
+                  name={nombre}
                   //onSuccess={() => handleDonationSuccess(finalMonto)} 
                 />
               </div>

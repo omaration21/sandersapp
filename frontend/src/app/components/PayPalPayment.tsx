@@ -1,6 +1,7 @@
 import React from 'react';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import Cookies from 'js-cookie';
+import { sendEmail } from '../services/api';
 
 interface PayPalDetails {
     payer?: {
@@ -13,12 +14,16 @@ interface PayPalDetails {
 }
 
 interface PayPalPaymentProps {
+    email?: string;
     monto: string | number;
     donorId?: number;
+    sectorId?: string;
+    comentario?: string;
+    name?: string;
     //onSuccess: () => void;
 }
 
-const PayPalPayment: React.FC<PayPalPaymentProps> = ({ monto, donorId /*, onSuccess */}) => {
+const PayPalPayment: React.FC<PayPalPaymentProps> = ({name, email, monto, donorId, sectorId, comentario /*, onSuccess */}) => {
     console.log("Monto en PayPalPayment:", monto);
 
     return (
@@ -52,10 +57,10 @@ const PayPalPayment: React.FC<PayPalPaymentProps> = ({ monto, donorId /*, onSucc
 
                         const donationData = {
                             amount: parseFloat(`${monto}`),
-                            donor_email: donorEmail,
+                            donor_email: email || donorEmail,
                             type_id: 2,
-                            comment,
-                            sector_id: 1,
+                            comment: comentario || comment,
+                            sector_id: sectorId || null,
                             donor_id: donorId || null,
                         };
 
@@ -97,8 +102,25 @@ const PayPalPayment: React.FC<PayPalPaymentProps> = ({ monto, donorId /*, onSucc
                             });
 
                         if (details.payer && details.payer.name) {
+                            console.log('name:', name);
+                            console.log('monto:', monto);
                             //onSuccess(); // Llamar la función de éxito
-                            alert('Pago completado por ' + details.payer.name.given_name);
+                            const emailData = {
+                                email: email || donorEmail,
+                                subject: 'Donación completada',
+                                message: `Hola ${name}, tu donación de $${monto} ha sido completada con éxito, muchas gracias por tu apoyo.`
+                            }
+
+                            console.log('Message:', emailData.message);
+
+                            const emailSendSuccess = sendEmail(emailData.email, emailData.subject, emailData.message);
+                            if (!emailSendSuccess) {
+                                console.log('Correo de confirmación NO enviado');
+                            }
+                            
+                            alert('Correo de confirmación enviado');
+                            alert('Donación completada por el usuario: ' + details.payer.name.given_name);
+
                         } else {
                             //onSuccess(); // Llamar la función de éxito
                             alert('Pago completado');

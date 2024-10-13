@@ -32,7 +32,7 @@ app.use('/users', usersRouter);
 app.use('/donations', donationsRouter);
 app.use('/uploads', express.static(path.join(__dirname, './uploads')));
 app.use('/gpt_admin', GptAdminRouter);
-app.use('/mail', mailRouter);
+app.use('/email', mailRouter);
 
 const PORT = process.env.PORT ?? 5001;
 

@@ -15,7 +15,9 @@ const DonacionUsuario = () => {
   const [monto, setMonto] = useState<number | string>("");
   const [customMonto, setCustomMonto] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false); // Nuevo estado para controlar el proceso
+
+  const [sector, setSector] = useState<string>("1");
+  const [comentario, setComentario] = useState<string>("");
 
   useEffect(() => {
     if (!authContext?.user) {
@@ -46,62 +48,6 @@ const DonacionUsuario = () => {
   };
 
   const finalMonto = monto || customMonto;
-
-  // const handleDonationSuccess = async () => {
-  //   console.log('Close window payment');
-  //   window.close();
-  // }
-
-  // const handleDonationSuccess = async (amount: number | string) => {
-  //   if (isProcessing) return; // Evitar que se procese más de una vez
-  //   setIsProcessing(true); // Bloquear procesamiento
-
-  //   console.log("Donation amount: ", amount);
-  //   if (!user || !user.id) {
-  //     alert("Hubo un problema con tu sesión. Por favor, inicia sesión nuevamente.");
-  //     setIsProcessing(false);
-  //     return;
-  //   }
-
-  //   const donationData = {
-  //     amount: parseFloat(`${amount}`),
-  //     donor_id: user.id,
-  //     type_id: 2,
-  //     comment: "Donación realizada a través de PayPal",
-  //     sector_id: 1,
-  //   };
-
-  //   try {
-  //     const token = Cookies.get("token");
-  //     if (!token) {
-  //       alert("Tu sesión ha expirado, por favor inicia sesión nuevamente.");
-  //       setIsProcessing(false);
-  //       return;
-  //     }
-
-  //     const response = await fetch("https://localhost:5001/donations/registerDonation", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       body: JSON.stringify(donationData),
-  //     });
-
-  //     if (!response.ok) {
-  //       alert(`Error al registrar la donación: ${response.statusText}`);
-  //       setIsProcessing(false);
-  //       return;
-  //     }
-
-  //     const data = await response.json();
-  //     alert("Donación registrada exitosamente");
-  //   } catch (error) {
-  //     alert("Hubo un problema registrando tu donación. Intenta de nuevo.");
-  //   } finally {
-  //     setIsProcessing(false); // Liberar bloqueo al final
-  //   }
-  // };
 
   const handleToggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -178,14 +124,47 @@ const DonacionUsuario = () => {
                   </div>
                 </div>
 
+                 {/** Selección del sector */}
+              <div className="mb-6">
+                <label htmlFor="sector" className="block text-sm font-medium mb-2 dark:text-white">
+                  Selecciona el sector al que quieres apoyar:
+                </label>
+                <select
+                  id="sector"
+                  value={sector}
+                  onChange={(e) => setSector(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                >
+                  <option value="1">Agua</option>
+                  <option value="2">Educación sexual</option>
+                  <option value="3">Nutrición</option>
+                </select>
+              </div>
+
+              <div className="mb-6">
+                <label htmlFor="comentario" className="block text-sm font-medium mb-2 dark:text-white">
+                  Comentario:
+                </label>
+                <textarea
+                  id="comentario"
+                  value={comentario}
+                  onChange={(e) => setComentario(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                  rows={4}
+                />
+              </div>
+
                 {error && <p className="text-red-500 dark:text-red-400 text-center mb-4">{error}</p>}
 
                 {finalMonto && parseFloat(finalMonto as string) > 0 && (
                   <div className="mt-8">
                     <PayPalPayment
+                      email={user.email}
                       monto={finalMonto}
                       donorId={user.id}
-                      //onSuccess={() => handleDonationSuccess()}
+                      sectorId={sector}
+                      comentario={comentario}
+                      name={user.name}
                     />
                   </div>
                 )}
