@@ -6,6 +6,7 @@ import PayPalPayment from "../../../components/PayPalPayment";
 import { AuthContext } from "../../../context/AuthContext";
 import { UpperBar } from 'src/app/components/UpperBar';
 import { useRouter } from "next/navigation";
+// import Cookies from "js-cookie";
 
 const DonacionUsuario = () => {
   const authContext = useContext(AuthContext);
@@ -13,8 +14,6 @@ const DonacionUsuario = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [monto, setMonto] = useState<number | string>("");
   const [customMonto, setCustomMonto] = useState<string>("");
-  const [sector, setSector] = useState<string>(""); // Nuevo estado para el sector
-  const [comentario, setComentario] = useState<string>(""); // Nuevo estado para el comentario
   const [error, setError] = useState<string | null>(null);
 
   const [sector, setSector] = useState<string>("1");
@@ -48,15 +47,6 @@ const DonacionUsuario = () => {
     setError(null);
   };
 
-  const handleSectorChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSector(e.target.value);
-    setError(null);
-  };
-
-  const handleComentarioChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setComentario(e.target.value);
-  };
-
   const finalMonto = monto || customMonto;
 
   const handleToggleSidebar = () => {
@@ -86,24 +76,6 @@ const DonacionUsuario = () => {
                 <h2 className="text-[#202451] dark:text-gray-200 text-2xl font-semibold mb-6 text-center">
                   Tu donación ayudará a nuestras causas en agua, educación sexual y alimentación.
                 </h2>
-
-                {/* Menú desplegable para seleccionar el sector */}
-                <div className="mb-6">
-                  <label htmlFor="sector" className="block text-gray-700 dark:text-gray-200 text-lg font-medium mb-2">
-                    Selecciona el sector al que deseas donar:
-                  </label>
-                  <select
-                    id="sector"
-                    value={sector}
-                    onChange={handleSectorChange}
-                    className="w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
-                  >
-                    <option value="" disabled>Selecciona una opción</option>
-                    <option value="agua">Agua</option>
-                    <option value="alimentacion">Alimentación</option>
-                    <option value="educacion_sexual">Educación Sexual</option>
-                  </select>
-                </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                   <button
@@ -184,7 +156,7 @@ const DonacionUsuario = () => {
 
                 {error && <p className="text-red-500 dark:text-red-400 text-center mb-4">{error}</p>}
 
-                {finalMonto && parseFloat(finalMonto as string) > 0 && sector && (
+                {finalMonto && parseFloat(finalMonto as string) > 0 && (
                   <div className="mt-8">
                     <PayPalPayment
                       email={user.email}
