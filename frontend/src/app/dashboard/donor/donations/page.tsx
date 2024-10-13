@@ -108,7 +108,7 @@ const DonacionUsuario = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-[#141D32] transition-colors">
+    <div className="flex flex-col min-h-screen bg-gray-200 dark:bg-[#141D32] transition-colors">
       {/* Barra superior */}
       <UpperBar user={authContext.user} onToggleSidebar={handleToggleSidebar} />
       <div className="flex flex-grow">

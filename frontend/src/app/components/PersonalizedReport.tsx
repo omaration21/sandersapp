@@ -64,12 +64,12 @@ export const PersonalizedReport = () => {
     };
 
     return (
-        <div className="bg-white dark:bg-gray-900 p-6 mt-10 rounded-lg shadow-lg transition-colors">
+        <div className="bg-gray-200 dark:bg-gray-900 p-6 mt-10 rounded-lg shadow-lg transition-colors">
         <h1 className="text-xl font-semibold text-gray-800 dark:text-white">Generar reporte personalizado</h1>
         <div className="mb-4">
           <label className="block text-gray-800 dark:text-gray-300">Fecha de inicio:</label>
           <DatePicker
-            className="form-input w-full text-gray-800 dark:text-white bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700"
+            className="form-input w-full text-gray-800 dark:text-white bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700"
             selected={startDate}
             onChange={date => setStartDate(date || new Date())}
           />
@@ -77,7 +77,7 @@ export const PersonalizedReport = () => {
         <div className="mb-4">
           <label className="block text-gray-800 dark:text-gray-300">Fecha de fin:</label>
           <DatePicker
-            className="form-input w-full text-gray-800 dark:text-white bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-700"
+            className="form-input w-full text-gray-800 dark:text-white bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700"
             selected={endDate}
             onChange={date => setEndDate(date || new Date())}
           />

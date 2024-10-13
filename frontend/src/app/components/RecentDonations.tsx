@@ -21,13 +21,13 @@ const RecentDonations: React.FC = () => {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-gray-900 p-6 mt-10 rounded-lg shadow-md transition-colors">
+    <div className="bg-gray-200 dark:bg-gray-900 p-6 mt-10 rounded-lg shadow-md transition-colors">
       <h2 className="text-2xl font-semibold mb-6 text-black dark:text-white">Donaciones recientes</h2>
       <ul className="list-none p-0">
         {recentDonations.map((donation) => (
           <li
             key={donation.id}
-            className="mb-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-md shadow-md transition-colors"
+            className="mb-4 p-4 bg-white dark:bg-gray-800 rounded-md shadow-md transition-colors"
           >
             {/* Nombre grande y llamativo */}
             <p className="text-2xl font-bold text-black dark:text-white mb-2">{donation.donor_name}</p>
