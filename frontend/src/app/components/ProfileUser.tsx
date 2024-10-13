@@ -78,7 +78,7 @@ export const ProfileUser = () => {
   }, [isDarkMode]);
 
   return (
-    <div className="bg-white dark:bg-gray-800 text-black dark:text-gray-200 p-6 rounded-lg shadow-md transition-colors mt-10">
+    <div className="bg-gray-200 dark:bg-gray-900 text-black dark:text-gray-200 p-6 rounded-lg shadow-md transition-colors mt-10">
       <h1 className="text-2xl font-semibold mb-4">Perfil de usuario</h1>
       <div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
         <img
@@ -95,21 +95,21 @@ export const ProfileUser = () => {
             type="text"
             value={editableUser.name}
             onChange={(e) => setEditableUser({ ...editableUser, name: e.target.value })}
-            className="w-full p-2 border border-gray-400 dark:border-gray-500 rounded text-gray-900 dark:text-gray-300 mb-2 bg-gray-100 dark:bg-gray-700"
+            className="w-full p-2 border border-gray-400 dark:border-gray-500 rounded text-gray-900 dark:text-gray-300 mb-2 bg-gray-200 dark:bg-gray-700"
             placeholder="Nombre"
           />
           <input
             type="email"
             value={editableUser.email}
             onChange={(e) => setEditableUser({ ...editableUser, email: e.target.value })}
-            className="w-full p-2 border border-gray-400 dark:border-gray-500 rounded text-gray-900 dark:text-gray-300 mb-2 bg-gray-100 dark:bg-gray-700"
+            className="w-full p-2 border border-gray-400 dark:border-gray-500 rounded text-gray-900 dark:text-gray-300 mb-2 bg-gray-200 dark:bg-gray-700"
             placeholder="Correo"
           />
           <input
             type="text"
             value={editableUser.phone}
             onChange={(e) => setEditableUser({ ...editableUser, phone: e.target.value })}
-            className="w-full p-2 border border-gray-400 dark:border-gray-500 rounded text-gray-900 dark:text-gray-300 mb-2 bg-gray-100 dark:bg-gray-700"
+            className="w-full p-2 border border-gray-400 dark:border-gray-500 rounded text-gray-900 dark:text-gray-300 mb-2 bg-gray-200 dark:bg-gray-700"
             placeholder="Teléfono"
           />
           <button onClick={handleSaveChanges} className="bg-green-500 dark:bg-green-700 text-white px-4 py-2 rounded mr-2">

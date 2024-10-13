@@ -1,6 +1,7 @@
 import React from 'react';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import Cookies from 'js-cookie';
+import { sendEmail } from '../services/api';
 
 interface PayPalDetails {
     payer?: {
@@ -13,23 +14,17 @@ interface PayPalDetails {
 }
 
 interface PayPalPaymentProps {
+    email?: string;
     monto: string | number;
-    sector: string; // Agregado: sector seleccionado
-    comentario: string; // Agregado: comentario de la donación
     donorId?: number;
+    sectorId?: string;
+    comentario?: string;
+    name?: string;
+    //onSuccess: () => void;
 }
 
-const PayPalPayment: React.FC<PayPalPaymentProps> = ({ monto, sector, comentario, donorId }) => {
+const PayPalPayment: React.FC<PayPalPaymentProps> = ({name, email, monto, donorId, sectorId, comentario /*, onSuccess */}) => {
     console.log("Monto en PayPalPayment:", monto);
-    console.log("Sector en PayPalPayment:", sector);
-    console.log("Comentario en PayPalPayment:", comentario); // Para verificar que el comentario se está pasando correctamente
-
-    // Mapa para convertir el sector en su respectivo ID en la base de datos
-    const sectorIds: { [key: string]: number } = {
-        agua: 1,
-        alimentacion: 2,
-        educacion_sexual: 3
-    };
 
     return (
         <PayPalScriptProvider options={{ clientId: "ASja7LRw7BXfSZN3adhaFtcKaTTKR-eEjxDUT3dMO7aJKGtYAaQPGL5Obm_H58N1kjFZnblabvbPT6PX" }}>
@@ -61,10 +56,10 @@ const PayPalPayment: React.FC<PayPalPaymentProps> = ({ monto, sector, comentario
 
                         const donationData = {
                             amount: parseFloat(`${monto}`),
-                            donor_email: donorEmail,
+                            donor_email: email || donorEmail,
                             type_id: 2,
-                            comment: comentario, // Agregado: enviar el comentario
-                            sector_id: sectorIds[sector], // Enviar el ID del sector seleccionado
+                            comment: comentario || comment,
+                            sector_id: sectorId || null,
                             donor_id: donorId || null,
                         };
 
@@ -105,7 +100,25 @@ const PayPalPayment: React.FC<PayPalPaymentProps> = ({ monto, sector, comentario
                             });
 
                         if (details.payer && details.payer.name) {
-                            alert('Pago completado por ' + details.payer.name.given_name);
+                            console.log('name:', name);
+                            console.log('monto:', monto);
+                            //onSuccess(); // Llamar la función de éxito
+                            const emailData = {
+                                email: email || donorEmail,
+                                subject: 'Donación completada',
+                                message: `Hola ${name}, tu donación de $${monto} ha sido completada con éxito, muchas gracias por tu apoyo.`
+                            }
+
+                            console.log('Message:', emailData.message);
+
+                            const emailSendSuccess = sendEmail(emailData.email, emailData.subject, emailData.message);
+                            if (!emailSendSuccess) {
+                                console.log('Correo de confirmación NO enviado');
+                            }
+                            
+                            alert('Correo de confirmación enviado');
+                            alert('Donación completada por el usuario: ' + details.payer.name.given_name);
+
                         } else {
                             alert('Pago completado');
                         }

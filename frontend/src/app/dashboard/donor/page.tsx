@@ -39,7 +39,7 @@ const DonorDashboard = () => {
   console.log('Renderizando panel de usuario donador con usuario:', authContext?.user);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-[#141D32]"> 
+    <div className="flex flex-col min-h-screen bg-gray-200 dark:bg-[#141D32]"> 
       {/* Renderizamos UpperBar pasando el usuario */}
       <UpperBar user={authContext.user} onToggleSidebar={handleToggleSidebar}/>
 

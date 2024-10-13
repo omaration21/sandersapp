@@ -108,16 +108,16 @@ const UsersPage = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-100 dark:bg-gray-900 text-black dark:text-white">
+    <div className="flex h-screen bg-white dark:bg-[#141D32] text-black dark:text-white">
       {authContext?.user && <UpperBar user={authContext.user} onToggleSidebar={handleToggleSidebar} />}
       {isSidebarOpen && (<Sidebar />)}
 
       <div className={`flex-1 p-10 ${isSidebarOpen ? 'ml-64' : 'ml-0'} mt-16`}>
-        <h2 className="text-2xl font-semibold mb-4">Gestión de Usuarios</h2>
+        <h2 className="text-2xl font-semibold mb-4">Gestión de usuarios</h2>
 
         <div className="overflow-x-auto bg-white dark:bg-gray-800 shadow-md rounded-lg">
           <table className="min-w-full bg-white dark:bg-gray-800">
-            <thead className="bg-gray-100 dark:bg-gray-700">
+            <thead className="bg-gray-200 dark:bg-gray-700">
               <tr>
                 <th className="text-left p-4 text-gray-900 dark:text-gray-100">Nombre</th>
                 <th className="text-left p-4 text-gray-900 dark:text-gray-100">Email</th>

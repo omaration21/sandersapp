@@ -19,7 +19,7 @@ class DonationsModel {
             connection = await mysql.createConnection(config);
     
             await connection.query(
-                'INSERT INTO donations (amount, donor_id, type_id, comment, sector_id) VALUES (?, ?, ?, ?, ?)',
+                'CALL sp_insert_donation(?, ?, ?, ?, ?)',
                 [amount, donor_id, type_id, comment, sector_id]
             );
     
@@ -43,7 +43,7 @@ class DonationsModel {
             connection = await mysql.createConnection(config);
     
             await connection.query(
-                'INSERT INTO donations (amount, donor_id, type_id, comment, sector_id) VALUES (?, ?, ?, ?, ?)',
+                'CALL sp_insert_donation(?, ?, ?, ?, ?)',
                 [amount, donor_id, type_id, comment, sector_id]
             );
     
@@ -67,7 +67,7 @@ class DonationsModel {
             connection = await mysql.createConnection(config);
 
             await connection.query(
-                'INSERT INTO donations (amount, donor_id, donor_email, type_id, comment, sector_id) VALUES (?, NULL, ?, ?, ?, ?)',
+                'CALL sp_register_anonymous_donation(?, ?, ?, ?, ?)',
                 [amount, donor_email, type_id, comment, sector_id]
             );
 
@@ -90,21 +90,7 @@ class DonationsModel {
         try {
             connection = await mysql.createConnection(config);
 
-            const [donations] = await connection.query(
-                `SELECT 
-                d.id,
-                d.amount,
-                COALESCE(u.name, 'Anónimo') AS donor_name,
-                d.comment,
-                s.description AS sector_name,
-                dt.description AS type_name,
-                d.date
-                FROM donations d
-                LEFT JOIN users u ON d.donor_id = u.id
-                JOIN sectors s ON d.sector_id = s.id
-                JOIN donation_types dt ON d.type_id = dt.id
-                ORDER BY d.date`
-            );
+            const [[donations]] = await connection.query('CALL sp_get_all_donations');
 
             return donations;
         } catch (error) {
@@ -124,19 +110,7 @@ class DonationsModel {
         try {
             connection = await mysql.createConnection(config);
 
-            const [donations] = await connection.query(
-                `SELECT 
-                d.id,
-                d.amount,
-                d.comment,
-                s.description AS sector_name,
-                dt.description AS type_name,
-                d.date
-                FROM donations d
-                JOIN sectors s ON d.sector_id = s.id
-                JOIN donation_types dt ON d.type_id = dt.id
-                WHERE d.donor_id = ?
-                ORDER BY d.date DESC`,
+            const [[donations]] = await connection.query('CALL sp_get_donations_by_user(?)',
                 [user_id]
             );
 

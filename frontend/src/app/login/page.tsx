@@ -34,7 +34,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 relative">
+    <div className="min-h-screen bg-gray-200 relative">
       <header className="bg-[#202451] text-white py-4 shadow-md relative z-10">
         <div className="container mx-auto flex justify-between items-center">
           <div>

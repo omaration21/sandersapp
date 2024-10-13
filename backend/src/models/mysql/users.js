@@ -20,27 +20,34 @@ export class UserModel {
     try {
       connection = await mysql.createConnection(config);
       const [users] = await connection.query(
-        "SELECT id, name, email, role_id, phone, profile_image_url FROM users"
+        "CALL sp_get_users"
       );
-      return users;
+
+      return users[0];
     } catch (error) {
       console.error("Error fetching users: ", error);
       return [];
     } finally {
       if (connection) {
         connection.end();
+        console.log("Connection closed");
       }
     }
   }
 
   static async registerNewUser(name, email, password, role_id, phone, profile_image_url) {
+
+    if (!profile_image_url || profile_image_url === '') {
+      profile_image_url = '/uploads/default-profile.jpg';
+    }
+
     let connection = null;
     try {
       connection = await mysql.createConnection(config);
       const hashedPassword = await bcrypt.hash(password, saltRounds);
 
       await connection.query(
-        "INSERT INTO users (name, email, password, role_id, phone, profile_image_url) VALUES (?, ?, ?, ?, ?, ?)",
+        "CALL sp_insert_user(?, ?, ?, ?, ?, ?)",
         [name, email, hashedPassword, role_id, phone, profile_image_url]
       );
 
@@ -69,7 +76,7 @@ export class UserModel {
     let connection = null;
     try {
         connection = await mysql.createConnection(config);
-        const [user] = await connection.query("SELECT * FROM users WHERE email = ?", [email]);
+        const [[user]] = await connection.query("CALL sp_get_user_by_email(?)", [email]);
 
         if (!user.length) {
             console.error('Usuario no encontrado');
@@ -151,8 +158,8 @@ export class UserModel {
     try {
       connection = await mysql.createConnection(config);
       await connection.query(
-        "UPDATE users SET name = ?, email = ?, role_id = ?, phone = ? WHERE id = ?",
-        [name, email, role_id, phone, id]
+        "CALL sp_update_user(?, ?, ?, ?, ?)",
+        [id, name, email, role_id, phone]
       );
       return true;
     } catch (error) {
@@ -172,11 +179,11 @@ export class UserModel {
       connection = await mysql.createConnection(config);
 
       await connection.query(
-        "UPDATE donations SET donor_id = NULL WHERE donor_id = ?",
+        "CALL sp_update_donations_donor_null(?)",
         [id]
       );
 
-      await connection.query("DELETE FROM users WHERE id = ?", [id]);
+      await connection.query("CALL sp_delete_user(?)", [id]);
 
       return true;
     } catch (error) {
@@ -218,7 +225,7 @@ export class UserModel {
     try {
       connection = await mysql.createConnection(config);
       const [result] = await connection.query(
-        "UPDATE users SET profile_image_url = ? WHERE id = ?",
+        "CALL sp_update_user_profile_image(?, ?)",
         [profileImageUrl, userId]
       );
 

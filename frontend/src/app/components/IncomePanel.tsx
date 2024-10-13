@@ -152,7 +152,7 @@ const IncomePanel: React.FC = () => {
   };
 
   return (
-    <div className={`bg-gray-100 dark:bg-gray-900 text-black dark:text-white p-6 rounded-lg shadow-md transition-colors w-3/4 h-full`}>
+    <div className={`bg-gray-200 dark:bg-gray-900 text-black dark:text-white p-6 rounded-lg shadow-md transition-colors w-3/4 h-full`}>
       <h2 className="text-2xl font-semibold mb-4">Ingresos por donaciones</h2>
       <div className="mb-4">
         <label htmlFor="filterSelect">Filtrar por:</label>

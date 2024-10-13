@@ -116,7 +116,7 @@ export const LastDonations = () => {
         {donations.map((donation) => (
           <li
             key={donation.id}
-            className="mb-4 p-4 bg-gray-100 dark:bg-gray-800 rounded-md shadow-md transition-colors"
+            className="mb-4 p-4 bg-gray-200 dark:bg-gray-800 rounded-md shadow-md transition-colors"
           >
             {/* Monto grande y llamativo */}
             <p className="text-2xl font-semibold text-green-700 dark:text-green-500 mb-2">${donation.amount}</p>

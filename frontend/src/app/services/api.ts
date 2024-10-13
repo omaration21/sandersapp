@@ -1,6 +1,7 @@
 export const API_URL = "https://localhost:5001";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+// import { send } from "process";
 
 interface TokenPayload {
   exp: number;
@@ -279,4 +280,55 @@ export async function getDonationsByUser(userId: number): Promise<DonationData[]
   }
 
   return await response.json();
+}
+
+export async function getResponseFromGPT(promt: string): Promise<any> {
+  let token = Cookies.get("token");
+
+  if (!token) {
+    throw new Error("No se encontró token. Por favor inicie sesión.");
+  }
+
+  if (isTokenExpired(token)) {
+    const refreshToken = Cookies.get("refreshToken");
+    token = await refreshAccessToken(refreshToken || "");
+  }
+
+  const response = await fetch(`${API_URL}/gpt_admin/question`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ question: promt }),
+  });
+
+  if (!response.ok) {
+    throw new Error("No se pudo obtener la respuesta");
+  }
+
+  const data = await response.json();
+  return data.message; // Devolvemos cualquier contenido que venga en 'message'
+}
+
+export async function sendEmail(email: string, subject: string, message: string): Promise<boolean> {
+
+  console.log('message:', message);
+
+  const response = await fetch(`${API_URL}/email/send`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, subject, text: message }),
+  });
+
+  if (!response.ok) {
+    console.log("No se pudo enviar el correo");
+    return false;
+  }
+  else{
+    console.log("Correo enviado");
+    return true;
+  }
 }

@@ -20,7 +20,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-200">
       {/* Header con logo como imagen y navegación */}
       <header className="bg-[#202451] text-white py-4 shadow-md">
         <div className="container mx-auto flex justify-between items-center">
@@ -65,7 +65,7 @@ export default function HomePage() {
       </section>
 
       {/* Situación Actual Section */}
-      <section className="container mx-auto py-12 bg-gray-100">
+      <section className="container mx-auto py-12 bg-gray-200">
         <h2 className="text-3xl font-bold text-center text-[#202451] mb-8">Situación Actual</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-8">
           {/* Primer bloque, más grande */}

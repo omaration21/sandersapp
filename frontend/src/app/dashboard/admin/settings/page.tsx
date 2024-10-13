@@ -25,7 +25,7 @@ const SettingsPage = () => {
     };
 
     return (
-        <div className="flex h-screen bg-gray-100 dark:bg-[#141D32] transition-colors"> {/* Color claro grisáceo y oscuro adaptado */}
+        <div className="flex h-screen bg-white dark:bg-[#141D32] transition-colors"> {/* Color claro grisáceo y oscuro adaptado */}
             {/* Renderizamos UpperBar */}
             <UpperBar user={user} onToggleSidebar={handleToggleSidebar} />
 

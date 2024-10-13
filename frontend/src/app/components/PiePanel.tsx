@@ -75,7 +75,7 @@ const PiePanel: React.FC = () => {
   };
 
   return (
-    <div className={`flex flex-col justify-center items-center w-1/2 h-full p-5 bg-gray-100 dark:bg-gray-900 rounded-lg shadow-lg transition-colors`}>
+    <div className={`flex flex-col justify-center items-center w-1/2 h-full p-5 bg-gray-200 dark:bg-gray-900 rounded-lg shadow-lg transition-colors`}>
       <h2 className="text-xl font-semibold mb-3 p-4 text-center text-black dark:text-white">
         Donaciones por sector
       </h2>

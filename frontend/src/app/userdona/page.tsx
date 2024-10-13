@@ -9,6 +9,14 @@ const DonacionInvitado = () => {
   const [sector, setSector] = useState<string>(''); // Para almacenar el sector seleccionado
   const [comentario, setComentario] = useState<string>(''); // Nuevo estado para el comentario
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const authContext = useContext(AuthContext);
+  const { user } = authContext || {};
+
+  const [sector, setSector] = useState<string>("1");
+  const [comentario, setComentario] = useState<string>("");
+  const [correo, setCorreo] = useState<string>("");
+  const [nombre, setNombre] = useState<string>("");
 
   const handleMontoClick = (montoSeleccionado: number) => {
     if (monto === montoSeleccionado) {
@@ -31,34 +39,55 @@ const DonacionInvitado = () => {
     setError(null);
   };
 
-  const handleComentarioChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setComentario(e.target.value);
-  };
-
-  const finalMonto = monto || customMonto;
+  // const handleDonationSuccess = (amount: string | number) => {
+  //   console.log('Donación exitosa de: $' + amount);
+  // };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-no-repeat bg-cover bg-center relative">
-      {/* Fondo con gradiente y imagen */}
-      <div
-        style={{
-          background: 'linear-gradient(to top right, #ffff 40%, transparent), url(/images/hands.jpg) center/cover no-repeat',
-        }}
-        className="absolute top-0 left-0 w-full h-full"
-      ></div>
-
-      <div className="max-w-6xl w-full flex flex-col md:flex-row bg-white shadow-lg rounded-lg relative z-10">
-        {/* Columna izquierda con título y imagen */}
-        <div className="md:w-1/2 flex flex-col justify-center items-center bg-[#f7f7f7] p-10">
-          <h1 className="text-4xl font-bold text-[#202440] mb-10 text-center">
-            ¡Únete a la causa!
-          </h1>
-          <img
-            src="/images/boy.jpg" // Cambia esta ruta a tu imagen preferida
-            alt="Cause illustration"
-            className="max-w-full h-auto object-cover"
-          />
+    <div className="min-h-screen bg-gray-200">
+      {/* Header con logo y botones de navegación */}
+      <header className="bg-[#202451] text-white py-4 shadow-md relative z-10">
+        <div className="container mx-auto flex justify-between items-center">
+          <div>
+            <Link href="/">
+              <img src="/images/logo.webp" alt="Logo Fundación Sanders" className="h-12 cursor-pointer" />
+            </Link>
+          </div>
+          <nav className="space-x-6">
+            {/* Botón Login */}
+            <button
+              onClick={handleLoginClick}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+            >
+              Login
+            </button>
+            {/* Botón Signup */}
+            <button
+              onClick={handleRegisterClick}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+            >
+              Registrate
+            </button>
+          </nav>
         </div>
+      </header>
+
+      {/* Contenido de la página de donación */}
+      <div className="flex items-center justify-center min-h-screen bg-no-repeat bg-cover bg-center relative">
+        <div className="absolute top-0 left-0 w-full h-full bg-white"></div>
+        
+        <div className="max-w-6xl w-full flex flex-col md:flex-row bg-white shadow-lg rounded-lg relative z-10">
+          {/* Columna izquierda con título y imagen */}
+          <div className="md:w-1/2 flex flex-col justify-center items-center bg-[#f7f7f7] p-10">
+            <h1 className="text-4xl font-bold text-[#202440] mb-10 text-center">
+              ¡Únete a la causa!
+            </h1>
+            <img
+              src="/images/boy.jpg"
+              alt="Cause illustration"
+              className="max-w-full h-auto object-cover"
+            />
+          </div>
 
         {/* Columna derecha con botones de acción y PayPal */}
         <div className="md:w-1/2 p-10 flex flex-col justify-center">
@@ -133,29 +162,78 @@ const DonacionInvitado = () => {
             </div>
           </div>
 
-          {/* Campo de texto para los comentarios */}
-          <div className="mb-6">
-            <label htmlFor="comentario" className="block text-gray-700 text-lg font-medium mb-2">
-              Escribe un comentario (opcional):
-            </label>
-            <textarea
-              id="comentario"
-              value={comentario}
-              onChange={handleComentarioChange}
-              className="w-full p-3 border border-gray-300 rounded-lg"
-              rows={4}
-              placeholder="Escribe aquí tu comentario..."
-            ></textarea>
+            <div className="mb-6">
+                    <label htmlFor="nombre" className="block text-sm font-medium mb-2">
+                      Nombre:
+                    </label>
+                    <input
+                      type="text"
+                      id="nombre"
+                      value={nombre}
+                      onChange={(e) => setNombre(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded"
+                    />
+                  </div>
+
+                  <div className="mb-6">
+                    <label htmlFor="correo" className="block text-sm font-medium mb-2">
+                      Correo electrónico:
+                    </label>
+                    <input
+                      type="email"
+                      id="correo"
+                      value={correo}
+                      onChange={(e) => setCorreo(e.target.value)}
+                      className="w-full px-4 py-2 border border-gray-300 rounded"
+                    />
+                  </div>
+
+              {/** Selección del sector */}
+              <div className="mb-6">
+                <label htmlFor="sector" className="block text-sm font-medium mb-2 text-black">
+                  Selecciona el sector al que quieres apoyar:
+                </label>
+                <select
+                  id="sector"
+                  value={sector}
+                  onChange={(e) => setSector(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded"
+                >
+                  <option value="1">Agua</option>
+                  <option value="2">Educación sexual</option>
+                  <option value="3">Nutrición</option>
+                </select>
+              </div>
+
+              <div className="mb-6">
+                <label htmlFor="comentario" className="block text-sm font-medium mb-2 text-black">
+                  Comentario:
+                </label>
+                <textarea
+                  id="comentario"
+                  value={comentario}
+                  onChange={(e) => setComentario(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded"
+                  rows={4}
+                />
+              </div>
+
+            {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
+            {finalMonto && parseFloat(finalMonto as string) > 0 && (
+              <div className="mt-8">
+                <PayPalPayment 
+                  monto={finalMonto} 
+                  donorId={user ? user.id : undefined}
+                  email={correo}
+                  sectorId={sector}
+                  comentario={comentario}
+                  name={nombre}
+                  //onSuccess={() => handleDonationSuccess(finalMonto)} 
+                />
+              </div>
+            )}
           </div>
-
-          {/* Mostrar el botón de PayPal solo si se seleccionó un monto válido, un sector y un comentario opcional */}
-          {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-
-          {finalMonto && parseFloat(finalMonto as string) > 0 && sector && (
-            <div className="mt-8">
-              <PayPalPayment monto={finalMonto} sector={sector} comentario={comentario} />
-            </div>
-          )}
         </div>
       </div>
     </div>

@@ -9,6 +9,7 @@ import PiePanel from '../../components/PiePanel';
 import RecentDonations from '../../components/RecentDonations'; 
 import { PersonalizedReport } from 'src/app/components/PersonalizedReport';
 import { UpperBar } from 'src/app/components/UpperBar';
+// import { ChatBot } from 'src/app/components/ChatBot';
 
 const AdminDashboard = () => {
   const authContext = useContext(AuthContext);
@@ -42,7 +43,7 @@ const AdminDashboard = () => {
   console.log('Renderizando Panel de Administrador');
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-[#141D32]"> 
+    <div className="flex flex-col min-h-screen bg-gray-white dark:bg-[#141D32]"> 
       {/* Renderizamos UpperBar pasando el usuario */}
       <UpperBar user={authContext.user} onToggleSidebar={handleToggleSidebar}/>
 
@@ -64,7 +65,6 @@ const AdminDashboard = () => {
           <div className="mt-6">
             <PersonalizedReport />  {/* Renderizado del componente PersonalizedReport */}
           </div>
-          
         </div>
       </div>
     </div>

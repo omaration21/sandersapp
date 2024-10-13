@@ -16,7 +16,9 @@ const DonacionUsuario = () => {
   const [sector, setSector] = useState<string>(""); // Nuevo estado para el sector
   const [comentario, setComentario] = useState<string>(""); // Nuevo estado para el comentario
   const [error, setError] = useState<string | null>(null);
-  const [isProcessing, setIsProcessing] = useState(false);
+
+  const [sector, setSector] = useState<string>("1");
+  const [comentario, setComentario] = useState<string>("");
 
   useEffect(() => {
     if (!authContext?.user) {
@@ -62,7 +64,7 @@ const DonacionUsuario = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100 dark:bg-[#141D32] transition-colors">
+    <div className="flex flex-col min-h-screen bg-gray-200 dark:bg-[#141D32] transition-colors">
       {/* Barra superior */}
       <UpperBar user={authContext.user} onToggleSidebar={handleToggleSidebar} />
       <div className="flex flex-grow">
@@ -80,7 +82,6 @@ const DonacionUsuario = () => {
                   className="max-w-full h-auto object-cover"
                 />
               </div>
-
               <div className="md:w-1/2 p-10 flex flex-col justify-center">
                 <h2 className="text-[#202451] dark:text-gray-200 text-2xl font-semibold mb-6 text-center">
                   Tu donación ayudará a nuestras causas en agua, educación sexual y alimentación.
@@ -151,36 +152,52 @@ const DonacionUsuario = () => {
                   </div>
                 </div>
 
-                {/* Campo de texto para los comentarios */}
-                <div className="mb-6">
-                  <label htmlFor="comentario" className="block text-gray-700 dark:text-gray-200 text-lg font-medium mb-2">
-                    Escribe un comentario (opcional):
-                  </label>
-                  <textarea
-                    id="comentario"
-                    value={comentario}
-                    onChange={handleComentarioChange}
-                    className="w-full p-3 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
-                    rows={4}
-                    placeholder="Escribe aquí tu comentario..."
-                  ></textarea>
-                </div>
+                 {/** Selección del sector */}
+              <div className="mb-6">
+                <label htmlFor="sector" className="block text-sm font-medium mb-2 dark:text-white">
+                  Selecciona el sector al que quieres apoyar:
+                </label>
+                <select
+                  id="sector"
+                  value={sector}
+                  onChange={(e) => setSector(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                >
+                  <option value="1">Agua</option>
+                  <option value="2">Educación sexual</option>
+                  <option value="3">Nutrición</option>
+                </select>
+              </div>
+
+              <div className="mb-6">
+                <label htmlFor="comentario" className="block text-sm font-medium mb-2 dark:text-white">
+                  Comentario:
+                </label>
+                <textarea
+                  id="comentario"
+                  value={comentario}
+                  onChange={(e) => setComentario(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+                  rows={4}
+                />
+              </div>
 
                 {error && <p className="text-red-500 dark:text-red-400 text-center mb-4">{error}</p>}
 
                 {finalMonto && parseFloat(finalMonto as string) > 0 && sector && (
                   <div className="mt-8">
                     <PayPalPayment
+                      email={user.email}
                       monto={finalMonto}
-                      sector={sector} // Pasamos el sector seleccionado a PayPalPayment
-                      comentario={comentario} // Pasamos el comentario a PayPalPayment
                       donorId={user.id}
+                      sectorId={sector}
+                      comentario={comentario}
+                      name={user.name}
                     />
                   </div>
                 )}
               </div>
             </div>
-          
         </div>
       </div>
     </div>
