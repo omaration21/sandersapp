@@ -108,7 +108,7 @@ const UsersPage = () => {
   };
 
   return (
-    <div className="flex h-screen bg-white dark:bg-gray-900 text-black dark:text-white">
+    <div className="flex h-screen bg-white dark:bg-[#141D32] text-black dark:text-white">
       {authContext?.user && <UpperBar user={authContext.user} onToggleSidebar={handleToggleSidebar} />}
       {isSidebarOpen && (<Sidebar />)}
 

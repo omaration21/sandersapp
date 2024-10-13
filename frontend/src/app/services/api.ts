@@ -1,6 +1,7 @@
 export const API_URL = "https://localhost:5001";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import { send } from "process";
 
 interface TokenPayload {
   exp: number;
@@ -308,4 +309,33 @@ export async function getResponseFromGPT(promt: string): Promise<any> {
 
   const data = await response.json();
   return data.message; // Devolvemos cualquier contenido que venga en 'message'
+}
+
+export async function sendEmail(email: string, subject: string, message: string): Promise<void> {
+  let token = Cookies.get("token");
+
+  if (!token) {
+    throw new Error("No se encontró token. Por favor inicie sesión.");
+  }
+
+  if (isTokenExpired(token)) {
+    const refreshToken = Cookies.get("refreshToken");
+    token = await refreshAccessToken(refreshToken || "");
+  }
+
+  const response = await fetch(`${API_URL}/email/send`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ email, subject, message }),
+  });
+
+  if (!response.ok) {
+    throw new Error("No se pudo enviar el correo");
+  }
+  else{
+    console.log("Correo enviado");
+  }
 }
