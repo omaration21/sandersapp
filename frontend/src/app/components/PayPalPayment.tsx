@@ -53,6 +53,7 @@ const PayPalPayment: React.FC<PayPalPaymentProps> = ({name, email, monto, donorI
                     }
                     return actions.order.capture().then((details: PayPalDetails) => {
                         const donorEmail = details.payer?.email_address || 'anon@test.com';
+                        const comment = 'Donación realizada a través de PayPal';
 
                         const donationData = {
                             amount: parseFloat(`${monto}`),
@@ -93,6 +94,7 @@ const PayPalPayment: React.FC<PayPalPaymentProps> = ({name, email, monto, donorI
                             .then(data => {
                                 console.log('Donación registrada exitosamente:', data);
                                 alert('Donación registrada exitosamente');
+                                //onSuccess(); // Llamar la función de éxito
                             })
                             .catch((error: any) => {
                                 console.error('Error registrando la donación:', error);
@@ -120,6 +122,7 @@ const PayPalPayment: React.FC<PayPalPaymentProps> = ({name, email, monto, donorI
                             alert('Donación completada por el usuario: ' + details.payer.name.given_name);
 
                         } else {
+                            //onSuccess(); // Llamar la función de éxito
                             alert('Pago completado');
                         }
                     });
