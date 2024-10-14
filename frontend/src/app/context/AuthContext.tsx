@@ -18,7 +18,7 @@ interface AuthContextType {
   role: 'Admin' | 'Donor' | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
-  setUser: (user: User | null) => void;  // Añadimos setUser
+  setUser: (user: User | null) => void; 
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
@@ -93,8 +93,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 };
 
-
-
   const logout = () => {
     setUser(null);
     setRole(null);
@@ -113,7 +111,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// Hook personalizado para acceder al contexto
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

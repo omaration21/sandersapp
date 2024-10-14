@@ -22,19 +22,24 @@ export const ProfileUser = () => {
   const handleSaveChanges = async () => {
     try {
       await updateUser(editableUser.id, editableUser);
+      
       if (selectedImage) {
         const newProfileImageUrl = await updateProfileImage(editableUser.id, selectedImage);
         setEditableUser({ ...editableUser, profile_image_url: newProfileImageUrl });
         setUser({ ...editableUser, profile_image_url: newProfileImageUrl });
         setPreviewImageUrl(null);
       }
+      
+      setUser({ ...editableUser, name: editableUser.name });
+  
       alert("Perfil actualizado con éxito");
-      setIsEditing(false);
+      setIsEditing(false); 
     } catch (error) {
       console.error("Error al actualizar el perfil:", error);
       alert("No se pudo actualizar el perfil");
     }
   };
+  
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -130,7 +135,7 @@ export const ProfileUser = () => {
           </div>
         </div>
       ) : (
-        <div className="mt-4">
+        <div className="flex justify-center mt-4">
           <button
             onClick={() => setIsEditing(true)}
             className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md transition-all"
