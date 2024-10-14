@@ -213,26 +213,26 @@ const UsersPage = () => {
               placeholder="Name"
               value={userToEdit?.name || ''}
               onChange={(e) => setUserToEdit({ ...userToEdit, name: e.target.value })}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded mb-2"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 dark:text-black rounded mb-2"
             />
             <input
               type="email"
               placeholder="Email"
               value={userToEdit?.email || ''}
               onChange={(e) => setUserToEdit({ ...userToEdit, email: e.target.value })}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded mb-2"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 dark:text-black rounded mb-2"
             />
             <input
               type="text"
               placeholder="Phone"
               value={userToEdit?.phone || ''}
               onChange={(e) => setUserToEdit({ ...userToEdit, phone: e.target.value })}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded mb-2"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 dark:text-black rounded mb-2"
             />
             <select
               value={userToEdit?.role_id || 0}
               onChange={(e) => setUserToEdit({ ...userToEdit, role_id: parseInt(e.target.value) })}
-              className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded mb-2"
+              className="w-full p-2 border border-gray-300 dark:border-gray-600 dark:text-black rounded mb-2"
             >
               <option value={0}>Select Role</option>
               {roles.map((role) => (
