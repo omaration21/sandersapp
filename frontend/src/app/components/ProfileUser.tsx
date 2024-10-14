@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth, User } from "../context/AuthContext";
 import { updateUser, updateProfileImage } from "../services/api";
 import { API_URL } from "../services/api";
+import { FiMoon, FiSun } from "react-icons/fi"; // Nuevos iconos para el switch
 
 export const ProfileUser = () => {
   const { user, setUser } = useAuth();
@@ -14,9 +15,7 @@ export const ProfileUser = () => {
     return savedDarkMode === "true";
   });
 
-  if (!editableUser) {
-    return <div>Cargando...</div>;
-  }
+  if (!editableUser) return <div>Cargando...</div>;
 
   const imageUrl = `${API_URL}${editableUser.profile_image_url}`;
 
@@ -26,10 +25,7 @@ export const ProfileUser = () => {
       if (selectedImage) {
         const newProfileImageUrl = await updateProfileImage(editableUser.id, selectedImage);
         setEditableUser({ ...editableUser, profile_image_url: newProfileImageUrl });
-        setUser({
-          ...editableUser,
-          profile_image_url: newProfileImageUrl,
-        });
+        setUser({ ...editableUser, profile_image_url: newProfileImageUrl });
         setPreviewImageUrl(null);
       }
       alert("Perfil actualizado con éxito");
@@ -45,9 +41,7 @@ export const ProfileUser = () => {
       const file = e.target.files[0];
       setSelectedImage(file);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImageUrl(reader.result as string);
-      };
+      reader.onloadend = () => setPreviewImageUrl(reader.result as string);
       reader.readAsDataURL(file);
     }
   };
@@ -62,89 +56,100 @@ export const ProfileUser = () => {
     const newDarkMode = !isDarkMode;
     setIsDarkMode(newDarkMode);
     localStorage.setItem("isDarkMode", newDarkMode.toString());
-    if (newDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    document.documentElement.classList.toggle("dark", newDarkMode);
   };
 
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
+    document.documentElement.classList.toggle("dark", isDarkMode);
   }, [isDarkMode]);
 
   return (
-    <div className="bg-white dark:bg-gray-800 text-black dark:text-gray-200 p-6 rounded-lg shadow-md transition-colors mt-10">
-      <h1 className="text-2xl font-semibold mb-4">Perfil de usuario</h1>
-      <div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
+    <div className="bg-white dark:bg-gray-800 text-black dark:text-gray-200 p-10 rounded-3xl shadow-2xl max-w-xl mx-auto mt-12 transition-colors">
+      <h1 className="text-4xl font-extrabold text-center mb-8 tracking-tight">
+        Perfil de Usuario
+      </h1>
+
+      <div className="flex flex-col items-center gap-6">
         <img
           src={previewImageUrl || imageUrl}
           alt="Imagen de perfil"
-          className="w-36 h-36 rounded-full object-cover"
+          className="w-36 h-36 rounded-full object-cover shadow-lg"
         />
-        {isEditing && <input type="file" accept="image/*" onChange={handleImageChange} className="mt-4" />}
+        {isEditing && (
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="block text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-100 hover:file:bg-blue-200"
+          />
+        )}
       </div>
-      <p className="mt-4">Rol: {editableUser.role_id === 1 ? "Administrador" : "Donante"}</p>
+
+      <div className="text-center mt-6 space-y-2 text-lg">
+        <p>{editableUser.name}</p>
+        <p>{editableUser.email}</p>
+        <p>{editableUser.phone}</p>
+      </div>
+
       {isEditing ? (
-        <div className="mt-4">
+        <div className="space-y-4 mt-4">
           <input
             type="text"
             value={editableUser.name}
             onChange={(e) => setEditableUser({ ...editableUser, name: e.target.value })}
-            className="w-full p-2 border border-gray-400 dark:border-gray-500 rounded text-gray-900 dark:text-gray-300 mb-2 bg-gray-100 dark:bg-gray-700"
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Nombre"
           />
           <input
             type="email"
             value={editableUser.email}
             onChange={(e) => setEditableUser({ ...editableUser, email: e.target.value })}
-            className="w-full p-2 border border-gray-400 dark:border-gray-500 rounded text-gray-900 dark:text-gray-300 mb-2 bg-gray-100 dark:bg-gray-700"
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Correo"
           />
           <input
             type="text"
             value={editableUser.phone}
             onChange={(e) => setEditableUser({ ...editableUser, phone: e.target.value })}
-            className="w-full p-2 border border-gray-400 dark:border-gray-500 rounded text-gray-900 dark:text-gray-300 mb-2 bg-gray-100 dark:bg-gray-700"
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Teléfono"
           />
-          <button onClick={handleSaveChanges} className="bg-green-500 dark:bg-green-700 text-white px-4 py-2 rounded mr-2">
-            Guardar Cambios
-          </button>
-          <button onClick={handleCancel} className="bg-gray-500 dark:bg-gray-700 text-white px-4 py-2 rounded">
-            Cancelar
-          </button>
+          <div className="flex justify-between mt-4">
+            <button
+              onClick={handleSaveChanges}
+              className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg shadow-md transition-all"
+            >
+              Guardar
+            </button>
+            <button
+              onClick={handleCancel}
+              className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg shadow-md transition-all"
+            >
+              Cancelar
+            </button>
+          </div>
         </div>
       ) : (
         <div className="mt-4">
-          <p>Nombre: {editableUser.name} </p>
-          <p>Correo: {editableUser.email} </p>
-          <p>Teléfono: {editableUser.phone} </p>
-          <button onClick={() => setIsEditing(true)} className="bg-blue-500 dark:bg-blue-700 text-white px-4 py-2 rounded">
+          <button
+            onClick={() => setIsEditing(true)}
+            className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md transition-all"
+          >
             Editar
           </button>
-          <div className="flex items-center mt-4">
-            <span>Modo oscuro:</span>
-            <label className="ml-2 relative inline-flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                className="sr-only"
-                checked={isDarkMode}
-                onChange={toggleDarkMode}
-              />
-              <div className="w-11 h-6 bg-gray-300 dark:bg-gray-600 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300">
-                <div
-                  className={`${isDarkMode ? "translate-x-6" : "translate-x-1"} inline-block w-4 h-4 transform bg-white dark:bg-gray-200 rounded-full transition-transform`}
-                ></div>
-              </div>
-            </label>
-          </div>
         </div>
       )}
+
+      <div className="flex items-center justify-center mt-8 gap-2">
+        <span>Modo oscuro:</span>
+        <button onClick={toggleDarkMode} className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 transition-all">
+          {isDarkMode ? (
+            <FiSun className="text-yellow-400 w-6 h-6" />
+          ) : (
+            <FiMoon className="text-blue-500 w-6 h-6" />
+          )}
+        </button>
+      </div>
     </div>
   );
 };
