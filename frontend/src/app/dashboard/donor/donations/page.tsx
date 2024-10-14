@@ -59,7 +59,7 @@ const DonacionUsuario = () => {
       <UpperBar user={authContext.user} onToggleSidebar={handleToggleSidebar} />
       <div className="flex flex-grow">
         {isSidebarOpen && <Sidebar />}
-        <div className={`flex-1 p-10 ${isSidebarOpen ? "ml-64" : "ml-0"} mt-16`}>
+        <div className={`flex justify-center items-center min-h-screen flex-1 p-10 ${isSidebarOpen ? "ml-64" : "ml-0"} mt-16`}>
           
             <div className="max-w-6xl w-full flex flex-col md:flex-row bg-white dark:bg-gray-800 shadow-lg rounded-lg relative transition-colors">
               <div className="md:w-1/2 flex flex-col justify-center items-center rounded-tl rounded-bl bg-[#f7f7f7] dark:bg-gray-700 p-10">
