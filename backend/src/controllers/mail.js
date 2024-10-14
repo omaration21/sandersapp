@@ -3,9 +3,7 @@ import { MailModel } from "../models/mail/mail.js";
 export class MailController {
     static async sendMail(req, res) {
         const { email, subject, text } = req.body;
-
-        console.log('data: ', email, subject, text);
-
+        
         const result = await MailModel.sendMail(email, subject, text);
 
         if (result) {
