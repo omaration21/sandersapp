@@ -49,6 +49,7 @@ const IncomePanel: React.FC = () => {
 
     switch (filterOption) {
       case "Diariamente":
+        console.log('Filtering daily');
         filtered = donations.filter((donation) => {
           const donationDate = new Date(donation.date || "");
           const normalizedDonationDate = new Date(
@@ -65,7 +66,9 @@ const IncomePanel: React.FC = () => {
         });
         break;
       case "Semanalmente":
-        const startOfWeek = new Date(now.setDate(now.getDate() - now.getDay()));
+        const nowDay = now.getDay() === 0 ? 7 : now.getDay();
+        const startOfWeek = new Date(now.setDate(now.getDate() - nowDay));
+
         filtered = donations.filter((donation) => {
           const donationDate = new Date(donation.date || "");
           const nowDate = new Date();
@@ -73,6 +76,7 @@ const IncomePanel: React.FC = () => {
         });
         break;
       case "Mensualmente":
+        console.log('Filtering monthly');
         filtered = donations.filter((donation) => {
           const donationDate = new Date(donation.date || "");
           return (
@@ -80,6 +84,7 @@ const IncomePanel: React.FC = () => {
             donationDate.getFullYear() === now.getFullYear()
           );
         });
+        console.log(filtered);
         break;
       default:
         filtered = donations;
@@ -152,7 +157,7 @@ const IncomePanel: React.FC = () => {
   };
 
   return (
-    <div className={`bg-gray-200 dark:bg-gray-900 text-black dark:text-white p-6 rounded-lg shadow-md transition-colors w-3/4 h-full`}>
+    <div className={`bg-gray-100 dark:bg-gray-900 text-black dark:text-white p-6 rounded-lg shadow-md transition-colors w-3/4 h-full`}>
       <h2 className="text-2xl font-semibold mb-4">Ingresos por donaciones</h2>
       <div className="mb-4">
         <label htmlFor="filterSelect">Filtrar por:</label>

@@ -1,6 +1,7 @@
 export const getInterpretationPrompt = (question) => {
     const interpretationPrompt = `
 Con los datos proporcionados, responde de manera clara y breve en lenguaje natural según la pregunta: "${question}".
+Considera que eres un experto en matemáticas y estadísticas que trabaja en una organización sin fines de lucro y que necesita analizar los datos de donaciones para tomar decisiones informadas.
 
 ## Instrucciones específicas:
 1. **Si la pregunta menciona explícitamente "enviar correo" o una variación similar**:
