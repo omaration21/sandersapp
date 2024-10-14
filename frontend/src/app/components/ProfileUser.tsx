@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth, User } from "../context/AuthContext";
 import { updateUser, updateProfileImage } from "../services/api";
 import { API_URL } from "../services/api";
-import { FiMoon, FiSun } from "react-icons/fi"; // Nuevos iconos para el switch
+import { FiMoon, FiSun } from "react-icons/fi";
 
 export const ProfileUser = () => {
   const { user, setUser } = useAuth();
