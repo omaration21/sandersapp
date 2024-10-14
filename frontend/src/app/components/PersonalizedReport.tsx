@@ -17,6 +17,11 @@ export const PersonalizedReport = () => {
         return donationDate >= startDate && donationDate <= endDate;
       });
 
+       // Calcular el monto total
+      const totalAmount = filteredDonations.reduce(
+        (sum, donation) => sum + Number(donation.amount || 0), 0
+      );
+
       const pdf = new jsPDF();
       const img = new Image();
       img.src = '/images/logo.png';
@@ -29,6 +34,7 @@ export const PersonalizedReport = () => {
         pdf.text(`Reporte de Donaciones Recibidas`, 70, 20);
         pdf.setFontSize(12);
         pdf.text(`Del ${formattedStartDate} al ${formattedEndDate}`, 90, 30);
+
         autoTable(pdf, {
           head: [['Fecha', 'Donante', 'Monto']],
           body: filteredDonations.map(donation => [
@@ -42,6 +48,14 @@ export const PersonalizedReport = () => {
             textColor: [255, 255, 255],
           }
         });
+
+        const finalY = 3.6 * (filteredDonations.length);
+        console.log(finalY);
+
+        pdf.setFontSize(14);
+        pdf.setTextColor(35, 41, 89);
+        pdf.text(`Monto total: $${totalAmount.toFixed(2)}`, 140, finalY);
+
         pdf.save('reporte-donaciones.pdf');
       };
     } catch (error) {
