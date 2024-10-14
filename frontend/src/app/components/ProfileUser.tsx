@@ -21,19 +21,22 @@ export const ProfileUser = () => {
 
   const handleSaveChanges = async () => {
     try {
-      await updateUser(editableUser.id, editableUser);
-      
+      await updateUser(editableUser.id, editableUser);  // Actualiza los datos del usuario
+  
       if (selectedImage) {
         const newProfileImageUrl = await updateProfileImage(editableUser.id, selectedImage);
+  
+        // Actualiza tanto el usuario editable como el global con la nueva imagen
         setEditableUser({ ...editableUser, profile_image_url: newProfileImageUrl });
         setUser({ ...editableUser, profile_image_url: newProfileImageUrl });
+  
+        // Limpia la vista previa y la imagen seleccionada
         setPreviewImageUrl(null);
+        setSelectedImage(null);
       }
-      
-      setUser({ ...editableUser, name: editableUser.name });
   
       alert("Perfil actualizado con éxito");
-      setIsEditing(false); 
+      setIsEditing(false);
     } catch (error) {
       console.error("Error al actualizar el perfil:", error);
       alert("No se pudo actualizar el perfil");
@@ -44,10 +47,14 @@ export const ProfileUser = () => {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      setSelectedImage(file);
+      setSelectedImage(file); // Guarda la imagen seleccionada
+  
+      // Muestra la vista previa usando FileReader
       const reader = new FileReader();
-      reader.onloadend = () => setPreviewImageUrl(reader.result as string);
-      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setPreviewImageUrl(reader.result as string); // Asigna la vista previa
+      };
+      reader.readAsDataURL(file); // Lee la imagen seleccionada
     }
   };
 
