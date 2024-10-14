@@ -32,6 +32,14 @@ const Sidebar = () => {
           </Link>
         )}
 
+        {role === 'Donor' && (
+          <Link href="/dashboard/donor/contacto">
+            <span className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 dark:hover:bg-gray-800 hover:text-white dark:hover:text-gray-300">
+              Contacto
+            </span>
+          </Link>
+        )}
+
         <Link href={role === 'Admin' ? "/dashboard/admin/settings" : "/dashboard/donor/settings"}>
           <span className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 dark:hover:bg-gray-800 hover:text-white dark:hover:text-gray-300">
             Configuración
