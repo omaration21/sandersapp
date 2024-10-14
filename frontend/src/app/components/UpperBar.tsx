@@ -54,17 +54,17 @@ export const UpperBar = ({ user, onToggleSidebar }: UpperBarProps) => {
           />
         )}
        <div className="relative group">
-  <button onClick={handleProfileClick} className="focus:outline-none">
-    <div className="text-white dark:text-gray-300 font-semibold">
-      {user.name}
-    </div>
-  </button>
+          <button onClick={handleProfileClick} className="focus:outline-none">
+            <div className="text-white dark:text-gray-300 font-semibold">
+              {user.name}
+            </div>
+          </button>
 
-  {/* Tooltip */}
-  <div className="absolute left-1/2 -translate-x-1/2 mt-2 px-4 py-2 bg-gray-800 text-white text-sm rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
-    Haz clic para ir a la configuración
-  </div>
-</div>
+          {/* Tooltip */}
+          <div className="absolute left-1/2 -translate-x-1/2 mt-2 px-4 py-2 bg-gray-800 text-white text-sm rounded-md opacity-0 group-hover:opacity-100 transition-opacity">
+            Haz clic para ir a la configuración
+          </div>
+        </div>
       </div>
     </header>
   );
