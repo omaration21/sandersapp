@@ -28,10 +28,8 @@ const AdminDashboard = () => {
     }
   }, [authContext, router]);
 
-  // Estado para controlar la visibilidad del sidebar
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  // Función para alternar la visibilidad del sidebar
   const handleToggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -53,17 +51,17 @@ const AdminDashboard = () => {
           
           {/* Contenedor para alinear IncomePanel y PiePanel uno al lado del otro */}
           <div className="flex justify-between gap-6" style={{ height: '600px' }}>
-            <IncomePanel />  {/* Renderizado del componente IncomePanel */}
-            <PiePanel />  {/* Renderizado del componente PiePanel */}
+            <IncomePanel /> 
+            <PiePanel /> 
           </div>  
 
           {/* Componente de donaciones recientes a toda la página */}
           <div className="mt-6">
-            <RecentDonations />  {/* Renderizado del componente RecentDonations */}
+            <RecentDonations /> 
           </div>
 
           <div className="mt-6">
-            <PersonalizedReport />  {/* Renderizado del componente PersonalizedReport */}
+            <PersonalizedReport /> 
           </div>
         </div>
       </div>

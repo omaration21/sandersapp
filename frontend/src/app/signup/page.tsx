@@ -54,7 +54,7 @@ const SignUp = () => {
             {/* Botón Login */}
             <Link href="/login">
               <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
-                Login
+                Iniciar Sesión
               </button>
             </Link>
             {/* Botón Donación */}
