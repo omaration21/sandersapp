@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import { getResponseFromGPT } from "../services/api";
 
-// Define el tipo de mensaje
 interface Message {
   role: string;
   content: string;

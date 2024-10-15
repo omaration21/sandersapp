@@ -42,7 +42,6 @@ const SignUp = () => {
 
   return (
     <div className="min-h-screen bg-gray-200">
-      {/* Header con logo como imagen y navegación */}
       <header className="bg-[#202451] text-white py-4 shadow-md relative z-10">
         <div className="container mx-auto flex justify-between items-center">
           <div>
@@ -67,9 +66,7 @@ const SignUp = () => {
         </div>
       </header>
 
-      {/* Sección del formulario de registro */}
       <div className="flex items-center justify-center min-h-screen">
-        {/* Fondo no debe cubrir el header */}
         <div
           style={{
             background: 'linear-gradient(to top right, #232959 50%, #1F244D 50%)',
@@ -83,7 +80,7 @@ const SignUp = () => {
           </div>
 
           <form onSubmit={handleSubmit}>
-            {error && <p className="text-red-500 mb-4">{error}</p>} {/* Mostrar el error si existe */}
+            {error && <p className="text-red-500 mb-4">{error}</p>} 
             <div className="mb-4">
               <label htmlFor="name" className="block text-[#202451]">Nombre</label>
               <input

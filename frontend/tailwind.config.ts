@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: 'class', // Habilita el modo oscuro por clase
+  darkMode: 'class',
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,7 +10,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        primary: '#232959',   // Colores personalizados
+        primary: '#232959',   
         secondary: '#3E4A97',
         accent: '#FF6384',
         backgroundDark: '#121212',  // Color de fondo para modo oscuro

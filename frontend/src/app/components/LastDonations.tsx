@@ -5,14 +5,13 @@ import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
 
 export const LastDonations = () => {
-  const { user } = useAuth(); // Obtenemos el usuario autenticado desde el contexto
+  const { user } = useAuth(); 
   const [donations, setDonations] = useState<DonationData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null); // Manejo de error tipado
+  const [error, setError] = useState<string | null>(null); 
 
   useEffect(() => {
     if (user && user.id) {
-      // Llamamos al método para obtener las donaciones por usuario
       getDonationsByUser(user.id)
         .then((data) => {
           // Guardamos las últimas 3 donaciones
@@ -68,10 +67,8 @@ export const LastDonations = () => {
       try {
         const allDonations = await getDonationsByUser(user.id);
         
-        // Crear la cabecera del CSV
         let csvContent = "Fecha, Sector, Monto, Comentario\r\n";
 
-        // Agregar las filas
         allDonations.forEach((donation) => {
           const row = [
             new Date(donation.date || "").toLocaleDateString(),
@@ -82,13 +79,12 @@ export const LastDonations = () => {
           csvContent += row + "\r\n";
         });
 
-        // Crear un Blob con la codificación correcta (UTF-8) y el marcador BOM
         const blob = new Blob([`\uFEFF${csvContent}`], { type: 'text/csv;charset=utf-8;' });
         const link = document.createElement("a");
         const url = URL.createObjectURL(blob);
         link.setAttribute("href", url);
         link.setAttribute("download", "historial-donaciones.csv");
-        document.body.appendChild(link); // Requerido para Firefox
+        document.body.appendChild(link); 
         link.click();
         document.body.removeChild(link);
       } catch (error) {
@@ -118,15 +114,11 @@ export const LastDonations = () => {
             key={donation.id}
             className="mb-4 p-4 bg-gray-200 dark:bg-gray-800 rounded-md shadow-md transition-colors"
           >
-            {/* Monto grande y llamativo */}
             <p className="text-2xl font-semibold text-green-700 dark:text-green-500 mb-2">${donation.amount}</p>
-            
             {/* Sector y fecha */}
             <p className="text-sm text-gray-600 dark:text-white">
               {new Date(donation.date || "").toLocaleDateString()} | {donation.sector_name}
             </p>
-            
-            {/* Comentario (sin cursiva) */}
             {donation.comment && (
               <p className="mt-2 text-sm text-gray-700 dark:text-white">
                 {donation.comment}

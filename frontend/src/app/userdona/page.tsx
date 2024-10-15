@@ -38,20 +38,15 @@ const DonacionInvitado = () => {
   const finalMonto = monto || customMonto;
 
   const handleLoginClick = () => {
-    router.push('/login'); // Redirige a la página de login
+    router.push('/login'); 
   };
 
   const handleRegisterClick = () => {
-    router.push('/signup'); // Redirige a la página de registro
+    router.push('/signup');
   };
-
-  // const handleDonationSuccess = (amount: string | number) => {
-  //   console.log('Donación exitosa de: $' + amount);
-  // };
 
   return (
     <div className="min-h-screen bg-gray-200">
-      {/* Header con logo y botones de navegación */}
       <header className="bg-[#202451] text-white py-4 shadow-md relative z-10">
         <div className="container mx-auto flex justify-between items-center">
           <div>
@@ -78,12 +73,10 @@ const DonacionInvitado = () => {
         </div>
       </header>
 
-      {/* Contenido de la página de donación */}
+
       <div className="flex items-center justify-center min-h-screen bg-no-repeat bg-cover bg-center relative">
         <div className="absolute top-0 left-0 w-full h-full bg-white"></div>
-        
         <div className="max-w-6xl w-full flex flex-col md:flex-row bg-white shadow-lg rounded-lg relative z-10">
-          {/* Columna izquierda con título y imagen */}
           <div className="md:w-1/2 flex flex-col justify-center items-center bg-[#f7f7f7] p-10">
             <h1 className="text-4xl font-bold text-[#202440] mb-10 text-center">
               ¡Únete a la causa!
@@ -95,13 +88,11 @@ const DonacionInvitado = () => {
             />
           </div>
 
-          {/* Columna derecha con botones de acción y PayPal */}
           <div className="md:w-1/2 p-10 flex flex-col justify-center">
             <h2 className="text-[#202451] text-2xl font-semibold mb-6 text-center">
               Tu donación ayudará a nuestras causas en agua, educación sexual y alimentación.
             </h2>
 
-            {/* Botones de monto */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
               <button
                 onClick={() => handleMontoClick(50)}
@@ -216,7 +207,6 @@ const DonacionInvitado = () => {
                   sectorId={sector}
                   comentario={comentario}
                   name={nombre}
-                  //onSuccess={() => handleDonationSuccess(finalMonto)} 
                 />
               </div>
             )}

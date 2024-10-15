@@ -21,10 +21,8 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-gray-200">
-      {/* Header con logo como imagen y navegación */}
       <header className="bg-[#202451] text-white py-4 shadow-md">
         <div className="container mx-auto flex justify-between items-center">
-          {/* Imagen del logo con enlace */}
           <div>
             <Link href="/">
               <img src="/images/logo.webp" alt="Logo Fundación Sanders" className="h-12 cursor-pointer" />
@@ -56,7 +54,6 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* Hero Section */}
       <section className="relative bg-cover bg-center h-[600px]" style={{ backgroundImage: "url('/images/paginaInicial.webp')" }}>
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white">
@@ -64,21 +61,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Situación Actual Section */}
       <section className="container mx-auto py-12 bg-gray-200">
         <h2 className="text-3xl font-bold text-center text-[#202451] mb-8">Situación Actual</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-8">
-          {/* Primer bloque, más grande */}
           <div className="md:col-span-2 md:row-span-2 bg-white p-6 rounded-lg shadow-md flex flex-col justify-center items-center">
             <h3 className="text-6xl font-bold text-[#202451]">12 MILLONES</h3>
             <p className="mt-4 text-gray-600">No cuentan con acceso a agua potable.</p>
           </div>
-          {/* Segundo bloque */}
+
           <div className="bg-white p-6 rounded-lg shadow-md text-center flex flex-col justify-center items-center">
             <h3 className="text-5xl font-bold text-[#202451]">+5 MILLONES</h3>
             <p className="mt-4 text-gray-600">Padecen desnutrición crónica.</p>
           </div>
-          {/* Tercer bloque */}
+
           <div className="bg-white p-6 rounded-lg shadow-md text-center flex flex-col justify-center items-center">
             <h3 className="text-5xl font-bold text-[#202451]">4 DE CADA 10</h3>
             <p className="mt-4 text-gray-600">Nacimientos son en niñas menores de 17 años.</p>

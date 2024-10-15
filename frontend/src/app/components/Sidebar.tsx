@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import { useAuth } from '../context/AuthContext'; // Importa el hook useAuth
+import { useAuth } from '../context/AuthContext'; 
 const Sidebar = () => {
-  const { role, logout } = useAuth(); // Utiliza useAuth para acceder al rol y al método logout
+  const { role, logout } = useAuth(); 
 
   return (
     <div className="w-64 text-white dark:text-gray-300 h-full fixed mt-20 bg-[#232959] dark:bg-gray-900 transition-colors">
@@ -48,7 +48,7 @@ const Sidebar = () => {
 
         <button
           onClick={() => {
-            logout(); // Llama al método logout
+            logout(); 
           }}
           className="block w-full py-2.5 px-4 mt-4 bg-red-600 dark:bg-red-700 text-white rounded transition duration-200 hover:bg-red-700 dark:hover:bg-red-800"
         >

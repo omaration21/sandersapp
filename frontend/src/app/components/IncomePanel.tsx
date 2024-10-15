@@ -11,7 +11,6 @@ import {
   Legend,
 } from "chart.js";
 
-// Register the necessary Chart.js components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 type FilterOption = "Diariamente" | "Semanalmente" | "Mensualmente";

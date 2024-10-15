@@ -8,6 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { GptAdminRouter } from './routes/gpt_admin.js';
 import { mailRouter } from './routes/mail.js';
+import googleDonorRoutes from './routes/google_donor.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,6 +34,7 @@ app.use('/donations', donationsRouter);
 app.use('/uploads', express.static(path.join(__dirname, './uploads')));
 app.use('/gpt_admin', GptAdminRouter);
 app.use('/email', mailRouter);
+app.use('/api', googleDonorRoutes);
 
 const PORT = process.env.PORT ?? 5001;
 

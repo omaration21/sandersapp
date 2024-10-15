@@ -10,7 +10,6 @@ export class DonationsController {
         const token = req.headers.authorization?.split(' ')[1];
         let donorId = null;
 
-        // Usa la clave secreta global del archivo .env
         const jwtSecret = process.env.JWT_SECRET;
 
         if (token) {
@@ -45,7 +44,6 @@ export class DonationsController {
         }
 
         try {
-            // Intenta registrar la donación en la base de datos
             const donationRegister = await DonationsModel.registerNewDonationAuthenticated(amount, donorId, type_id, comment, sector_id);
             console.log('Resultado del registro:', donationRegister);
 

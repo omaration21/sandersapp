@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { fetchDonations, DonationData } from "../services/api";
 
-// Define the RecentDonations component
 const RecentDonations: React.FC = () => {
   const [recentDonations, setRecentDonations] = useState<DonationData[]>([]);
 
@@ -11,7 +10,7 @@ const RecentDonations: React.FC = () => {
         const fetchedDonations = await fetchDonations();
         const lastThreeDonations = fetchedDonations
           .sort((a, b) => new Date(b.date || "").getTime() - new Date(a.date || "").getTime())
-          .slice(0, 3); // Get the last 3 donations
+          .slice(0, 3);
         setRecentDonations(lastThreeDonations);
       } catch (error) {
         console.error("Error fetching donations:", error);
@@ -29,18 +28,11 @@ const RecentDonations: React.FC = () => {
             key={donation.id}
             className="mb-4 p-4 bg-white dark:bg-gray-800 rounded-md shadow-md transition-colors"
           >
-            {/* Nombre grande y llamativo */}
             <p className="text-2xl font-bold text-black dark:text-white mb-2">{donation.donor_name}</p>
-            
-            {/* Monto grande y llamativo */}
             <p className="text-2xl font-semibold text-green-700 dark:text-green-700 mb-2">${donation.amount}</p>
-            
-            {/* Fecha y Sector en blanco en modo oscuro */}
             <p className="text-sm text-gray-600 dark:text-white">
               {new Date(donation.date || "").toLocaleDateString()} | {donation.sector_name}
             </p>
-            
-            {/* Comentario (sin cursiva) */}
             {donation.comment && (
               <p className="mt-2 text-sm text-gray-700 dark:text-white">
                 {donation.comment}

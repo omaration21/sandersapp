@@ -5,22 +5,21 @@ import multer from 'multer';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Obtener __dirname en ES6
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Configuración de multer para la subida de imágenes
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../uploads")); // Carpeta 'uploads' en la raíz
+    cb(null, path.join(__dirname, "../uploads")); 
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueSuffix + path.extname(file.originalname)); // Nombre único para cada archivo
+    cb(null, uniqueSuffix + path.extname(file.originalname));
   },
 });
 
-// Middleware de multer para manejar la subida de un solo archivo
+
 const upload = multer({ storage: storage }).single("profileImage");
 
 export const usersRouter = Router();

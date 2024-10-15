@@ -18,7 +18,6 @@ export default function RootLayout({
   return (
     <AuthProvider>
       <html lang="es">
-        {/* Usamos las clases dark y bg para cambiar el fondo según el modo */}
         <body className={`${inter.className} bg-white dark:bg-[#141D32] transition-colors`}>
           {children}
         </body>

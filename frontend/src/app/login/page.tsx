@@ -63,12 +63,11 @@ const LoginPage = () => {
 
       {/* Sección del formulario de Login */}
       <div className="flex items-center justify-center min-h-screen relative">
-        {/* Fondo debe cubrir toda la pantalla */}
         <div
           style={{
             background: 'linear-gradient(to top right, #1F244D 50%, #232959 50%)',
           }}
-          className="absolute top-0 left-0 w-full min-h-full z-0" // Cambiado h-full por min-h-full
+          className="absolute top-0 left-0 w-full min-h-full z-0" 
         ></div>
         <div className="relative z-10 items-center justify-center w-full max-w-md bg-[rgba(255,255,255)] rounded-lg shadow-md p-6">
           <div className="flex items-center justify-center ">
@@ -77,7 +76,7 @@ const LoginPage = () => {
           </div>
           
           <form onSubmit={handleSubmit}>
-            {error && <p className="text-red-500 mb-4">{error}</p>} {/* Mostrar el error si existe */}
+            {error && <p className="text-red-500 mb-4">{error}</p>}
             <div className="mb-4">
               <label htmlFor="email" className="block text-[#202451]">Correo</label>
               <input

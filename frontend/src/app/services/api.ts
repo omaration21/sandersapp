@@ -1,7 +1,6 @@
 export const API_URL = "https://localhost:5001";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
-// import { send } from "process";
 
 interface TokenPayload {
   exp: number;
@@ -213,7 +212,6 @@ export async function fetchProfileImage(
   profile_image_url: string
 ): Promise<string> {
   try {
-    // Hacer la solicitud a la URL de la imagen
     const response = await fetch(`${API_URL}${profile_image_url}`, {
       method: "GET",
     });
@@ -253,7 +251,7 @@ export async function updateProfileImage(userId: number, imageFile: File): Promi
   }
 
   const data = await response.json();
-  return data.profile_image_url; // Retorna la nueva URL de la imagen de perfil
+  return data.profile_image_url; 
 }
 
 export async function getDonationsByUser(userId: number): Promise<DonationData[]> {
@@ -308,7 +306,7 @@ export async function getResponseFromGPT(promt: string): Promise<any> {
   }
 
   const data = await response.json();
-  return data.message; // Devolvemos cualquier contenido que venga en 'message'
+  return data.message;
 }
 
 export async function sendEmail(email: string, subject: string, message: string): Promise<boolean> {

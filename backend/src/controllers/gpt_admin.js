@@ -19,7 +19,6 @@ export class GptAdminController {
         console.log('Question:', question);
 
         try {
-            // Genera la respuesta inicial con GPT
             const completion = await client.chat.completions.create({
                 model: 'gpt-4',
                 messages: [
@@ -48,7 +47,6 @@ export class GptAdminController {
 
             const interpretationPromt = getInterpretationPrompt(question);
 
-            //console.log('Interpretation Prompt:', interpretationPromt);
             console.log('Results:', resultsString);
 
             const completionInterpretation = await client.chat.completions.create({
@@ -60,15 +58,12 @@ export class GptAdminController {
             });
 
             const interpretation = completionInterpretation.choices[0].message.content;
-            //console.log('Interpretation:', interpretation);
 
             // Verifica si la pregunta implica enviar un correo
             const isMailRequest = await GptAdminController.isMailRelated(question);
 
             if (isMailRequest) {
-                //console.log('Mail request detected.');
                 const UsersJSON = JSON.parse(interpretation);
-                // Envía correos si se detecta una solicitud de correo
                 const sendMailSuccesfully = await GptAdminController.sendThankYouEmails(UsersJSON);
 
                 if (!sendMailSuccesfully) {
@@ -103,8 +98,6 @@ export class GptAdminController {
                 { role: 'user', content: question }
             ]
         });
-
-        //console.log('Mail related:', completion.choices[0].message.content);
 
         const response = completion.choices[0].message.content.trim().toLowerCase();
         return response === 'yes';

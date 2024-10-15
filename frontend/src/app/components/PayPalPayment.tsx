@@ -20,17 +20,15 @@ interface PayPalPaymentProps {
     sectorId?: string;
     comentario?: string;
     name?: string;
-    //onSuccess: () => void;
 }
 
-const PayPalPayment: React.FC<PayPalPaymentProps> = ({name, email, monto, donorId, sectorId, comentario /*, onSuccess */}) => {
+const PayPalPayment: React.FC<PayPalPaymentProps> = ({name, email, monto, donorId, sectorId, comentario}) => {
     console.log("Monto en PayPalPayment:", monto);
 
     return (
         <PayPalScriptProvider options={{ clientId: "ASja7LRw7BXfSZN3adhaFtcKaTTKR-eEjxDUT3dMO7aJKGtYAaQPGL5Obm_H58N1kjFZnblabvbPT6PX" }}>
-            {/* Añadimos una clave para recrear el botón de PayPal cada vez que el monto cambie */}
             <PayPalButtons
-                key={monto} // Esta clave asegura que PayPalButtons se vuelva a renderizar con el nuevo monto
+                key={monto} 
                 style={{ layout: 'vertical' }}
                 createOrder={(data, actions) => {
                     if (!actions || !actions.order) {
@@ -94,7 +92,6 @@ const PayPalPayment: React.FC<PayPalPaymentProps> = ({name, email, monto, donorI
                             .then(data => {
                                 console.log('Donación registrada exitosamente:', data);
                                 alert('Donación registrada exitosamente');
-                                //onSuccess(); // Llamar la función de éxito
                             })
                             .catch((error: any) => {
                                 console.error('Error registrando la donación:', error);
@@ -104,7 +101,6 @@ const PayPalPayment: React.FC<PayPalPaymentProps> = ({name, email, monto, donorI
                         if (details.payer && details.payer.name) {
                             console.log('name:', name);
                             console.log('monto:', monto);
-                            //onSuccess(); // Llamar la función de éxito
                             const emailData = {
                                 email: email || donorEmail,
                                 subject: 'Donación completada',
@@ -122,7 +118,6 @@ const PayPalPayment: React.FC<PayPalPaymentProps> = ({name, email, monto, donorI
                             alert('Donación completada por el usuario: ' + details.payer.name.given_name);
 
                         } else {
-                            //onSuccess(); // Llamar la función de éxito
                             alert('Pago completado');
                         }
                     });

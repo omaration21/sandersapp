@@ -71,26 +71,23 @@ export const PersonalizedReport = () => {
         return donationDate >= startDate && donationDate <= endDate;
       });
   
-      // Crear la cabecera del CSV
       let csvContent = "Fecha,Donante,Monto\r\n";
   
-      // Agregar las filas
       filteredDonations.forEach(donation => {
         const row = [
           new Date(donation.date || "").toLocaleDateString(),
           donation.donor_name || 'Nombre no disponible',
-          `$${donation.amount ? parseFloat(donation.amount).toFixed(2) : '0.00'}` // Monto con formato de moneda
+          `$${donation.amount ? parseFloat(donation.amount).toFixed(2) : '0.00'}`
         ].join(",");
         csvContent += row + "\r\n";
       });
   
-      // Crear un Blob con la codificación correcta (UTF-8) y el marcador BOM
       const blob = new Blob([`\uFEFF${csvContent}`], { type: 'text/csv;charset=utf-8;' });
       const link = document.createElement("a");
       const url = URL.createObjectURL(blob);
       link.setAttribute("href", url);
       link.setAttribute("download", "reporte-donaciones.csv");
-      document.body.appendChild(link); // Requerido para Firefox
+      document.body.appendChild(link); 
       link.click();
       document.body.removeChild(link);
     } catch (error) {

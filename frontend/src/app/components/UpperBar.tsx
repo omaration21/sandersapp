@@ -10,7 +10,7 @@ interface UpperBarProps {
 
 export const UpperBar = ({ user, onToggleSidebar }: UpperBarProps) => {
   const [profileImageUrl, setProfileImageUrl] = useState<string>("");
-  const router = useRouter(); // Hook de Next.js para navegación
+  const router = useRouter();
 
   useEffect(() => {
     const loadImage = async () => {
@@ -27,15 +27,13 @@ export const UpperBar = ({ user, onToggleSidebar }: UpperBarProps) => {
     loadImage();
   }, [user.profile_image_url]);
 
-  // Manejar la navegación según el rol del usuario
   const handleProfileClick = () => {
     const route = user.role_id === 1 ? "/dashboard/admin/settings" : "/dashboard/donor/settings";
-    router.push(route); // Navegar a la ruta correspondiente
+    router.push(route); 
   };
 
   return (
     <header className="bg-[#202451] dark:bg-gray-900 text-white dark:text-gray-300 py-6 shadow-md fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 transition-colors">
-      {/* Botón con 3 líneas para mostrar/ocultar sidebar */}
       <button onClick={onToggleSidebar} className="text-white dark:text-gray-300 focus:outline-none">
         <div className="space-y-2">
           <span className="block w-8 h-0.5 bg-white dark:bg-gray-300"></span>

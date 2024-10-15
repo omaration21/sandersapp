@@ -109,7 +109,6 @@ export class UserController {
     }
 
     static async uploadProfileImage(req, res) {
-        // Aquí, `multer` ya habrá manejado la subida del archivo y estará disponible en `req.file`
         if (!req.file) {
             return res.status(400).json({ error: 'No se ha subido ninguna imagen' });
         }

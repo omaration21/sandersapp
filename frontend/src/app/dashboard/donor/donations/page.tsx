@@ -6,7 +6,6 @@ import PayPalPayment from "../../../components/PayPalPayment";
 import { AuthContext } from "../../../context/AuthContext";
 import { UpperBar } from 'src/app/components/UpperBar';
 import { useRouter } from "next/navigation";
-// import Cookies from "js-cookie";
 
 const DonacionUsuario = () => {
   const authContext = useContext(AuthContext);
@@ -55,7 +54,6 @@ const DonacionUsuario = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-200 dark:bg-[#141D32] transition-colors">
-      {/* Barra superior */}
       <UpperBar user={authContext.user} onToggleSidebar={handleToggleSidebar} />
       <div className="flex flex-grow">
         {isSidebarOpen && <Sidebar />}
@@ -124,7 +122,6 @@ const DonacionUsuario = () => {
                   </div>
                 </div>
 
-                 {/** Selección del sector */}
               <div className="mb-6">
                 <label htmlFor="sector" className="block text-sm font-medium mb-2 dark:text-white">
                   Selecciona el sector al que quieres apoyar:

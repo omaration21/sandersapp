@@ -23,7 +23,7 @@ const DonorDashboard = () => {
 
     if (!authContext?.user) {
       console.log('No se encontró un usuario, redirigiendo al inicio de sesión');
-      router.push('/login'); // Redirige si no hay un usuario autenticado
+      router.push('/login'); 
     } 
   }, [authContext, router]);
 
@@ -31,7 +31,6 @@ const DonorDashboard = () => {
     return null; 
   }
 
-  // Función para alternar la visibilidad del sidebar
   const handleToggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -40,16 +39,14 @@ const DonorDashboard = () => {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-200 dark:bg-[#141D32]"> 
-      {/* Renderizamos UpperBar pasando el usuario */}
       <UpperBar user={authContext.user} onToggleSidebar={handleToggleSidebar}/>
 
       <div className="flex flex-grow">
         {isSidebarOpen && (<Sidebar/>)}
         <div className={`flex-1 p-10 ${isSidebarOpen ? 'ml-64' : 'ml-0'} mt-16`}>
 
-          {/* Componente de donaciones recientes a toda la página */}
           <div className="mt-2">
-            <LastDonations />  {/* Renderizado del componente RecentDonations */}
+            <LastDonations /> 
           </div>
         </div>
       </div>
