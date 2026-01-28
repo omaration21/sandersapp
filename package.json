@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@heroicons/react": "^2.1.5",
+    "@heroicons/react": "^2.2.0",
     "@types/react-datepicker": "^6.2.0",
     "jspdf": "^2.5.2",
     "jspdf-autotable": "^3.8.3",
